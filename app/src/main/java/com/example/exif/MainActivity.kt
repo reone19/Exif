@@ -30,8 +30,6 @@ class MainActivity : AppCompatActivity() {
     //realmの定義
     //private lateinit var realm: Realm
     //private val args: MainActivityArgs by navArgs()
-
-
     private lateinit var binding: ActivityMainBinding
     //ギャラリーのクラス変数の定義
     private val REQUEST_GALLERY_TAKE = 2

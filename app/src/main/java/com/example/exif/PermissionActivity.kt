@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 
 class PermissionActivity : AppCompatActivity() {
 
+
+
     private val RECORD_REQUEST_CODE = 1000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
