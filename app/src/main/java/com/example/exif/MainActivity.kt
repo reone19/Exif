@@ -1,136 +1,117 @@
 package com.example.exif
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+
+
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import com.example.exif.databinding.ActivityMainBinding
+import android.view.View
+//realm
 import io.realm.Realm
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
+import com.example.exif.model.Photo
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import java.io.File
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
+    //realmの定義
+    //private lateinit var realm: Realm
+    //private val args: MainActivityArgs by navArgs()
+
+
     private lateinit var binding: ActivityMainBinding
-    private lateinit var realm: Realm
-    // private val args: MainActivityArgs by navArgs()
+    //ギャラリーのクラス変数の定義
+    private val REQUEST_GALLERY_TAKE = 2
+    private val RECORD_REQUEST_CODE = 1000
+    //イメージビューのフィールド定義
+    private lateinit var storage_iv: ImageView
+    private lateinit var storage_btn: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
+        //配列化して、表示できるようにすればいい気がする
+        storage_iv = findViewById<ImageView>(R.id.storage_iv)
+        storage_btn = findViewById<Button>(R.id.storage_btn)
+        setupPermissions()
 
-
-        // インスタンス取得 (初期化なのでDB処理を行うときはonCreateメソッドに必ず書く)
-        realm = Realm.getDefaultInstance()
-
-
-        //削除ボタンを押したときにdeleteExecuteを実行して該当レコードを削除
-        binding.deleteBtn.setOnClickListener { deleteExecute(it) }
-    }
-
-
-    // Realmのインスタンスを破棄してリソース開放
-    override fun onDestroy() {
-        super.onDestroy()
-        realm.close()
-    }
-
-
-    // Create
-    private fun insertExecute(view: View) {
-        realm.executeTransaction { db: Realm ->
-            // idのインクリメント処理はこれを使うか、共有プリファレンスに常に最大のid番号を登録しておき、
-            // その値プラス1をする
-            val maxId = db.where<Photo>().max("photoID")
-            val nextId = (maxId?.toLong() ?: 0L) + 1L
-            val photo = db.createObject<Photo>(nextId)
-
-            // 各カラムにコンテンツプロバイダから取得した情報をセット(コンテンツプロバイダ周りはまだ)
-            photo?.photoName = binding.NameEdit.text.toString()
-            photo?.photoURL = binding.URLEdit.text.toString()
-        }
-
-
-        // 簡易Insert文
-        // private fun insertExecute(view: View)
-        // realm.executeTransaction {
-        // val tmp1 = Photo(1,”名前”,"URL", "NULL")
-        // realm.insert(tmp1)
-        // }
-    }
-
-
-    // Read
-    private fun readExecute(view: View) {
-        // ログに出力する簡易版
-        // var read = realm.where(Photo::class.java)
-        // .equalTo("photo_name", "*.jpg")
-        // .findAll()
-        // ログに出力？
-        // Log.d(TAG, read.toString())
-
-
-        // id番号に一致しているカラムを取得
-        val photo = realm.where<Photo>()
-            .equalTo("photoId", "id番号")
-            .findFirst()
-
-        // DBに保存されている各レコードをアプリケーションのXMLにセット
-        binding.nameEdit.setText(photo?.photoName)
-        binding.urlEdit.setText(photo?.photoURL)
-    }
-
-
-    // Update
-    private fun updateExecute(view: View) {
-//        val photo = realm.where<Photo>()
-//            .equalTo("photoId", "id番号")
-//            .findFirst()
-//        binding.titleEdit.setText(photo?.title)
-//        binding.detailEdit.setText(photo?.detail)
-//
-//        // 保存ボタン
-        // binding.save.setOnClickListener{ saveExecute(it) }
-
-
-        realm.executeTransaction { db: Realm ->
-            val photo = realm.where<Photo>()
-                .equalTo("photoId", "id番号")
-                .findFirst()
-
-            // XMLに入力されたテキストをDBに保存して更新
-            photo?.photoName = binding.photoNameEdit.text.toString()
-            photo?.photoURL = binding.photoURLEdit.text.toString()
-
-
-//       var update = realm.where(Photo::class.java)
-//            .equalTo("photo_name", "*.jpg")
-//            .findAll()
-//        realm.executeTransaction {
-//            update.updateAllFromRealm()
-//
-//        }
-
+        //EditTextのクリックイベントを設定
+        storage_btn.setOnClickListener {
+            openGalleryForImage()
         }
     }
 
-
-    // Delete
-    private fun deleteExecute(view: View) {
-//        var delete = realm.where(Photo::class.java)
-//            .equalTo("photo_name", "*.jpg")
-//            .findAll()
-        //削除
-//        realm.executeTransaction {
-//            delete.deleteAllFromRealm()
+    //ギャラリーを開くためのメソッド
+    private fun openGalleryForImage() {
+        //ギャラリーに画面を遷移するためのIntent
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_GALLERY_TAKE)
+    }
 
 
-        realm.executeTransaction { db: Realm ->
-            db.where<Photo>().equalTo("id", "id番号")
-                ?.findFirst()
-                ?.deleteFromRealm()
+    // onActivityResultにイメージ設定
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode){
+            2 -> {
+                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALLERY_TAKE){
+                    //選択された写真にImageViewを変更
+                    storage_iv.setImageURI(data?.data) // handle chosen image
+                }
+            }
         }
     }
+
+    //パーミッションのチェックを設定するためのメソッド
+    private fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        //権限の許可がされてない場合、makeRequest()メソッドを使ってリクエストをスル。眠い。。。
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            makeRequest()
+        }
+    }
+
+    //パーミッションをリクエストするためのメソッド
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            RECORD_REQUEST_CODE)
+    }
+
+    //パーミッションの許可の結果による実行されるメソッド
+    //Toastを使って、許可された状態か？否かを確認できるようにメソッドを作成。基本常に許可状態なので、パーミッションのリクエストとかのアクションキーないのであんま意味ないかも
+    //まぁ、確認用に・・
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            RECORD_REQUEST_CODE ->{
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(applicationContext, "デバイス内の写真やメディアへのアクセスが許可されませんでした。", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(applicationContext, "デバイス内の写真やメディアへのアクセスが許可されました。", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }
+
 }
