@@ -4,8 +4,12 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exif.databinding.ActivityMainBinding
+import com.example.exif.model.Meta
+import com.example.exif.model.Photo
 import io.realm.Realm
 import io.realm.kotlin.createObject
 import io.realm.kotlin.where
@@ -28,6 +32,12 @@ class MainActivity : AppCompatActivity() {
 
         //削除ボタンを押したときにdeleteExecuteを実行して該当レコードを削除
         binding.deleteBtn.setOnClickListener { deleteExecute(it) }
+
+        // RecyclerViewにアダプターとレイアウトマネージャーを設定する
+        binding.list.layoutManager = LinearLayoutManager(context)
+        val metas = realm.where<Meta>().findAll()
+        val adapter = MetaAdapter(metas)
+        binding.list.adapter = adapter
     }
 
 
@@ -48,8 +58,8 @@ class MainActivity : AppCompatActivity() {
             val photo = db.createObject<Photo>(nextId)
 
             // 各カラムにコンテンツプロバイダから取得した情報をセット(コンテンツプロバイダ周りはまだ)
-            photo?.photoName = binding.NameEdit.text.toString()
-            photo?.photoURL = binding.URLEdit.text.toString()
+            photo?.name = binding.NameEdit.text.toString()
+            photo?.url = binding.urlEdit.text.toString()
         }
 
 
@@ -73,13 +83,13 @@ class MainActivity : AppCompatActivity() {
 
 
         // id番号に一致しているカラムを取得
-        val photo = realm.where<Photo>()
+        val photo = realm.where<Meta>()
             .equalTo("photoId", "id番号")
             .findFirst()
 
         // DBに保存されている各レコードをアプリケーションのXMLにセット
-        binding.nameEdit.setText(photo?.photoName)
-        binding.urlEdit.setText(photo?.photoURL)
+        binding.PhotoNameEdit.setText(photo?.name)
+        binding.photoUrlEdit.setText(photo?.url)
     }
 
 
@@ -101,8 +111,8 @@ class MainActivity : AppCompatActivity() {
                 .findFirst()
 
             // XMLに入力されたテキストをDBに保存して更新
-            photo?.photoName = binding.photoNameEdit.text.toString()
-            photo?.photoURL = binding.photoURLEdit.text.toString()
+            photo?.name = binding.photoNameEdit.text.toString()
+            photo?.url = binding.photoURLEdit.text.toString()
 
 
 //       var update = realm.where(Photo::class.java)
