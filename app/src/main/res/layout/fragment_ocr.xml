@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OcrFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:text="IH31（941 9834 4162 / 924622）\n
+BT31（952 6454 8947 / 605025）\n
+ST31（940 7723 2667 / 231090）\n
+◎選択科目　金曜３限　（Zoom ID / Password）\n
+FE3S（960 9845 5092 / 169855）\n
+AP3S（990 4861 2556 / 674731）\n
+ND3S（972 6193 0717 / 380090）\n
+IP３S 対面授業 ※IP３S ⇒金曜１限、２限のオンライン授業を、３１４教室にて受講して、３限を２９８教室にて対面で受講" />
+
+</FrameLayout>

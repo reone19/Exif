@@ -12,6 +12,6 @@ open class Meta : RealmObject() {
     var updateDate: Date? = null   // 変更日時
     var freeChar: String? = null   // 任意の文字列
 
-    var metaDetail: MetaDetail? = null  // MetaDetailテーブルと1対1の関係
-    var metaPro: MetaPro? = null        // MetaProテーブルと1対1の関係
+//    var metaDetail: MetaDetail? = null  // MetaDetailテーブルと1対1の関係
+//    var metaPro: MetaPro? = null        // MetaProテーブルと1対1の関係
 }
