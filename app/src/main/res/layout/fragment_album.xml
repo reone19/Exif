@@ -5,13 +5,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
         android:id="@+id/MainLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <LinearLayout
+            android:id="@+id/popup"
+            android:layout_gravity="center"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:backgroundTint="@color/white">
+            <TextView
+                android:id="@+id/textView2"
+                android:textSize="24sp"
+                android:padding="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新規アルバム" />
+            <TextView
+                android:id="@+id/textView3"
+                android:padding="8dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="このアルバムの名前を入力してください。" />
+            <EditText
+                android:id="@+id/editTexttitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="タイトル" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="キャンセル" />
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="保存" />
+            </LinearLayout>
+        </LinearLayout>
         <Button
             android:id="@+id/back_button"
             android:layout_gravity="center"
@@ -20,7 +69,6 @@
             android:backgroundTint="#00BCD4"
             android:text="Back"
             android:textColor="#FFFFFF" />
-
         <Button
             android:id="@+id/add_album"
             android:layout_gravity="center"
@@ -29,13 +77,11 @@
             android:backgroundTint="#00BCD4"
             android:text="追加"
             android:textColor="#FFFFFF" />
-
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="horizontal">
-
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -44,7 +90,6 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="8dp"
                 android:orientation="vertical">
-
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -52,18 +97,15 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/noimage" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="最近の項目" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -72,7 +114,6 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:orientation="vertical">
-
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,18 +121,15 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/noimage" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="お気に入り" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -100,7 +138,6 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="16dp"
                 android:orientation="vertical">
-
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -108,19 +145,15 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/noimage" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="お気に入り" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0" />
             </LinearLayout>
         </LinearLayout>
-
-
     </LinearLayout>
 </ScrollView>

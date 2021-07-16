@@ -3,19 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout
+    <FrameLayout
         android:weightSum="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:orientation="horizontal">
-
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -24,26 +21,24 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="8dp"
                 android:orientation="vertical">
-
                 <ImageButton
+                    android:id="@+id/image_id0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/noimage" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="最近の項目" />
-
                 <TextView
+                    android:id="@+id/text0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -52,8 +47,8 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:orientation="vertical">
-
                 <ImageButton
+                    android:id="@+id/image_id1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -61,18 +56,16 @@
                     android:scaleType="fitXY"
                     style="?android:attr/borderlessButtonStyle"
                     app:srcCompat="@drawable/white" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
-
                 <TextView
+                    android:id="@+id/text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -81,8 +74,8 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="16dp"
                 android:orientation="vertical">
-
                 <ImageButton
+                    android:id="@+id/image_id2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -90,20 +83,16 @@
                     android:scaleType="fitXY"
                     style="?android:attr/borderlessButtonStyle"
                     app:srcCompat="@drawable/white" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
-
                 <TextView
+                    android:id="@+id/text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
             </LinearLayout>
         </LinearLayout>
-
-
-    </LinearLayout>
-
+    </FrameLayout>
 </LinearLayout>
