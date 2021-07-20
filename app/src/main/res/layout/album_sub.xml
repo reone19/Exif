@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/add_layout"
         android:weightSum="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,13 +29,14 @@
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
+                    style="?android:attr/borderlessButtonStyle"
                     app:srcCompat="@drawable/noimage" />
                 <TextView
+                    android:id="@+id/text0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="最近の項目" />
                 <TextView
-                    android:id="@+id/text0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0" />
@@ -57,11 +59,11 @@
                     style="?android:attr/borderlessButtonStyle"
                     app:srcCompat="@drawable/white" />
                 <TextView
+                    android:id="@+id/text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
                 <TextView
-                    android:id="@+id/text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
@@ -84,15 +86,15 @@
                     style="?android:attr/borderlessButtonStyle"
                     app:srcCompat="@drawable/white" />
                 <TextView
+                    android:id="@+id/text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
                 <TextView
-                    android:id="@+id/text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
 </LinearLayout>
