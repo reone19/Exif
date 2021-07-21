@@ -9,8 +9,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.exif.OcrFragment
-import com.example.exif.model.Image
 import com.example.exif.R
 import com.example.exif.YoshidanoYatu
 
