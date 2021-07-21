@@ -46,12 +46,6 @@ class PhotoAdapter(private var context: Context, private var imagesList: ArrayLi
             intent.putExtra("name", currentImage.imageName)
             context.startActivity(intent)
         }
-        holder.image?.setOnClickListener {
-            val intent = Intent(context, OcrFragment::class.java)
-            intent.putExtra("path", currentImage.imagePath)
-            intent.putExtra("name", currentImage.imageName)
-            context.startActivity(intent)
-        }
     }
 
     override fun getItemCount(): Int {
