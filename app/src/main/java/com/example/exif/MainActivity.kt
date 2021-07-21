@@ -25,10 +25,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //リサイクルビューイメージのId定義
         imageRecycler = findViewById(R.id.image_recycler)
         progressBar = findViewById(R.id.recycler_progress)
-
+        //リサイクルビューのグリットレイアウトで表示されている画像の制御、spanCountは4列で画像を並べてる意味
         imageRecycler?.layoutManager=GridLayoutManager(this,4)
+        //これで表示画像の大きさを均等になるよう修正を加えている。falseにしたら大変な事になる。
         imageRecycler?.setHasFixedSize(true)
 
         if(ContextCompat.checkSelfPermission(
@@ -47,7 +49,8 @@ class MainActivity : AppCompatActivity() {
         if(allPictures!!.isEmpty())
         {
             progressBar?.visibility= View.VISIBLE
-            //外部ストレージからすべての画像を取得する
+            //画像取得の際のプログレスバーの不可視設定かつimageRecyclerに
+            // allpicturesの画像配列をセット。
             allPictures=getAllImages()
             //Adapterをリサイクラーにセットする
             imageRecycler?.adapter= PhotoAdapter(this,allPictures!!)
