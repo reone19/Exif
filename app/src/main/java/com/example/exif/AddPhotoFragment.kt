@@ -7,8 +7,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteConstraintException
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
@@ -18,9 +20,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
+import com.example.exif.model.PhotoAdapterAlbum
 
 
 class AddPhotoFragment : AppCompatActivity() {
+    var a:Int = 1
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
@@ -31,8 +35,32 @@ class AddPhotoFragment : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo_fragment)
 
+        val albumID= intent.getStringExtra("album_id")
+
         val backButton = findViewById<Button>(R.id.back)
         backButton.setOnClickListener{
+            var b:Int = PhotoAdapterAlbum(this,allPictures!!).a
+            //データベース接続
+            val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
+            val database = dbHelper.writableDatabase
+            val values = ContentValues()
+            for (i in 0..b-1){
+                try {
+                    values.put("photo_id", PhotoAdapterAlbum(this,allPictures!!).dbimageId[a])
+                    if (albumID != null) {
+                        values.put("album_id", albumID.toInt())
+                    }
+                    database.insertOrThrow("Album_Photo", null, values)
+                }
+                catch (e: SQLiteConstraintException){
+
+                }
+            }
+            finish()
+        }
+
+        val okButton = findViewById<Button>(R.id.ok)
+        okButton.setOnClickListener{
             finish()
         }
 
@@ -64,7 +92,7 @@ class AddPhotoFragment : AppCompatActivity() {
             // allpicturesの画像配列をセット。
             allPictures=getAllImages()
             //Adapterをリサイクラーにセットする
-            imageRecycler?.adapter= PhotoAdapter(this,allPictures!!)
+            imageRecycler?.adapter= PhotoAdapterAlbum(this,allPictures!!)
             progressBar?.visibility=View.GONE
         }
 
@@ -83,11 +111,13 @@ class AddPhotoFragment : AppCompatActivity() {
             cursor!!.moveToFirst()
             do {
                 val image = Image()
+                image.imageid = a.toString()
                 image.imagePath =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
                 images.add(image)
+                a = a + 1
             } while (cursor.moveToNext())
             cursor.close()
         } catch (e: Exception) {

@@ -7,7 +7,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest
+import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteConstraintException
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
@@ -20,6 +22,7 @@ import com.example.exif.model.PhotoAdapter
 
 
 class MainActivity : AppCompatActivity() {
+    var a:Int = 1
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
@@ -65,6 +68,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    //データベース接続
+    val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
     //外部ストレージからすべての画像を取得するメソッドの設定
     private fun getAllImages(): ArrayList<Image>?{
         val images = ArrayList<Image>()
@@ -79,11 +84,24 @@ class MainActivity : AppCompatActivity() {
             cursor!!.moveToFirst()
             do {
                 val image = Image()
+                image.imageid = a.toString()
                 image.imagePath =
                         cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
                         cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                try {
+                    val database = dbHelper.writableDatabase
+                    val values = ContentValues()
+                    values.put("id", a)
+                    values.put("path", image.imagePath)
+                    values.put("name", image.imageName)
+                    database.insertOrThrow("Photo", null, values)
+                }
+                catch (e: SQLiteConstraintException){
+
+                }
                 images.add(image)
+                a = a + 1
             } while (cursor.moveToNext())
             cursor.close()
         } catch (e: Exception) {

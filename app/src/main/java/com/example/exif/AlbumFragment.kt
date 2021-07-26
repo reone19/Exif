@@ -119,6 +119,7 @@ class AlbumFragment : Fragment() {
                         btn[k] = view.findViewById<ImageButton>(arrayListId.get(h).toInt())
                         btn[k]?.setOnClickListener{
                             val intent = Intent(context, AlbumPhotoFragment::class.java)
+                            intent.putExtra("album_id", f.toString())
                             startActivity(intent)
                         }
                         //アルバムタイトル表示
@@ -144,6 +145,7 @@ class AlbumFragment : Fragment() {
                             btn[k] = view.findViewById<ImageButton>(arrayListId.get(h).toInt())
                             btn[k]?.setOnClickListener{
                                 val intent = Intent(context, AlbumPhotoFragment::class.java)
+                                intent.putExtra("album_id", f.toString())
                                 startActivity(intent)
                             }
                             //アルバムタイトル表示
@@ -228,6 +230,7 @@ class AlbumFragment : Fragment() {
                 btn[k] = view.findViewById<ImageButton>(imagenewId[b])
                 btn[k]?.setOnClickListener{
                     val intent = Intent(context, AlbumPhotoFragment::class.java)
+                    intent.putExtra("album_id", f.toString())
                     startActivity(intent)
                 }
                 val tv = view.findViewById<TextView>(textnewId[b])
@@ -251,6 +254,7 @@ class AlbumFragment : Fragment() {
                 btn[k] = view.findViewById<ImageButton>(imagenewId[b])
                 btn[k]?.setOnClickListener{
                     val intent = Intent(context, AlbumPhotoFragment::class.java)
+                    intent.putExtra("album_id", f.toString())
                     startActivity(intent)
                 }
                 val tv = view.findViewById<TextView>(textnewId[b])

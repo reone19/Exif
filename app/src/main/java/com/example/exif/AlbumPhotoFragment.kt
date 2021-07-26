@@ -21,7 +21,6 @@ import com.example.exif.model.PhotoAdapter
 
 
 class AlbumPhotoFragment : AppCompatActivity() {
-
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
     private var  progressBar: ProgressBar?=null
@@ -31,9 +30,12 @@ class AlbumPhotoFragment : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_album_photo_fragment)
 
+        val albumID = intent.getStringExtra("album_id")
+
         val addButton = findViewById<Button>(R.id.add_photo)
         addButton.setOnClickListener{
             val intent = Intent(this, AddPhotoFragment::class.java)
+            intent.putExtra("album_id", albumID)
             startActivity(intent)
         }
 
