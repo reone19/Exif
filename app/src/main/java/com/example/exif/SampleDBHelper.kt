@@ -12,12 +12,12 @@ public class SampleDBHelper(
 ) : SQLiteOpenHelper(context, databaseName, factory, version) {
 
     override fun onCreate(database: SQLiteDatabase?) {
-        database?.execSQL("create table if not exists SampleTable (id text primary key,text_id text, name text, num integer)");
+        database?.execSQL("create table if not exists Album (id text primary key, text_id text, subtext_id text, photo_num integer, name text, num integer)");
     }
 
     override fun onUpgrade(database: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         if (oldVersion < newVersion) {
-            database?.execSQL("alter table SampleTable add column deleteFlag integer default 0")
+            database?.execSQL("alter table Album add column deleteFlag integer default 0")
         }
     }
 }

@@ -37,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:text="最近の項目" />
                 <TextView
+                    android:id="@+id/sub_text0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0" />
@@ -64,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="" />
                 <TextView
+                    android:id="@+id/sub_text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
@@ -91,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="" />
                 <TextView
+                    android:id="@+id/sub_text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />

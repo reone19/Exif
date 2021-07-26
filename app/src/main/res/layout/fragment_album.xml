@@ -95,15 +95,15 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
                         style="?android:attr/borderlessButtonStyle"
-                        app:srcCompat="@drawable/noimage" />
+                        app:srcCompat="@drawable/white" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="お気に入り" />
+                        android:text="" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0" />
+                        android:text="" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

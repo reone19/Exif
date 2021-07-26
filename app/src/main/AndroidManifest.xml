@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Exif">
-        <activity android:name=".YoshidanoYatu"></activity>
+        <activity android:name=".AddPhotoFragment"></activity>
+        <activity android:name=".AlbumPhotoFragment" />
+        <activity android:name=".YoshidanoYatu" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
