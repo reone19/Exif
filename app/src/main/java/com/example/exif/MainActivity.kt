@@ -1,29 +1,28 @@
 package com.example.exif
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
-import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
-    private var  progressBar: ProgressBar?=null
+    private var progressBar: ProgressBar?=null
     private var allPictures:ArrayList<Image>?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
