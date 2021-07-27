@@ -51,6 +51,57 @@
 
             <TextView
                 android:padding="3dp"
+                android:text="ビットの深さ" />
+
+            <EditText
+                android:id="@+id/bitsPerSample"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="圧縮の種類" />
+
+            <EditText
+                android:id="@+id/compression"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="画像タイトル" />
+
+            <EditText
+                android:id="@+id/imageDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
                 android:text="画像の方向" />
 
             <EditText
@@ -103,6 +154,91 @@
 
             <TextView
                 android:padding="3dp"
+                android:text="ロケーション" />
+
+            <EditText
+                android:id="@+id/stripOffsets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="GPSタグのバージョン" />
+
+            <EditText
+                android:id="@+id/gpsVersionID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="経度" />
+
+            <EditText
+                android:id="@+id/gpsLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="緯度" />
+
+            <EditText
+                android:id="@+id/gpsLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="作成日時" />
+
+            <EditText
+                android:id="@+id/dateTimeOriginal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
                 android:text="変更日時" />
 
             <EditText
@@ -112,7 +248,6 @@
                 android:ems="10"
                 android:inputType="date"
                 android:text="" />
-
         </TableRow>
     </TableLayout>
 

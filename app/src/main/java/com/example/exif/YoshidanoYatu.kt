@@ -23,7 +23,6 @@ class YoshidanoYatu : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityYoshidanoYatuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         //画像のパスを受け取るためのデータ
         imagePath = intent.getStringExtra("path")
         //画像の名前を受け取るためのデータ

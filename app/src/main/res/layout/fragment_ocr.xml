@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/imageWidth"
+            android:id="@+id/ocrString"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
@@ -30,7 +30,7 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="写真を選択してね" />
+            android:text="文字を抽出" />
 
     </LinearLayout>
 

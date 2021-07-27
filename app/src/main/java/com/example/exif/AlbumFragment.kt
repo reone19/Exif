@@ -1,6 +1,7 @@
 package com.example.exif
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -48,7 +49,7 @@ class AlbumFragment : Fragment() {
     var arrayListSubTextId: ArrayList<String> = arrayListOf()
     var arrayListPhotoNum: ArrayList<Int> = arrayListOf()
     var arrayListName: ArrayList<String> = arrayListOf()
-    var arrayListNum: ArrayList<Int> = arrayListOf()
+    private var arrayListNum: ArrayList<Int> = arrayListOf()
 
     companion object {
         private const val TAG = "AlbumFragment"
