@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,7 @@ class AlbumFragment : Fragment() {
 
         //アルバム遷移用ボタンのインスタンス化準備
         val btn = arrayOfNulls<ImageButton>(999)
+        val num = arrayOfNulls<Int>(999)
 
         //データベース接続
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
@@ -117,11 +119,8 @@ class AlbumFragment : Fragment() {
 
                         //アルバム遷移用ボタンのインスタンス化
                         btn[k] = view.findViewById<ImageButton>(arrayListId.get(h).toInt())
-                        btn[k]?.setOnClickListener{
-                            val intent = Intent(context, AlbumPhotoFragment::class.java)
-                            intent.putExtra("album_id", f.toString())
-                            startActivity(intent)
-                        }
+                        num[k] = arrayListId.get(h).toInt()
+
                         //アルバムタイトル表示
                         val tv = view.findViewById<TextView>(arrayListTextId.get(h).toInt())
                         tv.setText(arrayListName.get(h))
@@ -143,11 +142,7 @@ class AlbumFragment : Fragment() {
 
                             //アルバム遷移用ボタンのインスタンス化
                             btn[k] = view.findViewById<ImageButton>(arrayListId.get(h).toInt())
-                            btn[k]?.setOnClickListener{
-                                val intent = Intent(context, AlbumPhotoFragment::class.java)
-                                intent.putExtra("album_id", f.toString())
-                                startActivity(intent)
-                            }
+                            num[k] = arrayListId.get(h).toInt()
                             //アルバムタイトル表示
                             val tv = view.findViewById<TextView>(arrayListTextId.get(h).toInt())
                             tv.setText(arrayListName.get(h))
@@ -228,11 +223,7 @@ class AlbumFragment : Fragment() {
 
                 //アルバム遷移用ボタンのインスタンス化
                 btn[k] = view.findViewById<ImageButton>(imagenewId[b])
-                btn[k]?.setOnClickListener{
-                    val intent = Intent(context, AlbumPhotoFragment::class.java)
-                    intent.putExtra("album_id", f.toString())
-                    startActivity(intent)
-                }
+                num[k] = imagenewId[b]
                 val tv = view.findViewById<TextView>(textnewId[b])
                 val sub_tv = view.findViewById<TextView>(sub_textnewId[b])
 
@@ -252,11 +243,7 @@ class AlbumFragment : Fragment() {
 
                 //アルバム遷移用ボタンのインスタンス化
                 btn[k] = view.findViewById<ImageButton>(imagenewId[b])
-                btn[k]?.setOnClickListener{
-                    val intent = Intent(context, AlbumPhotoFragment::class.java)
-                    intent.putExtra("album_id", f.toString())
-                    startActivity(intent)
-                }
+                num[k] = imagenewId[b]
                 val tv = view.findViewById<TextView>(textnewId[b])
                 val sub_tv = view.findViewById<TextView>(sub_textnewId[b])
 
@@ -301,6 +288,15 @@ class AlbumFragment : Fragment() {
             //ポップアップを非表示
             popup.visibility = View.INVISIBLE
             scroll.setBackgroundColor(Color.argb(255,255,255,255))
+        }
+
+        for (z in 0..c){
+            btn[z]?.setOnClickListener{
+                Log.d("TAG", btn[z].toString())
+                val intent = Intent(context, AlbumPhotoFragment::class.java)
+                intent.putExtra("album_id", num[z].toString())
+                startActivity(intent)
+            }
         }
     }
 }

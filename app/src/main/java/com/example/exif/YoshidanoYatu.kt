@@ -1,27 +1,33 @@
 package com.example.exif
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.exif.databinding.ActivityYoshidanoYatuBinding
+
+// 画像のパス
+var imagePath: String? = null
 
 class YoshidanoYatu : AppCompatActivity() {
 
     private lateinit var binding: ActivityYoshidanoYatuBinding
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityYoshidanoYatuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //画像のパスを受け取るためのデータ
-        val imagePath= intent.getStringExtra("path")
+        imagePath = intent.getStringExtra("path")
         //画像の名前を受け取るためのデータ
-        val imageName= intent.getStringExtra("name")
+        val imageName = intent.getStringExtra("name")
         val resultImage = findViewById<ImageView>(R.id.imageView)
         //スマホトップ左に画像の名前を表示
         supportActionBar?.setTitle(imageName)

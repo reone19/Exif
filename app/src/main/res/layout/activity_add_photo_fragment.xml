@@ -7,24 +7,12 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="戻る"
-        android:textColor="#FFFFFF"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="75dp"
-        tools:layout_editor_absoluteY="634dp" />
-
-    <Button
         android:id="@+id/ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="完了"
         android:textColor="#FFFFFF"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="250dp"
-        tools:layout_editor_absoluteY="634dp" />
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginBottom="50dp"

@@ -10,6 +10,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.app.ActivityCompat
@@ -21,6 +22,15 @@ import com.example.exif.model.PhotoAdapter
 
 
 class AlbumPhotoFragment : AppCompatActivity() {
+    var a:Int = 0
+    var b:Int = 0
+    var albumID = ""
+
+    var arrayListPhotoId: java.util.ArrayList<String> = arrayListOf()
+    var arrayListAlbumId: java.util.ArrayList<String> = arrayListOf()
+    var arrayListPhotoPath: java.util.ArrayList<String> = arrayListOf()
+    var arrayListPhotoName: java.util.ArrayList<String> = arrayListOf()
+
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
     private var  progressBar: ProgressBar?=null
@@ -30,7 +40,16 @@ class AlbumPhotoFragment : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_album_photo_fragment)
 
-        val albumID = intent.getStringExtra("album_id")
+        albumID = intent.getStringExtra("album_id").toString()
+        Log.d("TAG", albumID)
+
+        //データベース接続
+        val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
+        // データの取得処理
+        val databaseR = dbHelper.readableDatabase
+        val sql =
+            "select al.photo_id, al.album_id, ph.path, ph.name from Album_Photo al INNER JOIN Photo ph ON al.photo_id=ph.id " + "where album_id = " + albumID
+        val dbcursor = databaseR.rawQuery(sql, null)
 
         val addButton = findViewById<Button>(R.id.add_photo)
         addButton.setOnClickListener{
@@ -58,6 +77,20 @@ class AlbumPhotoFragment : AppCompatActivity() {
             )
         }
 
+        if (dbcursor.count > 0) {
+            dbcursor.moveToFirst()
+            while (!dbcursor.isAfterLast) {
+                arrayListPhotoId.add(dbcursor.getString(0))
+                arrayListAlbumId.add(dbcursor.getString(1))
+                arrayListPhotoPath.add(dbcursor.getString(2))
+                arrayListPhotoName.add(dbcursor.getString(3))
+                //arrayListAlbumId.add(cursor.getString(1))
+                Log.d("DB", arrayListPhotoId.get(b))
+                a = a + 1
+                dbcursor.moveToNext()
+            }
+        }
+
         allPictures= ArrayList()
 
         if(allPictures!!.isEmpty())
@@ -73,14 +106,20 @@ class AlbumPhotoFragment : AppCompatActivity() {
 
     }
     //外部ストレージからすべての画像を取得するメソッドの設定
-    private fun getAllImages(): ArrayList<Image>?{
+    private fun getAllImages(): ArrayList<Image>? {
         val images = ArrayList<Image>()
         val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection =
             arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
 
         var cursor =
-            this@AlbumPhotoFragment.contentResolver.query(allImageUri, projection, null, null, null)
+            this@AlbumPhotoFragment.contentResolver.query(
+                allImageUri,
+                projection,
+                null,
+                null,
+                null
+            )
 
         try {
             cursor!!.moveToFirst()
@@ -90,7 +129,11 @@ class AlbumPhotoFragment : AppCompatActivity() {
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-                images.add(image)
+                for (i in 0..a-1){
+                    if (image.imageName == arrayListPhotoName.get(i)){
+                        images.add(image)
+                    }
+                }
             } while (cursor.moveToNext())
             cursor.close()
         } catch (e: Exception) {

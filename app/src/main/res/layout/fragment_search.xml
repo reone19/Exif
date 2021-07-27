@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="検索" />
     <TextView
         android:id="@+id/textView1"
         android:text="SearchFragment"

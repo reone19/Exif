@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.app.ActivityCompat
@@ -25,6 +26,7 @@ import com.example.exif.model.PhotoAdapterAlbum
 
 class AddPhotoFragment : AppCompatActivity() {
     var a:Int = 1
+    var albumID = ""
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
@@ -35,33 +37,13 @@ class AddPhotoFragment : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo_fragment)
 
-        val albumID= intent.getStringExtra("album_id")
-
-        val backButton = findViewById<Button>(R.id.back)
-        backButton.setOnClickListener{
-            var b:Int = PhotoAdapterAlbum(this,allPictures!!).a
-            //データベース接続
-            val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
-            val database = dbHelper.writableDatabase
-            val values = ContentValues()
-            for (i in 0..b-1){
-                try {
-                    values.put("photo_id", PhotoAdapterAlbum(this,allPictures!!).dbimageId[a])
-                    if (albumID != null) {
-                        values.put("album_id", albumID.toInt())
-                    }
-                    database.insertOrThrow("Album_Photo", null, values)
-                }
-                catch (e: SQLiteConstraintException){
-
-                }
-            }
-            finish()
-        }
+        albumID= intent.getStringExtra("album_id").toString()
+        Log.d("Albumid", albumID)
 
         val okButton = findViewById<Button>(R.id.ok)
         okButton.setOnClickListener{
-            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
 //        リサイクルビューイメージのId定義
@@ -112,6 +94,7 @@ class AddPhotoFragment : AppCompatActivity() {
             do {
                 val image = Image()
                 image.imageid = a.toString()
+                image.albumid = albumID
                 image.imagePath =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
