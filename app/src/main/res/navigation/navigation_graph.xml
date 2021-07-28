@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/nav_photo">
+    <fragment android:id="@+id/nav_photo"
+        android:name="com.example.exif.PhotoFragment"
+        android:label="PhotoFragment"/>
+    <fragment android:id="@+id/nav_album"
+        android:name="com.example.exif.AlbumFragment"
+        android:label="AlbumFragment"/>
+    <fragment android:id="@+id/nav_search"
+        android:name="com.example.exif.SearchFragment"
+        android:label="SearchFragment"/>
+</navigation>

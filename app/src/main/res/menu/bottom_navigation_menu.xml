@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_photo"
+        android:icon="@drawable/ic_photo"
+        android:title="ライブラリ"/>
+    <item
+        android:id="@+id/nav_album"
+        android:icon="@drawable/ic_album"
+        android:title="アルバム"/>
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_search"
+        android:title="検索"/>
+</menu>
