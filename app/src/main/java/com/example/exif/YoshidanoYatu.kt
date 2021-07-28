@@ -13,6 +13,8 @@ import com.example.exif.databinding.ActivityYoshidanoYatuBinding
 
 // 画像のパス
 var imagePath: String? = null
+var imageName: String? = null
+var photoID: String? = null
 
 class YoshidanoYatu : AppCompatActivity() {
 
@@ -26,7 +28,8 @@ class YoshidanoYatu : AppCompatActivity() {
         //画像のパスを受け取るためのデータ
         imagePath = intent.getStringExtra("path")
         //画像の名前を受け取るためのデータ
-        val imageName = intent.getStringExtra("name")
+        imageName = intent.getStringExtra("name")
+        photoID = intent.getStringExtra("id")
         val resultImage = findViewById<ImageView>(R.id.imageView)
         //スマホトップ左に画像の名前を表示
         supportActionBar?.setTitle(imageName)
