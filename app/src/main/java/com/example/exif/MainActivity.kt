@@ -1,5 +1,6 @@
 package com.example.exif
 
+
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
@@ -30,6 +31,7 @@ import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
     var a:Int = 1
+//    var b:Int = 0
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
@@ -52,13 +54,13 @@ class MainActivity : AppCompatActivity() {
         imageRecycler?.setHasFixedSize(true)
 
         if(ContextCompat.checkSelfPermission(
-                        this@MainActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                )!= PackageManager.PERMISSION_GRANTED
+                this@MainActivity,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )!= PackageManager.PERMISSION_GRANTED
         ){
             ActivityCompat.requestPermissions(
-                    this@MainActivity,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
+                this@MainActivity,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
             )
         }
 
@@ -84,10 +86,10 @@ class MainActivity : AppCompatActivity() {
         val images = ArrayList<Image>()
         val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection =
-                arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
+            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
 
         var cursor =
-                this@MainActivity.contentResolver.query(allImageUri, projection, null, null, null)
+            this@MainActivity.contentResolver.query(allImageUri, projection, null, null, null)
 
         try {
             cursor!!.moveToFirst()
@@ -95,18 +97,22 @@ class MainActivity : AppCompatActivity() {
                 val image = Image()
                 image.imageid = a.toString()
                 image.imagePath =
-                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
-                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-                image.imageSentence = "未入力"
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                image.imageSentence1 = ""
+                image.imageSentence2 = ""
+                image.imageSentence3 = ""
                 try {
                     val database = dbHelper.writableDatabase
                     val values = ContentValues()
                     values.put("id", a)
                     values.put("path", image.imagePath)
                     values.put("name", image.imageName)
-                    values.put("sentence",image.imageSentence)
-                    database.insertOrThrow("Photo", null, values)
+                    values.put("sentence1",image.imageSentence1)
+                    values.put("sentence2",image.imageSentence2)
+                    values.put("sentence3",image.imageSentence3)
+                    database.insertOrThrow("Photo",null, values)
                 }
                 catch (e: SQLiteConstraintException){
 

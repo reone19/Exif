@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentExifBinding
@@ -276,7 +277,7 @@ class ExifFragment : Fragment() {
             val database = dbHelper.writableDatabase
             val values = ContentValues()
 
-            // 各カラムの値を更新
+            // 各カラムの値をセット
             values.put("imageLength", imageLength?.text.toString())
             values.put("imageWidth", imageWidth?.text.toString())
             values.put("bitsPerSample", bitsPerSample?.text.toString())
@@ -294,6 +295,11 @@ class ExifFragment : Fragment() {
 
             // 一括でMetaテーブルをアップデート
             database.update("Meta", values, "photo_id=$photoID", null)
+
+            // トースト表示
+            val text = "保存しました。"
+            val duration = Toast.LENGTH_SHORT
+            Toast.makeText(context, text, duration).show()
 
         } catch (exception: Exception) {
             Log.e("updateData", exception.toString())

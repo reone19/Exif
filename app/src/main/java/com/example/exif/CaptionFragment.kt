@@ -1,23 +1,16 @@
 package com.example.exif
 
 import android.content.ContentValues
-import android.content.Intent
 import android.database.sqlite.SQLiteConstraintException
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.exifinterface.media.ExifInterface
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentCaptionBinding
-import com.example.exif.model.Image
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
 
 
 class CaptionFragment : Fragment() {
@@ -27,8 +20,12 @@ class CaptionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var arrayListPhotoId: ArrayList<String> = arrayListOf()
-    private var arrayListimageSentence: ArrayList<String> = arrayListOf()
-    private var sentence:String? = null
+    private var arrayListimageSentence1: ArrayList<String> = arrayListOf()
+    private var arrayListimageSentence2: ArrayList<String> = arrayListOf()
+    private var arrayListimageSentence3: ArrayList<String> = arrayListOf()
+    private var sentence1:String? = null
+    private var sentence2:String? = null
+    private var sentence3:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,26 +41,42 @@ class CaptionFragment : Fragment() {
             // データの取得処理
             val databaseR = dbHelper.readableDatabase
             val sql =
-                "select id,sentence from photo where id = " + photoID
+                "select id,sentence1,sentence2,sentence3 from photo where id = " + photoID
             val cursor = databaseR.rawQuery(sql, null)
 
             if (cursor.count > 0) {
                 cursor.moveToFirst()
                 while (!cursor.isAfterLast) {
                     arrayListPhotoId.add(cursor.getString(0))
-                    arrayListimageSentence.add(cursor.getString(1))
+                    arrayListimageSentence1.add(cursor.getString(1))
+                    arrayListimageSentence2.add(cursor.getString(2))
+                    arrayListimageSentence3.add(cursor.getString(3))
                     cursor.moveToNext()
                 }
             }
             // 画像のキャプション
             try {
                 // 画像のキャプション
-                sentence = arrayListimageSentence.get(0)
+                sentence1 = arrayListimageSentence1.get(0)
+            } catch (e: NullPointerException){
+
+            }
+            try {
+                // 画像のキャプション
+                sentence2 = arrayListimageSentence2.get(0)
+            } catch (e: NullPointerException){
+
+            }
+            try {
+                // 画像のキャプション
+                sentence3 = arrayListimageSentence3.get(0)
             } catch (e: NullPointerException){
 
             }
             // データセット
-            binding.capString.setText(sentence)
+            binding.capString1.setText(sentence1)
+            binding.capString2.setText(sentence2)
+            binding.capString3.setText(sentence3)
 
         }catch (e: SQLiteConstraintException){
 
@@ -75,18 +88,29 @@ class CaptionFragment : Fragment() {
         return binding.root
     }
 
-    fun UpdateCaption(){
+    private fun UpdateCaption(){
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
         //とりあえずインスタンス化した。
-        val cat: String
-        val caption = view?.findViewById<EditText>(R.id.capString)
+        //val cat: String
+        val caption1 = view?.findViewById<EditText>(R.id.capString1)
+        val caption2 = view?.findViewById<EditText>(R.id.capString2)
+        val caption3 = view?.findViewById<EditText>(R.id.capString3)
         //なんでネコ？
-        cat = caption?.text.toString()
+        //cat = caption1?.text.toString()
+        //cat = caption2?.text.toString()
+        //cat = caption3?.text.toString()
         try {
             val database = dbHelper.writableDatabase
             val values = ContentValues()
-            values.put("sentence",cat)
+            values.put("sentence1",caption1?.text.toString())
+            values.put("sentence2",caption2?.text.toString())
+            values.put("sentence3",caption3?.text.toString())
             database.update("Photo", values, "id="+photoID,null)
+
+            // トースト表示
+            val text = "保存しました。"
+            val duration = Toast.LENGTH_SHORT
+            Toast.makeText(context, text, duration).show()
 
         }catch(exception: Exception) {
             Log.e("updateData", exception.toString())
