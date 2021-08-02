@@ -14,6 +14,7 @@ import com.example.exif.databinding.FragmentExifBinding
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import java.util.ArrayList
 
 
 class ExifFragment : Fragment() {
@@ -21,6 +22,23 @@ class ExifFragment : Fragment() {
     // バインディング
     private var _binding: FragmentExifBinding? = null
     private val binding get() = _binding!!
+
+    var arrayListPhotoId: ArrayList<String> = arrayListOf()
+    var arrayListImageName: ArrayList<String> = arrayListOf()
+    var arrayListimageLength: ArrayList<String> = arrayListOf()
+    var arrayListimageWidth: ArrayList<String> = arrayListOf()
+    var arrayListbitsPerSample: ArrayList<String> = arrayListOf()
+    var arrayListcompressions: ArrayList<String> = arrayListOf()
+    var arrayListimageDescription: ArrayList<String> = arrayListOf()
+    var arrayListimageOrientation: ArrayList<String> = arrayListOf()
+    var arrayListmaker: ArrayList<String> = arrayListOf()
+    var arrayListmodel: ArrayList<String> = arrayListOf()
+    var arrayListstripOffsets: ArrayList<String> = arrayListOf()
+    var arrayListgpsVersionID: ArrayList<String> = arrayListOf()
+    var arrayListgpsLatitude: ArrayList<String> = arrayListOf()
+    var arrayListgpsLongitude: ArrayList<String> = arrayListOf()
+    var arrayListdateTimeOriginal: ArrayList<String> = arrayListOf()
+    var arrayListdatedateTime: ArrayList<String> = arrayListOf()
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -42,34 +60,166 @@ class ExifFragment : Fragment() {
             // Exifの各値をここにセット
             // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
 
+            //データベース接続
+            val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
+
+            // データの取得処理
+            val databaseR = dbHelper.readableDatabase
+            val sql =
+                "select photo_id, imageName, imageLength, imageWidth, bitsPerSample, compression, imageDescription, imageOrientation, maker, model, stripOffsets, gpsVersionID, gpsLatitude, gpsLongitude, dateTimeOriginal, dateTime from Meta where photo_id = " + photoID
+            val cursor = databaseR.rawQuery(sql, null)
+            if (cursor.count > 0) {
+                cursor.moveToFirst()
+                while (!cursor.isAfterLast) {
+                    arrayListPhotoId.add(cursor.getString(0))
+                    arrayListImageName.add(cursor.getString(1))
+                    arrayListimageLength.add(cursor.getString(2))
+                    arrayListimageWidth.add(cursor.getString(3))
+                    arrayListbitsPerSample.add(cursor.getString(4))
+                    arrayListcompressions.add(cursor.getString(5))
+                    arrayListimageDescription.add(cursor.getString(6))
+                    arrayListimageOrientation.add(cursor.getString(7))
+                    arrayListmaker.add(cursor.getString(8))
+                    arrayListmodel.add(cursor.getString(9))
+                    arrayListstripOffsets.add(cursor.getString(10))
+                    arrayListgpsVersionID.add(cursor.getString(11))
+                    arrayListgpsLatitude.add(cursor.getString(12))
+                    arrayListgpsLongitude.add(cursor.getString(13))
+                    arrayListdateTimeOriginal.add(cursor.getString(14))
+                    arrayListdatedateTime.add(cursor.getString(15))
+                    cursor.moveToNext()
+                }
+            }
+
+
             // 画像の高さ
-            var imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
+            var imageLength: String? = null
             // 画像の横幅
-            var imageWidth = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH)
+            var imageWidth: String? = null
             // 画像のビットの深さ
-            var bitsPerSample = exifInterface.getAttribute(ExifInterface.TAG_BITS_PER_SAMPLE)
+            var bitsPerSample: String? = null
             // 圧縮の種類
-            var compression = exifInterface.getAttribute(ExifInterface.TAG_COMPRESSION)
+            var compression: String? = null
             // 画像タイトル
-            var imageDescription = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
+            var imageDescription: String? = null
             // 画像方向
-            var imageOrientation = exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION)
+            var imageOrientation: String? = null
             // メーカ名
-            var maker = exifInterface.getAttribute(ExifInterface.TAG_MAKE)
+            var maker: String? = null
             //モデル名
-            var model = exifInterface.getAttribute(ExifInterface.TAG_MODEL)
+            var model: String? = null
             // ロケーション
-            var stripOffsets = exifInterface.getAttribute(ExifInterface.TAG_STRIP_OFFSETS)
+            var stripOffsets: String? = null
             // GPSタグのバージョン
-            var gpsVersionID = exifInterface.getAttribute(ExifInterface.TAG_GPS_VERSION_ID)
+            var gpsVersionID: String? = null
             // 経度
-            var gpsLatitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
+            var gpsLatitude: String? = null
             // 緯度
-            var gpsLongitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
+            var gpsLongitude: String? = null
             // 原画像データの生成日時
-            var dateTimeOriginal = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
+            var dateTimeOriginal: String? = null
             // 更新日時
-            var dateTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
+            var dateTime: String? = null
+
+            try {
+                // 画像の高さ
+                imageLength = arrayListimageLength.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 画像の横幅
+                imageWidth = arrayListimageWidth.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 画像のビットの深さ
+                bitsPerSample = arrayListbitsPerSample.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 圧縮の種類
+                compression = arrayListcompressions.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 画像タイトル
+                imageDescription = arrayListimageDescription.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 画像方向
+                imageOrientation = arrayListimageOrientation.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // メーカ名
+                maker = arrayListmaker.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                //モデル名
+                model = arrayListmodel.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // ロケーション
+                stripOffsets = arrayListstripOffsets.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // GPSタグのバージョン
+                gpsVersionID = arrayListgpsVersionID.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 経度
+                gpsLatitude = arrayListgpsLatitude.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 緯度
+                gpsLongitude = arrayListgpsLongitude.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 原画像データの生成日時
+                dateTimeOriginal = arrayListdateTimeOriginal.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+            try {
+                // 更新日時
+                dateTime = arrayListdatedateTime.get(0)
+            }
+            catch (e: NullPointerException){
+
+            }
+
 
             // データセット
             binding.imageLength.setText(imageLength)

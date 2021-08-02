@@ -43,13 +43,17 @@ class AlbumFragment : Fragment() {
     var h:Int = 0
     //btn用添え字
     var k:Int = 0
+    //3の倍数用
+    var l:Int = 3
 
     var arrayListId: ArrayList<String> = arrayListOf()
     var arrayListTextId: ArrayList<String> = arrayListOf()
     var arrayListSubTextId: ArrayList<String> = arrayListOf()
     var arrayListPhotoNum: ArrayList<Int> = arrayListOf()
     var arrayListName: ArrayList<String> = arrayListOf()
-    private var arrayListNum: ArrayList<Int> = arrayListOf()
+    var arrayListNum: ArrayList<Int> = arrayListOf()
+
+    var arrayListAlbumPhotoNum: ArrayList<String> = arrayListOf()
 
     companion object {
         private const val TAG = "AlbumFragment"
@@ -87,6 +91,7 @@ class AlbumFragment : Fragment() {
                 arrayListNum.add(cursor.getInt(5))
                 cursor.moveToNext()
             }
+
             //アルバム個数取得
             d = arrayListNum.size
 
@@ -98,6 +103,21 @@ class AlbumFragment : Fragment() {
 
                 //アルバム1つ1つの設定ループ
                 for (q in 0..2){
+                    try {
+                        val sql_sub =
+                            "select count(*) from Album_Photo where album_id = " + arrayListId.get(h)
+                        val cursor_sub = databaseR.rawQuery(sql_sub, null)
+                        if (cursor_sub.count > 0) {
+                            cursor_sub.moveToFirst()
+                            while (!cursor_sub.isAfterLast) {
+                                arrayListAlbumPhotoNum.add(cursor_sub.getString(0))
+                                cursor_sub.moveToNext()
+                            }
+                        }
+                    }
+                    catch (e: IndexOutOfBoundsException){
+
+                    }
                     //IDを変数で指定
                     val image = "image_id$e"
                     val text = "text$e"
@@ -127,7 +147,12 @@ class AlbumFragment : Fragment() {
                         tv.setText(arrayListName.get(h))
                         //アルバム内の写真数表示
                         val sub_tv = view.findViewById<TextView>(arrayListSubTextId.get(h).toInt())
-                        sub_tv.setText(arrayListPhotoNum.get(h).toString())
+                        try {
+                            sub_tv.setText(arrayListAlbumPhotoNum.get(h))
+                        }
+                        catch (e: IndexOutOfBoundsException){
+                            sub_tv.setText("0")
+                        }
                         //空の写真をnoimageに
                         imageview.setImageResource(imagesourse)
                     }
@@ -149,7 +174,12 @@ class AlbumFragment : Fragment() {
                             tv.setText(arrayListName.get(h))
                             //アルバム内の写真数表示
                             val sub_tv = view.findViewById<TextView>(arrayListSubTextId.get(h).toInt())
-                            sub_tv.setText(arrayListPhotoNum.get(h).toString())
+                            try {
+                                sub_tv.setText(arrayListAlbumPhotoNum.get(h))
+                            }
+                            catch (e: IndexOutOfBoundsException){
+                                sub_tv.setText("0")
+                            }
                             //空の写真をnoimageに
                             imageview.setImageResource(imagesourse)
                         }
@@ -171,9 +201,10 @@ class AlbumFragment : Fragment() {
                         e = 0;
                     }
                 }
-                if (d%3 == 0){
+                if (d <= l && d%l == 0){
                     break
                 }
+                l = l + 3
             }
             a = a + (d % 3)
             c = c + d

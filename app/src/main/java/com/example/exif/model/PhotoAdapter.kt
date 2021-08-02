@@ -41,8 +41,10 @@ class PhotoAdapter(private var context: Context, private var imagesList: ArrayLi
         //MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
         holder.image?.setOnClickListener {
             val intent = Intent(context, YoshidanoYatu::class.java)
+            intent.putExtra("id", currentImage.imageid)
             intent.putExtra("path", currentImage.imagePath)
             intent.putExtra("name", currentImage.imageName)
+            intent.putExtra("sentence", currentImage.imageSentence)
             context.startActivity(intent)
         }
     }

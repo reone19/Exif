@@ -125,6 +125,7 @@ class AlbumPhotoFragment : AppCompatActivity() {
             cursor!!.moveToFirst()
             do {
                 val image = Image()
+                image.imageid = a.toString()
                 image.imagePath =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =

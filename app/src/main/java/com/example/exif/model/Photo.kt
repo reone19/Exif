@@ -5,6 +5,7 @@ class Image {
     var albumid:String?=null
     var imagePath:String?=null
     var imageName:String?=null
+    var imageSentence:String?=null
 
     constructor(imagePath: String?, imageName: String?){
         this.imagePath = imagePath
