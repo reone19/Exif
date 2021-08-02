@@ -13,9 +13,9 @@ public class SampleDBHelper(
 
     override fun onCreate(database: SQLiteDatabase?) {
         database?.execSQL("create table if not exists Album (id text primary key, text_id text, subtext_id text, photo_num integer, name text, num integer)");
-        database?.execSQL("create table if not exists Photo (id text primary key, path text, name text, sentence text)");
+        database?.execSQL("create table if not exists Photo (id text primary key, path text, name text, sentence1 text, sentence2 text, sentence3 text)");
         database?.execSQL("create table if not exists Album_Photo (photo_id text, album_id text, FOREIGN KEY(photo_id) REFERENCES Photo(id), FOREIGN KEY(album_id) REFERENCES Album(id))");
-        database?.execSQL("create table if not exists Meta (photo_id text primary key, imageName text, imageLength text, imageWidth text, bitsPerSample text, compression text, imageDescription text, imageOrientation text, maker text, model text, stripOffsets text, gpsVersionID text, gpsLatitude text, gpsLongitude text, dateTimeOriginal text, dateTime text, FOREIGN KEY(photo_id) REFERENCES Photo(id))");
+        database?.execSQL("create table if not exists Meta (photo_id text primary key, imageName text, imageLength text, imageWidth text, bitsPerSample text, compression text, imageDescription text, imageOrientation text, maker text, model text, stripOffsets text, gpsVersionID text, gpsLatitude text, gpsLongitude text, dateTimeOriginal text, changeDateAndTime text, FOREIGN KEY(photo_id) REFERENCES Photo(id))");
     }
 
     override fun onUpgrade(database: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

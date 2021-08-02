@@ -1,11 +1,6 @@
 package com.example.exif
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
-import kotlinx.android.synthetic.main.activity_main.*
+
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
@@ -13,17 +8,22 @@ import android.database.sqlite.SQLiteConstraintException
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -31,6 +31,7 @@ import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
     var a:Int = 1
+//    var b:Int = 0
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
@@ -53,13 +54,13 @@ class MainActivity : AppCompatActivity() {
         imageRecycler?.setHasFixedSize(true)
 
         if(ContextCompat.checkSelfPermission(
-                        this@MainActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                )!= PackageManager.PERMISSION_GRANTED
+                this@MainActivity,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )!= PackageManager.PERMISSION_GRANTED
         ){
             ActivityCompat.requestPermissions(
-                    this@MainActivity,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
+                this@MainActivity,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
             )
         }
 
@@ -85,10 +86,10 @@ class MainActivity : AppCompatActivity() {
         val images = ArrayList<Image>()
         val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection =
-                arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
+            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
 
         var cursor =
-                this@MainActivity.contentResolver.query(allImageUri, projection, null, null, null)
+            this@MainActivity.contentResolver.query(allImageUri, projection, null, null, null)
 
         try {
             cursor!!.moveToFirst()
@@ -96,18 +97,22 @@ class MainActivity : AppCompatActivity() {
                 val image = Image()
                 image.imageid = a.toString()
                 image.imagePath =
-                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
-                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-                image.imageSentence = "未入力"
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                image.imageSentence1 = ""
+                image.imageSentence2 = ""
+                image.imageSentence3 = ""
                 try {
                     val database = dbHelper.writableDatabase
                     val values = ContentValues()
                     values.put("id", a)
                     values.put("path", image.imagePath)
                     values.put("name", image.imageName)
-                    values.put("sentence",image.imageSentence)
-                    database.insertOrThrow("Photo", null, values)
+                    values.put("sentence1",image.imageSentence1)
+                    values.put("sentence2",image.imageSentence2)
+                    values.put("sentence3",image.imageSentence3)
+                    database.insertOrThrow("Photo",null, values)
                 }
                 catch (e: SQLiteConstraintException){
 
@@ -152,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                     // 原画像データの生成日時
                     var dateTimeOriginal = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
                     // 更新日時
-                    var dateTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
+                    var changeDateAndTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
 
                     // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
                     // セーブ -> exifInterface.saveAttributes()
@@ -175,7 +180,7 @@ class MainActivity : AppCompatActivity() {
                         values.put("gpsLatitude", gpsLatitude)
                         values.put("gpsLongitude", gpsLongitude)
                         values.put("dateTimeOriginal", dateTimeOriginal)
-                        values.put("dateTime", dateTime)
+                        values.put("changeDateAndTime", changeDateAndTime)
                         database.insertOrThrow("Meta", null, values)
                     }
                     catch (e: SQLiteConstraintException){

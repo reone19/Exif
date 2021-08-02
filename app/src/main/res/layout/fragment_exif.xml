@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="textPersonName"
                 android:text="" />
         </TableRow>
 
@@ -195,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="number|text"
                 android:text="" />
         </TableRow>
 
@@ -212,7 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="number|text"
                 android:text="" />
         </TableRow>
 
@@ -229,7 +229,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="date"
+                android:inputType="datetime"
                 android:text="" />
         </TableRow>
 
@@ -246,9 +246,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="date"
+                android:inputType="datetime"
                 android:text="" />
+
         </TableRow>
+
+        <Button
+            android:id="@+id/exifSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保存" />
+
     </TableLayout>
 
 </FrameLayout>

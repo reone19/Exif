@@ -9,7 +9,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.exif.OCR
 import com.example.exif.R
 import com.example.exif.YoshidanoYatu
 
@@ -44,7 +43,9 @@ class PhotoAdapter(private var context: Context, private var imagesList: ArrayLi
             intent.putExtra("id", currentImage.imageid)
             intent.putExtra("path", currentImage.imagePath)
             intent.putExtra("name", currentImage.imageName)
-            intent.putExtra("sentence", currentImage.imageSentence)
+            intent.putExtra("sentence1", currentImage.imageSentence1)
+            intent.putExtra("sentence2", currentImage.imageSentence2)
+            intent.putExtra("sentence3", currentImage.imageSentence3)
             context.startActivity(intent)
         }
     }

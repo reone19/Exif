@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CaptionFragment">
+    tools:context=".CaptionFragment"
+    android:orientation="vertical">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -15,23 +16,54 @@
 
             <TextView
                 android:padding="3dp"
-                android:text="キャプション" />
+                android:text="キャプション１" />
 
             <EditText
-                android:id="@+id/capString"
+                android:id="@+id/capString1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="" />
 
-            <Button
-                android:id="@+id/btn"
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="キャプション２" />
+
+            <EditText
+                android:id="@+id/capString2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="保存" />
-
-
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="キャプション３" />
+
+            <EditText
+                android:id="@+id/capString3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="" />
+        </TableRow>
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保存" />
     </TableLayout>
 </FrameLayout>

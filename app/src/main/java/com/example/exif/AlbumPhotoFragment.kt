@@ -1,29 +1,26 @@
 package com.example.exif
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
-import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class AlbumPhotoFragment : AppCompatActivity() {
-    var a:Int = 0
-    var b:Int = 0
+    var a: Int = 0
+    var b: Int = 1
     var albumID = ""
 
     var arrayListPhotoId: java.util.ArrayList<String> = arrayListOf()
@@ -33,8 +30,8 @@ class AlbumPhotoFragment : AppCompatActivity() {
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
-    private var  progressBar: ProgressBar?=null
-    private var allPictures:ArrayList<Image>?= null
+    private var progressBar: ProgressBar? = null
+    private var allPictures: ArrayList<Image>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +49,7 @@ class AlbumPhotoFragment : AppCompatActivity() {
         val dbcursor = databaseR.rawQuery(sql, null)
 
         val addButton = findViewById<Button>(R.id.add_photo)
-        addButton.setOnClickListener{
+        addButton.setOnClickListener {
             val intent = Intent(this, AddPhotoFragment::class.java)
             intent.putExtra("album_id", albumID)
             startActivity(intent)
@@ -62,18 +59,18 @@ class AlbumPhotoFragment : AppCompatActivity() {
         imageRecycler = findViewById(R.id.image_recycler)
         progressBar = findViewById(R.id.recycler_progress)
         //リサイクルビューのグリットレイアウトで表示されている画像の制御、spanCountは4列で画像を並べてる意味
-        imageRecycler?.layoutManager=GridLayoutManager(this,4)
+        imageRecycler?.layoutManager = GridLayoutManager(this, 4)
         //これで表示画像の大きさを均等になるよう修正を加えている。falseにしたら大変な事になる。
         imageRecycler?.setHasFixedSize(true)
 
-        if(ContextCompat.checkSelfPermission(
+        if (ContextCompat.checkSelfPermission(
                 this@AlbumPhotoFragment,
                 Manifest.permission.READ_EXTERNAL_STORAGE
-            )!= PackageManager.PERMISSION_GRANTED
-        ){
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(
                 this@AlbumPhotoFragment,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 101
             )
         }
 
@@ -85,26 +82,25 @@ class AlbumPhotoFragment : AppCompatActivity() {
                 arrayListPhotoPath.add(dbcursor.getString(2))
                 arrayListPhotoName.add(dbcursor.getString(3))
                 //arrayListAlbumId.add(cursor.getString(1))
-                Log.d("DB", arrayListPhotoId.get(b))
                 a = a + 1
                 dbcursor.moveToNext()
             }
         }
 
-        allPictures= ArrayList()
+        allPictures = ArrayList()
 
-        if(allPictures!!.isEmpty())
-        {
-            progressBar?.visibility= View.VISIBLE
+        if (allPictures!!.isEmpty()) {
+            progressBar?.visibility = View.VISIBLE
             //画像取得の際のプログレスバーの不可視設定かつimageRecyclerに
             // allpicturesの画像配列をセット。
-            allPictures=getAllImages()
+            allPictures = getAllImages()
             //Adapterをリサイクラーにセットする
-            imageRecycler?.adapter= PhotoAdapter(this,allPictures!!)
-            progressBar?.visibility=View.GONE
+            imageRecycler?.adapter = PhotoAdapter(this, allPictures!!)
+            progressBar?.visibility = View.GONE
         }
 
     }
+
     //外部ストレージからすべての画像を取得するメソッドの設定
     private fun getAllImages(): ArrayList<Image>? {
         val images = ArrayList<Image>()
@@ -125,16 +121,17 @@ class AlbumPhotoFragment : AppCompatActivity() {
             cursor!!.moveToFirst()
             do {
                 val image = Image()
-                image.imageid = a.toString()
+                image.imageid = b.toString()
                 image.imagePath =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-                for (i in 0..a-1){
-                    if (image.imageName == arrayListPhotoName.get(i)){
+                for (i in 0..a - 1) {
+                    if (image.imageName == arrayListPhotoName.get(i)) {
                         images.add(image)
                     }
                 }
+                b = b + 1
             } while (cursor.moveToNext())
             cursor.close()
         } catch (e: Exception) {
