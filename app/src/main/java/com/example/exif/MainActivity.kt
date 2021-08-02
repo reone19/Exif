@@ -1,11 +1,5 @@
 package com.example.exif
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
-import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
@@ -13,17 +7,22 @@ import android.database.sqlite.SQLiteConstraintException
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -152,7 +151,7 @@ class MainActivity : AppCompatActivity() {
                     // 原画像データの生成日時
                     var dateTimeOriginal = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
                     // 更新日時
-                    var dateTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
+                    var changeDateAndTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
 
                     // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
                     // セーブ -> exifInterface.saveAttributes()
@@ -175,7 +174,7 @@ class MainActivity : AppCompatActivity() {
                         values.put("gpsLatitude", gpsLatitude)
                         values.put("gpsLongitude", gpsLongitude)
                         values.put("dateTimeOriginal", dateTimeOriginal)
-                        values.put("dateTime", dateTime)
+                        values.put("changeDateAndTime", changeDateAndTime)
                         database.insertOrThrow("Meta", null, values)
                     }
                     catch (e: SQLiteConstraintException){
