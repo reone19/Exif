@@ -44,6 +44,7 @@ class PhotoAdapter(private var context: Context, private var imagesList: ArrayLi
             intent.putExtra("id", currentImage.imageid)
             intent.putExtra("path", currentImage.imagePath)
             intent.putExtra("name", currentImage.imageName)
+            intent.putExtra("sentence", currentImage.imageSentence)
             context.startActivity(intent)
         }
     }

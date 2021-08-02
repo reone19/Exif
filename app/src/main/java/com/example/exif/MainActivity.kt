@@ -99,12 +99,14 @@ class MainActivity : AppCompatActivity() {
                         cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
                         cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                image.imageSentence = "未入力"
                 try {
                     val database = dbHelper.writableDatabase
                     val values = ContentValues()
                     values.put("id", a)
                     values.put("path", image.imagePath)
                     values.put("name", image.imageName)
+                    values.put("sentence",image.imageSentence)
                     database.insertOrThrow("Photo", null, values)
                 }
                 catch (e: SQLiteConstraintException){

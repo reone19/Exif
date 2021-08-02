@@ -15,66 +15,23 @@
 
             <TextView
                 android:padding="3dp"
-                android:text="キャプション1" />
+                android:text="キャプション" />
 
             <EditText
-                android:id="@+id/ocrString"
+                android:id="@+id/capString"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="" />
-        </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:padding="3dp"
-                android:text="キャプション2" />
-
-            <EditText
-                android:id="@+id/editTextTextPersonName2"
+            <Button
+                android:id="@+id/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
-        </TableRow>
+                android:text="保存" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <TextView
-                android:padding="3dp"
-                android:text="キャプション3" />
-
-            <EditText
-                android:id="@+id/editTextTextPersonName3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:padding="3dp"
-                android:text="キャプション4" />
-
-            <EditText
-                android:id="@+id/editTextTextPersonName4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
         </TableRow>
     </TableLayout>
 </FrameLayout>
