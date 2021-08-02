@@ -41,6 +41,7 @@ class ExifFragment : Fragment() {
 
             // Exifの各値をここにセット
             // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
+            // exifInterface.setAttribute(ExifInterface.TAG_IMAGE_LENGTH, "3112")
 
             // 画像の高さ
             var imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
@@ -89,6 +90,7 @@ class ExifFragment : Fragment() {
 
             // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
             // セーブ -> exifInterface.saveAttributes()
+            exifInterface.saveAttributes()
 
         } catch (e: IOException) {
             e.stackTrace
