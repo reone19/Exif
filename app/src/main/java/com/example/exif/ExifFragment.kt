@@ -2,7 +2,6 @@ package com.example.exif
 
 import android.content.ContentValues
 import android.media.ExifInterface
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,9 +13,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentExifBinding
-import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import java.util.*
 
 
@@ -52,16 +49,11 @@ class ExifFragment : Fragment() {
         _binding = FragmentExifBinding.inflate(inflater, container, false)
 
         // Exif取得
-        val f: File = File(imagePath)
-        val uri = Uri.fromFile(f)
-        var `in`: InputStream? = null
-
         try {
-            `in` = activity?.contentResolver?.openInputStream(uri)
-            var exifInterface = ExifInterface(`in`!!)
-
-            // Exifの各値をここにセット
-            // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
+            // 取得したい画像のURL
+            // ExifInterface exifInterface = new ExifInterface(imagePath);
+            // ↓は↑のコードをkotlinに直した
+            var exifInterface: ExifInterface? = imagePath?.let { ExifInterface(it) }
 
             //データベース接続
             val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
@@ -69,7 +61,7 @@ class ExifFragment : Fragment() {
             // データの取得処理
             val databaseR = dbHelper.readableDatabase
             val sql =
-                "select photo_id, imageName, imageLength, imageWidth, bitsPerSample, compression, imageDescription, imageOrientation, maker, model, stripOffsets, gpsVersionID, gpsLatitude, gpsLongitude, dateTimeOriginal, changeDateAndTime from Meta where photo_id = " + photoID
+                "select photo_id, imageName, imageLength, imageWidth, bitsPerSample, compression, imageDescription, imageOrientation, maker, model, stripOffsets, gpsVersionID, gpsLatitude, gpsLongitude, dateTimeOriginal, changeDateAndTime from Meta where photo_id = $photoID"
             val cursor = databaseR.rawQuery(sql, null)
             if (cursor.count > 0) {
                 cursor.moveToFirst()
@@ -126,89 +118,88 @@ class ExifFragment : Fragment() {
 
             try {
                 // 画像の高さ
-                imageLength = arrayListimageLength.get(0)
+                imageLength = arrayListimageLength[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 画像の横幅
-                imageWidth = arrayListimageWidth.get(0)
+                imageWidth = arrayListimageWidth[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 画像のビットの深さ
-                bitsPerSample = arrayListbitsPerSample.get(0)
+                bitsPerSample = arrayListbitsPerSample[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 圧縮の種類
-                compression = arrayListcompressions.get(0)
+                compression = arrayListcompressions[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 画像タイトル
-                imageDescription = arrayListimageDescription.get(0)
+                imageDescription = arrayListimageDescription[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 画像方向
-                imageOrientation = arrayListimageOrientation.get(0)
+                imageOrientation = arrayListimageOrientation[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // メーカ名
-                maker = arrayListmaker.get(0)
+                maker = arrayListmaker[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 //モデル名
-                model = arrayListmodel.get(0)
+                model = arrayListmodel[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // ロケーション
-                stripOffsets = arrayListstripOffsets.get(0)
+                stripOffsets = arrayListstripOffsets[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // GPSタグのバージョン
-                gpsVersionID = arrayListgpsVersionID.get(0)
+                gpsVersionID = arrayListgpsVersionID[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 経度
-                gpsLatitude = arrayListgpsLatitude.get(0)
+                gpsLatitude = arrayListgpsLatitude[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 緯度
-                gpsLongitude = arrayListgpsLongitude.get(0)
+                gpsLongitude = arrayListgpsLongitude[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 原画像データの生成日時
-                dateTimeOriginal = arrayListdateTimeOriginal.get(0)
+                dateTimeOriginal = arrayListdateTimeOriginal[0]
             } catch (e: NullPointerException) {
 
             }
             try {
                 // 更新日時
-                changeDateAndTime = arrayListchangeDateAndTime.get(0)
+                changeDateAndTime = arrayListchangeDateAndTime[0]
             } catch (e: NullPointerException) {
 
             }
-
 
             // データセット
             binding.imageLength.setText(imageLength)
@@ -226,20 +217,9 @@ class ExifFragment : Fragment() {
             binding.dateTimeOriginal.setText(dateTimeOriginal)
             binding.changeDateAndTime.setText(changeDateAndTime)
 
-            // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
-            // セーブ -> exifInterface.saveAttributes()
-
         } catch (e: IOException) {
             e.stackTrace
             e.message?.let { Log.e("ExifActivity", it) }
-
-        } finally {
-            if (`in` != null) {
-                try {
-                    `in`.close()
-                } catch (ignored: IOException) {
-                }
-            }
         }
 
         // 保存ボタンを押したときの動作
@@ -252,6 +232,7 @@ class ExifFragment : Fragment() {
 
 
     // 保存ボタンを押したときの動作
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun updateExif() {
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
 
@@ -270,6 +251,44 @@ class ExifFragment : Fragment() {
         val gpsLongitude = view?.findViewById<EditText>(R.id.gpsLongitude)
         val dateTimeOriginal = view?.findViewById<EditText>(R.id.dateTimeOriginal)
         val changeDateAndTime = view?.findViewById<EditText>(R.id.changeDateAndTime)
+
+
+        // Exif取得
+        try {
+            // 取得したい画像のURL
+            // ExifInterface exifInterface = new ExifInterface(imagePath);
+            // ↓は↑のコードをkotlinに直した
+            var exifInterface: ExifInterface? = imagePath?.let { ExifInterface(it) }
+
+            // セット
+            exifInterface?.setAttribute(ExifInterface.TAG_IMAGE_LENGTH, imageLength.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_IMAGE_WIDTH, imageWidth.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_BITS_PER_SAMPLE, bitsPerSample.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_COMPRESSION, compression.toString())
+            exifInterface?.setAttribute(
+                ExifInterface.TAG_IMAGE_DESCRIPTION,
+                imageDescription.toString()
+            )
+            exifInterface?.setAttribute(ExifInterface.TAG_ORIENTATION, imageOrientation.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_MAKE, maker.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_MODEL, model.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_STRIP_OFFSETS, stripOffsets.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_GPS_VERSION_ID, gpsVersionID.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_GPS_LATITUDE, gpsLatitude.toString())
+            exifInterface?.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, gpsLongitude.toString())
+            exifInterface?.setAttribute(
+                ExifInterface.TAG_DATETIME_ORIGINAL,
+                dateTimeOriginal.toString()
+            )
+            exifInterface?.setAttribute(ExifInterface.TAG_DATETIME, changeDateAndTime.toString())
+
+            // セーブ
+            exifInterface?.saveAttributes()
+
+        } catch (e: IOException) {
+            e.stackTrace
+            e.message?.let { Log.e("ExifActivity", it) }
+        }
 
         // データベース更新処理
         try {

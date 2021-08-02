@@ -6,7 +6,6 @@ import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import android.media.ExifInterface
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -24,19 +23,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
 import java.io.IOException
-import java.io.InputStream
 
 
 class MainActivity : AppCompatActivity() {
-    var a:Int = 1
-//    var b:Int = 0
+    var a: Int = 1
+    // var b: Int = 0
 
     //フィールドの記載
     private var imageRecycler: RecyclerView? = null
-    private var  progressBar: ProgressBar?=null
-    private var allPictures:ArrayList<Image>?= null
+    private var progressBar: ProgressBar? = null
+    private var allPictures: ArrayList<Image>? = null
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,40 +46,41 @@ class MainActivity : AppCompatActivity() {
         imageRecycler = findViewById(R.id.image_recycler)
         progressBar = findViewById(R.id.recycler_progress)
         //リサイクルビューのグリットレイアウトで表示されている画像の制御、spanCountは4列で画像を並べてる意味
-        imageRecycler?.layoutManager=GridLayoutManager(this,4)
+        imageRecycler?.layoutManager = GridLayoutManager(this, 4)
         //これで表示画像の大きさを均等になるよう修正を加えている。falseにしたら大変な事になる。
         imageRecycler?.setHasFixedSize(true)
 
-        if(ContextCompat.checkSelfPermission(
+        if (ContextCompat.checkSelfPermission(
                 this@MainActivity,
                 Manifest.permission.READ_EXTERNAL_STORAGE
-            )!= PackageManager.PERMISSION_GRANTED
-        ){
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(
                 this@MainActivity,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 101
             )
         }
 
-        allPictures= ArrayList()
+        allPictures = ArrayList()
 
-        if(allPictures!!.isEmpty())
-        {
-            progressBar?.visibility= View.VISIBLE
+        if (allPictures!!.isEmpty()) {
+            progressBar?.visibility = View.VISIBLE
             //画像取得の際のプログレスバーの不可視設定かつimageRecyclerに
-            // allpicturesの画像配列をセット。
-            allPictures=getAllImages()
+            // allPicturesの画像配列をセット。
+            allPictures = getAllImages()
             //Adapterをリサイクラーにセットする
-            imageRecycler?.adapter= PhotoAdapter(this,allPictures!!)
-            progressBar?.visibility=View.GONE
+            imageRecycler?.adapter = PhotoAdapter(this, allPictures!!)
+            progressBar?.visibility = View.GONE
         }
 
     }
+
     //データベース接続
     val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
+
     //外部ストレージからすべての画像を取得するメソッドの設定
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun getAllImages(): ArrayList<Image>?{
+    private fun getAllImages(): ArrayList<Image>? {
         val images = ArrayList<Image>()
         val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection =
@@ -109,58 +107,53 @@ class MainActivity : AppCompatActivity() {
                     values.put("id", a)
                     values.put("path", image.imagePath)
                     values.put("name", image.imageName)
-                    values.put("sentence1",image.imageSentence1)
-                    values.put("sentence2",image.imageSentence2)
-                    values.put("sentence3",image.imageSentence3)
-                    database.insertOrThrow("Photo",null, values)
-                }
-                catch (e: SQLiteConstraintException){
+                    values.put("sentence1", image.imageSentence1)
+                    values.put("sentence2", image.imageSentence2)
+                    values.put("sentence3", image.imageSentence3)
+                    database.insertOrThrow("Photo", null, values)
+                } catch (e: SQLiteConstraintException) {
 
                 }
 
                 // Exif取得
-                val f: File = File(image.imagePath)
-                val uri = Uri.fromFile(f)
-                var `in`: InputStream? = null
-
                 try {
-                    `in` = contentResolver.openInputStream(uri)
-                    var exifInterface = ExifInterface(`in`!!)
-
-                    // Exifの各値をここにセット
-                    // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
+                    // 取得したい画像のURL
+                    // ExifInterface exifInterface = new ExifInterface(imagePath);
+                    // ↓は↑のコードをkotlinに直した
+                    var exifInterface: ExifInterface? = imagePath?.let { ExifInterface(it) }
 
                     // 画像の高さ
-                    var imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
+                    var imageLength = exifInterface?.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
                     // 画像の横幅
-                    var imageWidth = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH)
+                    var imageWidth = exifInterface?.getAttribute(ExifInterface.TAG_IMAGE_WIDTH)
                     // 画像のビットの深さ
-                    var bitsPerSample = exifInterface.getAttribute(ExifInterface.TAG_BITS_PER_SAMPLE)
+                    var bitsPerSample =
+                        exifInterface?.getAttribute(ExifInterface.TAG_BITS_PER_SAMPLE)
                     // 圧縮の種類
-                    var compression = exifInterface.getAttribute(ExifInterface.TAG_COMPRESSION)
+                    var compression = exifInterface?.getAttribute(ExifInterface.TAG_COMPRESSION)
                     // 画像タイトル
-                    var imageDescription = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
+                    var imageDescription =
+                        exifInterface?.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
                     // 画像方向
-                    var imageOrientation = exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION)
+                    var imageOrientation =
+                        exifInterface?.getAttribute(ExifInterface.TAG_ORIENTATION)
                     // メーカ名
-                    var maker = exifInterface.getAttribute(ExifInterface.TAG_MAKE)
+                    var maker = exifInterface?.getAttribute(ExifInterface.TAG_MAKE)
                     //モデル名
-                    var model = exifInterface.getAttribute(ExifInterface.TAG_MODEL)
+                    var model = exifInterface?.getAttribute(ExifInterface.TAG_MODEL)
                     // ロケーション
-                    var stripOffsets = exifInterface.getAttribute(ExifInterface.TAG_STRIP_OFFSETS)
+                    var stripOffsets = exifInterface?.getAttribute(ExifInterface.TAG_STRIP_OFFSETS)
                     // GPSタグのバージョン
-                    var gpsVersionID = exifInterface.getAttribute(ExifInterface.TAG_GPS_VERSION_ID)
+                    var gpsVersionID = exifInterface?.getAttribute(ExifInterface.TAG_GPS_VERSION_ID)
                     // 経度
-                    var gpsLatitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
+                    var gpsLatitude = exifInterface?.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
                     // 緯度
-                    var gpsLongitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
+                    var gpsLongitude = exifInterface?.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
                     // 原画像データの生成日時
-                    var dateTimeOriginal = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
+                    var dateTimeOriginal =
+                        exifInterface?.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
                     // 更新日時
-                    var changeDateAndTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
-
-                    // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
-                    // セーブ -> exifInterface.saveAttributes()
+                    var changeDateAndTime = exifInterface?.getAttribute(ExifInterface.TAG_DATETIME)
 
                     try {
                         val database = dbHelper.writableDatabase
@@ -182,8 +175,7 @@ class MainActivity : AppCompatActivity() {
                         values.put("dateTimeOriginal", dateTimeOriginal)
                         values.put("changeDateAndTime", changeDateAndTime)
                         database.insertOrThrow("Meta", null, values)
-                    }
-                    catch (e: SQLiteConstraintException){
+                    } catch (e: SQLiteConstraintException) {
 
                     }
                 } catch (e: IOException) {
@@ -193,7 +185,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 images.add(image)
-                a = a + 1
+                a += 1
             } while (cursor.moveToNext())
             cursor.close()
         } catch (e: Exception) {
