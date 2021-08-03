@@ -1,9 +1,11 @@
 package com.example.exif
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -56,6 +59,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+        // メディアへのアクセス権限を付与
+        if(ContextCompat.checkSelfPermission(
+                this@MainActivity,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )!= PackageManager.PERMISSION_GRANTED
+        ){
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
+            )
+        }
+
+
         val navController = findNavController(R.id.nav_host_fragment)
         setupWithNavController(bottom_navigation, navController)
 
@@ -67,17 +84,6 @@ class MainActivity : AppCompatActivity() {
         //これで表示画像の大きさを均等になるよう修正を加えている。falseにしたら大変な事になる。
         imageRecycler?.setHasFixedSize(true)
 
-//        // メディアへのアクセス権限を付与
-//        if(ContextCompat.checkSelfPermission(
-//                this@MainActivity,
-//                Manifest.permission.READ_EXTERNAL_STORAGE
-//            )!= PackageManager.PERMISSION_GRANTED
-//        ){
-//            ActivityCompat.requestPermissions(
-//                this@MainActivity,
-//                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
-//            )
-//        }
 
         allPictures = ArrayList()
 
@@ -92,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     //外部ストレージからすべての画像を取得するメソッドの設定
     private fun getAllImages(): ArrayList<Image>? {
@@ -146,6 +153,7 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
+
     override fun onResume() {
         super.onResume()
 
@@ -159,4 +167,5 @@ class MainActivity : AppCompatActivity() {
             flag = false
         }
     }
+
 }

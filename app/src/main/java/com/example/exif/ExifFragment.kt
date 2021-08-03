@@ -1,6 +1,5 @@
 package com.example.exif
 
-import android.app.Activity
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentExifBinding
 import java.io.File
@@ -31,13 +29,6 @@ class ExifFragment : Fragment() {
     ): View? {
         _binding = FragmentExifBinding.inflate(inflater, container, false)
 
-        val permissions = arrayOf(
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.ACCESS_MEDIA_LOCATION,
-            android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-        )
-        ActivityCompat.requestPermissions(context as Activity, permissions, 0)
 
         // Exif取得
         val f: File = File(imagePath)
@@ -58,13 +49,12 @@ class ExifFragment : Fragment() {
                 //　ここの値を自由に変更するとExifの直接編集ができているか確認できる
                 //
                 //
-                // exifInterface.setAttribute(ExifInterface.TAG_BITS_PER_SAMPLE, "12")
+                // exifInterface.setAttribute(ExifInterface.TAG_BITS_PER_SAMPLE, "102")
                 //
                 //　コメントアウトをはずして任意の画像のExifページを開く→該当のsetAttributeがsaveされる→
                 //　コメントアウトをつけて、更新されているか確認
                 //　DBからではなく、Exifから表示させているので、変更が保存されていればExifが更新できている
                 // ことの証明になる
-
 
 
                 // 画像の高さ
