@@ -1,27 +1,21 @@
 package com.example.exif
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
-import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.sqlite.SQLiteConstraintException
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
-import com.example.exif.model.PhotoAdapter
 import com.example.exif.model.PhotoAdapterAlbum
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class AddPhotoFragment : AppCompatActivity() {
@@ -42,7 +36,7 @@ class AddPhotoFragment : AppCompatActivity() {
 
         val okButton = findViewById<Button>(R.id.ok)
         okButton.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, PhotoFragment::class.java)
             startActivity(intent)
         }
 

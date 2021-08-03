@@ -1,11 +1,10 @@
 package com.example.exif
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 public class SampleDBHelper(
-    context: Context,
+    context: MainActivity,
     databaseName: String,
     factory: SQLiteDatabase.CursorFactory?,
     version: Int

@@ -1,6 +1,5 @@
 package com.example.exif.model
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,12 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.exif.AlbumPhotoFragment
 import com.example.exif.R
 import com.example.exif.YoshidanoYatu
 
 
-class PhotoAdapter(private var context: Context, private var imagesList: ArrayList<Image>) :
+class PhotoAdapter(private var context: AlbumPhotoFragment, private var imagesList: ArrayList<Image>) :
     RecyclerView.Adapter<PhotoAdapter.ImageViewHolder>(){
 
     class ImageViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
@@ -39,7 +39,7 @@ class PhotoAdapter(private var context: Context, private var imagesList: ArrayLi
             .into(holder.image!!)
         //MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
         holder.image?.setOnClickListener {
-            val intent = Intent(context, YoshidanoYatu::class.java)
+            val intent = Intent(context.activity, YoshidanoYatu::class.java)
             intent.putExtra("id", currentImage.imageid)
             intent.putExtra("path", currentImage.imagePath)
             intent.putExtra("name", currentImage.imageName)
