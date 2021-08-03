@@ -1,5 +1,6 @@
 package com.example.exif
 
+import android.app.Activity
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentExifBinding
 import java.io.File
@@ -30,6 +32,14 @@ class ExifFragment : Fragment() {
     ): View? {
         _binding = FragmentExifBinding.inflate(inflater, container, false)
 
+        val permissions = arrayOf(
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.ACCESS_MEDIA_LOCATION,
+            android.Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+        )
+        ActivityCompat.requestPermissions(context as Activity, permissions, 0)
+
         // Exif取得
         val f: File = File(imagePath)
         val uri = Uri.fromFile(f)
@@ -41,7 +51,6 @@ class ExifFragment : Fragment() {
 
             // Exifの各値をここにセット
             // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
-            // exifInterface.setAttribute(ExifInterface.TAG_IMAGE_LENGTH, "3112")
 
             // 画像の高さ
             var imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
@@ -52,7 +61,8 @@ class ExifFragment : Fragment() {
             // 圧縮の種類
             var compression = exifInterface.getAttribute(ExifInterface.TAG_COMPRESSION)
             // 画像タイトル
-            var imageDescription = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
+            var imageDescription =
+                exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
             // 画像方向
             var imageOrientation = exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION)
             // メーカ名
@@ -68,7 +78,8 @@ class ExifFragment : Fragment() {
             // 緯度
             var gpsLongitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
             // 原画像データの生成日時
-            var dateTimeOriginal = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
+            var dateTimeOriginal =
+                exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
             // 更新日時
             var dateTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
 
@@ -104,7 +115,6 @@ class ExifFragment : Fragment() {
                 }
             }
         }
-
         return binding.root
     }
 
