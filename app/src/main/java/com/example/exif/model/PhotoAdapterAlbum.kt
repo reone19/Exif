@@ -2,7 +2,6 @@ package com.example.exif.model
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.exif.R
 import com.example.exif.SampleDBHelper
-import com.example.exif.YoshidanoYatu
 
 
 class PhotoAdapterAlbum(private var context: Context, private var imagesList: ArrayList<Image>) :

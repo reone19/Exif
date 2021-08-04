@@ -209,7 +209,6 @@ class ExifFragment : Fragment() {
 
             }
 
-
             // データセット
             binding.imageLength.setText(imageLength)
             binding.imageWidth.setText(imageWidth)
@@ -225,9 +224,6 @@ class ExifFragment : Fragment() {
             binding.gpsLongitude.setText(gpsLongitude)
             binding.dateTimeOriginal.setText(dateTimeOriginal)
             binding.changeDateAndTime.setText(changeDateAndTime)
-
-            // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
-            // セーブ -> exifInterface.saveAttributes()
 
         } catch (e: IOException) {
             e.stackTrace
@@ -252,8 +248,13 @@ class ExifFragment : Fragment() {
 
 
     // 保存ボタンを押したときの動作
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun updateExif() {
+
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
+        // Exif用imagePath
+        val f: File = File(imagePath)
+        val uri = Uri.fromFile(f)
 
         // 各ExifのEditTextを変数に取得
         val imageLength = view?.findViewById<EditText>(R.id.imageLength)
@@ -270,6 +271,75 @@ class ExifFragment : Fragment() {
         val gpsLongitude = view?.findViewById<EditText>(R.id.gpsLongitude)
         val dateTimeOriginal = view?.findViewById<EditText>(R.id.dateTimeOriginal)
         val changeDateAndTime = view?.findViewById<EditText>(R.id.changeDateAndTime)
+
+        // Exif直接編集処理
+        try {
+            activity?.contentResolver?.openInputStream(uri)?.use {
+                val exifInterface = ExifInterface(
+                    context?.contentResolver?.openFileDescriptor(
+                        uri,
+                        "rw",
+                        null
+                    )!!.fileDescriptor
+                )
+
+                // EditTextの値をExifにセット
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_IMAGE_LENGTH,
+                    imageLength.toString()
+                )
+                exifInterface.setAttribute(ExifInterface.TAG_IMAGE_WIDTH, imageWidth.toString())
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_BITS_PER_SAMPLE,
+                    bitsPerSample.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_COMPRESSION,
+                    compression.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_IMAGE_DESCRIPTION,
+                    imageDescription.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_ORIENTATION,
+                    imageOrientation.toString()
+                )
+                exifInterface.setAttribute(ExifInterface.TAG_MAKE, maker.toString())
+                exifInterface.setAttribute(ExifInterface.TAG_MODEL, model.toString())
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_STRIP_OFFSETS,
+                    stripOffsets.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_GPS_VERSION_ID,
+                    gpsVersionID.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_GPS_LATITUDE,
+                    gpsLatitude.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_GPS_LONGITUDE,
+                    gpsLongitude.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_DATETIME_ORIGINAL,
+                    dateTimeOriginal.toString()
+                )
+                exifInterface.setAttribute(
+                    ExifInterface.TAG_DATETIME,
+                    changeDateAndTime.toString()
+                )
+
+                // Exifを更新
+                exifInterface.saveAttributes()
+            }
+
+        } catch (e: IOException) {
+            e.stackTrace
+            e.message?.let { Log.e("ExifActivity", it) }
+        }
 
         // データベース更新処理
         try {

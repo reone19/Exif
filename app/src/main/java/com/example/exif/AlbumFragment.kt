@@ -1,7 +1,6 @@
 package com.example.exif
 
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
