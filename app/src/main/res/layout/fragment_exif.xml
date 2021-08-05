@@ -451,6 +451,12 @@
             android:layout_height="wrap_content"
             android:text="保存" />
 
+        <Button
+            android:id="@+id/exifAllDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="一括削除" />
+
     </TableLayout>
 
 </FrameLayout>
