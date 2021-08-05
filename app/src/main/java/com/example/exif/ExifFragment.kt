@@ -25,6 +25,36 @@ class ExifFragment : Fragment() {
     private var _binding: FragmentExifBinding? = null
     private val binding get() = _binding!!
 
+    private val arrayListPhotoId: ArrayList<String> = arrayListOf()
+    private val arrayListImageName: ArrayList<String> = arrayListOf()
+    private val arrayListImageLength: ArrayList<String> = arrayListOf()
+    private val arrayListImageWidth: ArrayList<String> = arrayListOf()
+    private val arrayListYResolution: ArrayList<String> = arrayListOf()
+    private val arrayListXResolution: ArrayList<String> = arrayListOf()
+    private val arrayListBitsPerSample: ArrayList<String> = arrayListOf()
+    private val arrayListCompressions: ArrayList<String> = arrayListOf()
+    private val arrayListImageOrientation: ArrayList<String> = arrayListOf()
+    private val arrayListImageDescription: ArrayList<String> = arrayListOf()
+    private val arrayListArtist: ArrayList<String> = arrayListOf()
+    private val arrayListMaker: ArrayList<String> = arrayListOf()
+    private val arrayListModel: ArrayList<String> = arrayListOf()
+    private val arrayListAperture: ArrayList<String> = arrayListOf()
+    private val arrayListExposureTime: ArrayList<String> = arrayListOf()
+    private val arrayListIsoSpeed: ArrayList<String> = arrayListOf()
+    private val arrayListExposureBias: ArrayList<String> = arrayListOf()
+    private val arrayListFNumber: ArrayList<String> = arrayListOf()
+    private val arrayListShutterSpeed: ArrayList<String> = arrayListOf()
+    private val arrayListFocalLength: ArrayList<String> = arrayListOf()
+    private val arrayListMeteringMode: ArrayList<String> = arrayListOf()
+    private val arrayListFlash: ArrayList<String> = arrayListOf()
+    private val arrayListStripOffsets: ArrayList<String> = arrayListOf()
+    private val arrayListGpsVersionID: ArrayList<String> = arrayListOf()
+    private val arrayListGpsLatitude: ArrayList<String> = arrayListOf()
+    private val arrayListGpsLongitude: ArrayList<String> = arrayListOf()
+    private val arrayListGpsAltitude: ArrayList<String> = arrayListOf()
+    private val arrayListDateTimeOriginal: ArrayList<String> = arrayListOf()
+    private val arrayListChangeDateAndTime: ArrayList<String> = arrayListOf()
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -33,35 +63,6 @@ class ExifFragment : Fragment() {
     ): View? {
         _binding = FragmentExifBinding.inflate(inflater, container, false)
 
-        val arrayListPhotoId: ArrayList<String> = arrayListOf()
-        val arrayListImageName: ArrayList<String> = arrayListOf()
-        val arrayListImageLength: ArrayList<String> = arrayListOf()
-        val arrayListImageWidth: ArrayList<String> = arrayListOf()
-        val arrayListYResolution: ArrayList<String> = arrayListOf()
-        val arrayListXResolution: ArrayList<String> = arrayListOf()
-        val arrayListBitsPerSample: ArrayList<String> = arrayListOf()
-        val arrayListCompressions: ArrayList<String> = arrayListOf()
-        val arrayListImageOrientation: ArrayList<String> = arrayListOf()
-        val arrayListImageDescription: ArrayList<String> = arrayListOf()
-        val arrayListArtist: ArrayList<String> = arrayListOf()
-        val arrayListMaker: ArrayList<String> = arrayListOf()
-        val arrayListModel: ArrayList<String> = arrayListOf()
-        val arrayListAperture: ArrayList<String> = arrayListOf()
-        val arrayListExposureTime: ArrayList<String> = arrayListOf()
-        val arrayListIsoSpeed: ArrayList<String> = arrayListOf()
-        val arrayListExposureBias: ArrayList<String> = arrayListOf()
-        val arrayListFNumber: ArrayList<String> = arrayListOf()
-        val arrayListShutterSpeed: ArrayList<String> = arrayListOf()
-        val arrayListFocalLength: ArrayList<String> = arrayListOf()
-        val arrayListMeteringMode: ArrayList<String> = arrayListOf()
-        val arrayListFlash: ArrayList<String> = arrayListOf()
-        val arrayListStripOffsets: ArrayList<String> = arrayListOf()
-        val arrayListGpsVersionID: ArrayList<String> = arrayListOf()
-        val arrayListGpsLatitude: ArrayList<String> = arrayListOf()
-        val arrayListGpsLongitude: ArrayList<String> = arrayListOf()
-        val arrayListGpsAltitude: ArrayList<String> = arrayListOf()
-        val arrayListDateTimeOriginal: ArrayList<String> = arrayListOf()
-        val arrayListChangeDateAndTime: ArrayList<String> = arrayListOf()
 
         //データベース接続
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
@@ -182,13 +183,13 @@ class ExifFragment : Fragment() {
 
         try {
             // 画像の高さの解像度
-            yResolution = arrayListImageWidth[0]
+            yResolution = arrayListYResolution[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // 画像の横幅の解像度
-            xResolution = arrayListImageWidth[0]
+            xResolution = arrayListXResolution[0]
         } catch (e: NullPointerException) {
         }
 
@@ -218,7 +219,7 @@ class ExifFragment : Fragment() {
 
         try {
             // 作者名
-            artist = arrayListImageDescription[0]
+            artist = arrayListArtist[0]
         } catch (e: NullPointerException) {
         }
 
@@ -236,55 +237,55 @@ class ExifFragment : Fragment() {
 
         try {
             // 絞り値
-            aperture = arrayListModel[0]
+            aperture = arrayListAperture[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // 露出時間
-            exposureTime = arrayListModel[0]
+            exposureTime = arrayListExposureTime[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // ISO値
-            isoSpeed = arrayListModel[0]
+            isoSpeed = arrayListIsoSpeed[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // 露出補正時間
-            exposureBias = arrayListModel[0]
+            exposureBias = arrayListExposureBias[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // F値
-            fNumber = arrayListModel[0]
+            fNumber = arrayListFNumber[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // シャッタースピード
-            shutterSpeed = arrayListModel[0]
+            shutterSpeed = arrayListShutterSpeed[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // 焦点距離
-            focalLength = arrayListModel[0]
+            focalLength = arrayListFocalLength[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // 測光モード
-            meteringMode = arrayListModel[0]
+            meteringMode = arrayListMeteringMode[0]
         } catch (e: NullPointerException) {
         }
 
         try {
             // フラッシュ
-            flash = arrayListModel[0]
+            flash = arrayListFlash[0]
         } catch (e: NullPointerException) {
         }
 
@@ -314,7 +315,7 @@ class ExifFragment : Fragment() {
 
         try {
             // 高度
-            gpsAltitude = arrayListGpsLongitude[0]
+            gpsAltitude = arrayListGpsAltitude[0]
         } catch (e: NullPointerException) {
         }
 
@@ -419,140 +420,330 @@ class ExifFragment : Fragment() {
                 )
 
                 // EditTextの値をExifにセット
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_IMAGE_LENGTH,
-                    imageLength.toString()
-                )
+                // 空文字のときはnullをセット
+                if (imageLength?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_IMAGE_LENGTH,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_IMAGE_LENGTH,
+                        imageLength.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_IMAGE_WIDTH,
-                    imageWidth.toString()
-                )
+                if (imageWidth?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_IMAGE_WIDTH,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_IMAGE_WIDTH,
+                        imageWidth.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_Y_RESOLUTION,
-                    yResolution.toString()
-                )
+                if (yResolution?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_Y_RESOLUTION,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_Y_RESOLUTION,
+                        yResolution.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_X_RESOLUTION,
-                    xResolution.toString()
-                )
+                if (xResolution?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_X_RESOLUTION,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_X_RESOLUTION,
+                        xResolution.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_BITS_PER_SAMPLE,
-                    bitsPerSample.toString()
-                )
+                if (bitsPerSample?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_BITS_PER_SAMPLE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_BITS_PER_SAMPLE,
+                        bitsPerSample.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_COMPRESSION,
-                    compression.toString()
-                )
+                if (compression?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_COMPRESSION,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_COMPRESSION,
+                        compression.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_ORIENTATION,
-                    imageOrientation.toString()
-                )
+                if (imageOrientation?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_ORIENTATION,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_ORIENTATION,
+                        imageOrientation.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_IMAGE_DESCRIPTION,
-                    imageDescription.toString()
-                )
+                if (imageDescription?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_IMAGE_DESCRIPTION,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_IMAGE_DESCRIPTION,
+                        imageDescription.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_ARTIST,
-                    artist.toString()
-                )
+                if (artist?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_ARTIST,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_ARTIST,
+                        artist.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_MAKE,
-                    maker.toString()
-                )
+                if (maker?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_MAKE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_MAKE,
+                        maker.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_MODEL,
-                    model.toString()
-                )
+                if (model?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_MODEL,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_MODEL,
+                        model.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_APERTURE_VALUE,
-                    aperture .toString()
-                )
+                if (aperture?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_APERTURE_VALUE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_APERTURE_VALUE,
+                        aperture.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_EXPOSURE_TIME,
-                    exposureTime.toString()
-                )
+                if (exposureTime?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_EXPOSURE_TIME,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_EXPOSURE_TIME,
+                        exposureTime.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_ISO_SPEED_RATINGS,
-                    isoSpeed.toString()
-                )
+                if (isoSpeed?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_ISO_SPEED_RATINGS,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_ISO_SPEED_RATINGS,
+                        isoSpeed.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_EXPOSURE_BIAS_VALUE,
-                    exposureBias.toString()
-                )
+                if (exposureBias?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_EXPOSURE_BIAS_VALUE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_EXPOSURE_BIAS_VALUE,
+                        exposureBias.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_F_NUMBER,
-                    fNumber.toString()
-                )
+                if (fNumber?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_F_NUMBER,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_F_NUMBER,
+                        fNumber.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_SHUTTER_SPEED_VALUE,
-                    shutterSpeed.toString()
-                )
+                if (shutterSpeed?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_SHUTTER_SPEED_VALUE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_SHUTTER_SPEED_VALUE,
+                        shutterSpeed.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_FOCAL_LENGTH,
-                    focalLength.toString()
-                )
+                if (focalLength?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_FOCAL_LENGTH,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_FOCAL_LENGTH,
+                        focalLength.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_METERING_MODE,
-                    meteringMode.toString()
-                )
+                if (meteringMode?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_METERING_MODE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_METERING_MODE,
+                        meteringMode.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_FLASH,
-                    flash.toString()
-                )
+                if (flash?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_FLASH,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_FLASH,
+                        flash.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_STRIP_OFFSETS,
-                    stripOffsets.toString()
-                )
+                if (stripOffsets?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_STRIP_OFFSETS,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_STRIP_OFFSETS,
+                        stripOffsets.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_GPS_VERSION_ID,
-                    gpsVersionID.toString()
-                )
+                if (gpsVersionID?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_VERSION_ID,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_VERSION_ID,
+                        gpsVersionID.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_GPS_LATITUDE,
-                    gpsLatitude.toString()
-                )
+                if (gpsLatitude?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_LATITUDE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_LATITUDE,
+                        gpsLatitude.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_GPS_LONGITUDE,
-                    gpsLongitude.toString()
-                )
+                if (gpsLongitude?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_LONGITUDE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_LONGITUDE,
+                        gpsLongitude.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_GPS_ALTITUDE,
-                    gpsAltitude.toString()
-                )
+                if (gpsAltitude?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_ALTITUDE,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_GPS_ALTITUDE,
+                        gpsAltitude.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_DATETIME_ORIGINAL,
-                    dateTimeOriginal.toString()
-                )
+                if (dateTimeOriginal?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_DATETIME_ORIGINAL,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_DATETIME_ORIGINAL,
+                        dateTimeOriginal.toString()
+                    )
+                }
 
-                exifInterface.setAttribute(
-                    ExifInterface.TAG_DATETIME,
-                    changeDateAndTime.toString()
-                )
+                if (changeDateAndTime?.text.toString().isEmpty()) {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_DATETIME,
+                        null
+                    )
+                } else {
+                    exifInterface.setAttribute(
+                        ExifInterface.TAG_DATETIME,
+                        changeDateAndTime.toString()
+                    )
+                }
 
                 // Exifを更新
                 exifInterface.saveAttributes()
@@ -569,34 +760,169 @@ class ExifFragment : Fragment() {
             val database = dbHelper.writableDatabase
             val values = ContentValues()
 
-            // 各カラムの値をセット
-            values.put("image_length", imageLength?.text.toString())
-            values.put("image_width", imageWidth?.text.toString())
-            values.put("y_resolution", yResolution?.text.toString())
-            values.put("x_resolution", xResolution?.text.toString())
-            values.put("bits_per_sample", bitsPerSample?.text.toString())
-            values.put("compression", compression?.text.toString())
-            values.put("image_orientation", imageOrientation?.text.toString())
-            values.put("image_description", imageDescription?.text.toString())
-            values.put("artist", artist?.text.toString())
-            values.put("maker", maker?.text.toString())
-            values.put("model", model?.text.toString())
-            values.put("strip_offsets", stripOffsets?.text.toString())
-            values.put("aperture", aperture?.text.toString())
-            values.put("exposure_time", exposureTime?.text.toString())
-            values.put("iso_speed", isoSpeed?.text.toString())
-            values.put("exposure_bias", exposureBias?.text.toString())
-            values.put("f_number", fNumber?.text.toString())
-            values.put("shutter_speed", shutterSpeed?.text.toString())
-            values.put("focal_length", focalLength?.text.toString())
-            values.put("metering_mode", meteringMode?.text.toString())
-            values.put("flash", flash?.text.toString())
-            values.put("gps_version_id", gpsVersionID?.text.toString())
-            values.put("gps_latitude", gpsLatitude?.text.toString())
-            values.put("gps_longitude", gpsLongitude?.text.toString())
-            values.put("gps_altitude", gpsAltitude?.text.toString())
-            values.put("date_time_original", dateTimeOriginal?.text.toString())
-            values.put("change_date_and_time", changeDateAndTime?.text.toString())
+            // 各カラムの値をデータベースにセット
+            // EditTextの値が空文字の場合、removeすることによりnullをセットする
+            if (imageLength?.text.toString().isEmpty()) {
+                values.putNull("image_length")
+            } else {
+                values.put("image_length", imageLength?.text.toString())
+            }
+
+            if (imageWidth?.text.toString().isEmpty()) {
+                values.putNull("image_width")
+            } else {
+                values.put("image_width", imageWidth?.text.toString())
+            }
+
+            if (yResolution?.text.toString().isEmpty()) {
+                values.putNull("y_resolution")
+            } else {
+                values.put("y_resolution", yResolution?.text.toString())
+            }
+
+            if (xResolution?.text.toString().isEmpty()) {
+                values.putNull("x_resolution")
+            } else {
+                values.put("x_resolution", xResolution?.text.toString())
+            }
+
+            if (bitsPerSample?.text.toString().isEmpty()) {
+                values.putNull("bits_per_sample")
+            } else {
+                values.put("bits_per_sample", bitsPerSample?.text.toString())
+            }
+
+            if (compression?.text.toString().isEmpty()) {
+                values.putNull("compression")
+            } else {
+                values.put("compression", compression?.text.toString())
+            }
+
+            if (imageOrientation?.text.toString().isEmpty()) {
+                values.putNull("image_orientation")
+            } else {
+                values.put("image_orientation", imageOrientation?.text.toString())
+            }
+
+            if (imageDescription?.text.toString().isEmpty()) {
+                values.putNull("image_description")
+            } else {
+                values.put("image_description", imageDescription?.text.toString())
+            }
+
+            if (artist?.text.toString().isEmpty()) {
+                values.putNull("artist")
+            } else {
+                values.put("artist", artist?.text.toString())
+            }
+
+            if (maker?.text.toString().isEmpty()) {
+                values.putNull("maker")
+            } else {
+                values.put("maker", maker?.text.toString())
+            }
+
+            if (model?.text.toString().isEmpty()) {
+                values.putNull("model")
+            } else {
+                values.put("model", model?.text.toString())
+            }
+
+            if (aperture?.text.toString().isEmpty()) {
+                values.putNull("aperture")
+            } else {
+                values.put("aperture", aperture?.text.toString())
+            }
+
+            if (exposureTime?.text.toString().isEmpty()) {
+                values.putNull("exposure_time")
+            } else {
+                values.put("exposure_time", exposureTime?.text.toString())
+            }
+
+            if (isoSpeed?.text.toString().isEmpty()) {
+                values.putNull("iso_speed")
+            } else {
+                values.put("iso_speed", isoSpeed?.text.toString())
+            }
+
+            if (exposureBias?.text.toString().isEmpty()) {
+                values.putNull("exposure_bias")
+            } else {
+                values.put("exposure_bias", exposureBias?.text.toString())
+            }
+
+            if (fNumber?.text.toString().isEmpty()) {
+                values.putNull("f_number")
+            } else {
+                values.put("f_number", fNumber?.text.toString())
+            }
+
+            if (shutterSpeed?.text.toString().isEmpty()) {
+                values.putNull("shutter_speed")
+            } else {
+                values.put("shutter_speed", shutterSpeed?.text.toString())
+            }
+
+            if (focalLength?.text.toString().isEmpty()) {
+                values.putNull("focal_length")
+            } else {
+                values.put("focal_length", focalLength?.text.toString())
+            }
+
+            if (meteringMode?.text.toString().isEmpty()) {
+                values.putNull("metering_mode")
+            } else {
+                values.put("metering_mode", meteringMode?.text.toString())
+            }
+
+            if (flash?.text.toString().isEmpty()) {
+                values.putNull("flash")
+            } else {
+                values.put("flash", flash?.text.toString())
+            }
+
+            if (stripOffsets?.text.toString().isEmpty()) {
+                values.putNull("strip_offsets")
+            } else {
+                values.put("strip_offsets", stripOffsets?.text.toString())
+            }
+
+            if (gpsVersionID?.text.toString().isEmpty()) {
+                values.putNull("gps_version_id")
+            } else {
+                values.put("gps_version_id", gpsVersionID?.text.toString())
+            }
+
+            if (gpsLatitude?.text.toString().isEmpty()) {
+                values.putNull("gps_latitude")
+            } else {
+                values.put("gps_latitude", gpsLatitude?.text.toString())
+            }
+
+            if (gpsLongitude?.text.toString().isEmpty()) {
+                values.putNull("gps_longitude")
+            } else {
+                values.put("gps_longitude", gpsLongitude?.text.toString())
+            }
+
+            if (gpsAltitude?.text.toString().isEmpty()) {
+                values.putNull("gps_altitude")
+            } else {
+                values.put("gps_altitude", gpsAltitude?.text.toString())
+            }
+
+            if (dateTimeOriginal?.text.toString().isEmpty()) {
+                values.putNull("date_time_original")
+            } else {
+                values.put("date_time_original", dateTimeOriginal?.text.toString())
+            }
+
+            if (changeDateAndTime?.text.toString().isEmpty()) {
+                values.putNull("change_date_and_time")
+            } else {
+                values.put("change_date_and_time", changeDateAndTime?.text.toString())
+            }
 
             // 一括でMetaテーブルをアップデート
             database.update("Meta", values, "photo_id=$photoID", null)
