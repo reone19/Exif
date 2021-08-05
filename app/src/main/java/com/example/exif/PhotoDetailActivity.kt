@@ -1,29 +1,31 @@
 package com.example.exif
 
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import android.graphics.Color
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.exif.databinding.ActivityImageDetaileBinding
+import com.example.exif.databinding.ActivityPhotoDetailBinding
+
 // 画像のパス
 var imagePath: String? = null
 var imageName: String? = null
 var photoID: String? = null
 
-class ImageDetaile : AppCompatActivity() {
+class PhotoDetailActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityImageDetaileBinding
+    private lateinit var binding: ActivityPhotoDetailBinding
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityImageDetaileBinding.inflate(layoutInflater)
+        binding = ActivityPhotoDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //画像のパスを受け取るためのデータ
         imagePath = intent.getStringExtra("path")
         //画像の名前を受け取るためのデータ
@@ -46,11 +48,11 @@ class ImageDetaile : AppCompatActivity() {
         Glide.with(this).load(imagePath).into(resultImage)
 
         // キャプションフラグメントをデフォルト表示にする
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.container, CaptionFragment())
-//            addToBackStack(null)
-//            commit()
-//        }
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.container, CaptionFragment())
+            addToBackStack(null)
+            commit()
+        }
 
         // キャプションボタンをクリックしたときのフラグメント動作
         binding.captionButton.setOnClickListener {

@@ -15,8 +15,8 @@ import com.example.exif.R
 import com.example.exif.SampleDBHelper
 
 
-class PhotoAdapterAlbum(private var context: Context, private var imagesList: ArrayList<Image>) :
-    RecyclerView.Adapter<PhotoAdapterAlbum.ImageViewHolder>(){
+class AlbumAdapter(private var context: Context, private var imagesList: ArrayList<Image>) :
+    RecyclerView.Adapter<AlbumAdapter.ImageViewHolder>(){
     var a:Int = 0
     val dbimageId = IntArray(999)
 

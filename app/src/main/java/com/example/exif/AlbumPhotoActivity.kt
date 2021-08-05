@@ -18,7 +18,7 @@ import com.example.exif.model.PhotoAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class AlbumPhotoFragment : AppCompatActivity() {
+class AlbumPhotoActivity : AppCompatActivity() {
     var a: Int = 0
     var b: Int = 1
     var albumID = ""
@@ -50,7 +50,7 @@ class AlbumPhotoFragment : AppCompatActivity() {
 
         val addButton = findViewById<Button>(R.id.add_photo)
         addButton.setOnClickListener {
-            val intent = Intent(this, AddPhotoFragment::class.java)
+            val intent = Intent(this, AddPhotoActivity::class.java)
             intent.putExtra("album_id", albumID)
             startActivity(intent)
         }
@@ -64,12 +64,12 @@ class AlbumPhotoFragment : AppCompatActivity() {
         imageRecycler?.setHasFixedSize(true)
 
         if (ContextCompat.checkSelfPermission(
-                this@AlbumPhotoFragment,
+                this@AlbumPhotoActivity,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this@AlbumPhotoFragment,
+                this@AlbumPhotoActivity,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 101
             )
         }
@@ -109,7 +109,7 @@ class AlbumPhotoFragment : AppCompatActivity() {
             arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
 
         var cursor =
-            this@AlbumPhotoFragment.contentResolver.query(
+            this@AlbumPhotoActivity.contentResolver.query(
                 allImageUri,
                 projection,
                 null,

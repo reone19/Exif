@@ -324,7 +324,7 @@ class AlbumFragment : Fragment() {
         for (z in 0..c){
             btn[z]?.setOnClickListener{
                 Log.d("TAG", btn[z].toString())
-                val intent = Intent(context, AlbumPhotoFragment::class.java)
+                val intent = Intent(context, AlbumPhotoActivity::class.java)
                 intent.putExtra("album_id", num[z].toString())
                 startActivity(intent)
             }

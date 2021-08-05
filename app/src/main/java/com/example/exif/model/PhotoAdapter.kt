@@ -9,8 +9,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.exif.PhotoDetailActivity
 import com.example.exif.R
-import com.example.exif.ImageDetaile
 
 
 class PhotoAdapter(private var context: Context, private var imagesList: ArrayList<Image>) :
@@ -39,7 +39,7 @@ class PhotoAdapter(private var context: Context, private var imagesList: ArrayLi
             .into(holder.image!!)
         //MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
         holder.image?.setOnClickListener {
-            val intent = Intent(context, ImageDetaile::class.java)
+            val intent = Intent(context, PhotoDetailActivity::class.java)
             intent.putExtra("id", currentImage.imageid)
             intent.putExtra("path", currentImage.imagePath)
             intent.putExtra("name", currentImage.imageName)

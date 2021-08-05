@@ -2,15 +2,10 @@ package com.example.exif
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import android.Manifest
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.sqlite.SQLiteConstraintException
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -20,11 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
-import com.example.exif.model.PhotoAdapter
-import com.example.exif.model.PhotoAdapterAlbum
+import com.example.exif.model.AlbumAdapter
 
 
-class AddPhotoFragment : AppCompatActivity() {
+class AddPhotoActivity : AppCompatActivity() {
     var a:Int = 1
     var albumID = ""
 
@@ -55,12 +49,12 @@ class AddPhotoFragment : AppCompatActivity() {
         imageRecycler?.setHasFixedSize(true)
 
         if(ContextCompat.checkSelfPermission(
-                this@AddPhotoFragment,
+                this@AddPhotoActivity,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )!= PackageManager.PERMISSION_GRANTED
         ){
             ActivityCompat.requestPermissions(
-                this@AddPhotoFragment,
+                this@AddPhotoActivity,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),101
             )
         }
@@ -74,7 +68,7 @@ class AddPhotoFragment : AppCompatActivity() {
             // allpicturesの画像配列をセット。
             allPictures=getAllImages()
             //Adapterをリサイクラーにセットする
-            imageRecycler?.adapter= PhotoAdapterAlbum(this,allPictures!!)
+            imageRecycler?.adapter= AlbumAdapter(this,allPictures!!)
             progressBar?.visibility=View.GONE
         }
 
@@ -87,7 +81,7 @@ class AddPhotoFragment : AppCompatActivity() {
             arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
 
         var cursor =
-            this@AddPhotoFragment.contentResolver.query(allImageUri, projection, null, null, null)
+            this@AddPhotoActivity.contentResolver.query(allImageUri, projection, null, null, null)
 
         try {
             cursor!!.moveToFirst()
