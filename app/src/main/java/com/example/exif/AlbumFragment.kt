@@ -141,7 +141,7 @@ class AlbumFragment : Fragment() {
                     val subTextId = resources.getIdentifier(subText, "id", "com.example.exif")
                     // 空の写真をインスタンス化
                     val imageSource =
-                        resources.getIdentifier("noImage", "drawable", "com.example.exif")
+                        resources.getIdentifier("no_image", "drawable", "com.example.exif")
 
                     // album_subの追加がラストか判別(ラストじゃないなら)
                     if (i != d / 3) {
@@ -169,7 +169,7 @@ class AlbumFragment : Fragment() {
                         } catch (e: IndexOutOfBoundsException) {
                             subTv.text = "0"
                         }
-                        // 空の写真をnoImageに
+                        // 空の写真をno_imageに
                         imageview.setImageResource(imageSource)
 
                     } else {
@@ -198,7 +198,7 @@ class AlbumFragment : Fragment() {
                             } catch (e: IndexOutOfBoundsException) {
                                 subTv.text = "0"
                             }
-                            // 空の写真をnoImageに
+                            // 空の写真をno_imageに
                             imageview.setImageResource(imageSource)
 
                         } catch (e: IndexOutOfBoundsException) {
@@ -252,7 +252,7 @@ class AlbumFragment : Fragment() {
             val textId = resources.getIdentifier(text, "id", "com.example.exif")
             val subTextId = resources.getIdentifier(subText, "id", "com.example.exif")
             // 空の写真をインスタンス化
-            val imageSource = resources.getIdentifier("noImage", "drawable", "com.example.exif")
+            val imageSource = resources.getIdentifier("no_image", "drawable", "com.example.exif")
             // 新しいID生成
             val imageNewId = IntArray(999)
             imageNewId[b] = f
@@ -309,7 +309,7 @@ class AlbumFragment : Fragment() {
                 title = edittext.text.toString()
                 tv.text = title
                 subTv.text = "0"
-                // 空の写真をnoImageに
+                // 空の写真をno_imageに
                 imageview.setImageResource(imageSource)
             }
 

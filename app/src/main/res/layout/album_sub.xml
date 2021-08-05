@@ -34,7 +34,7 @@
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/noimage" />
+                    app:srcCompat="@drawable/no_image" />
 
                 <TextView
                     android:id="@+id/text0"
