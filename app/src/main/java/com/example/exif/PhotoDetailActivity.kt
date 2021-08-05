@@ -1,13 +1,12 @@
 package com.example.exif
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.graphics.Color
 import android.os.Build
-import android.view.View
+import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.exif.databinding.ActivityPhotoDetailBinding
 
@@ -26,25 +25,21 @@ class PhotoDetailActivity : AppCompatActivity() {
         binding = ActivityPhotoDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //画像のパスを受け取るためのデータ
+        // 画像のパスを受け取るためのデータ
         imagePath = intent.getStringExtra("path")
-        //画像の名前を受け取るためのデータ
+        // 画像の名前を受け取るためのデータ
         imageName = intent.getStringExtra("name")
         photoID = intent.getStringExtra("id")
         val resultImage = findViewById<ImageView>(R.id.imageView)
-        //スマホトップ左に画像の名前を表示
-        supportActionBar?.setTitle(imageName)
+        // スマホトップ左に画像の名前を表示
+        supportActionBar?.title = imageName
 
-        //戻るボタン
-
-
-        //戻るボタン
+        // 戻るボタン
         val backBtn = findViewById<Button>(R.id.back)
-        backBtn.setOnClickListener { view: View? -> finish() }
+        backBtn.setOnClickListener { finish() }
 
-
-        //グリットレイアウトの画像のため、画像をGlideで画像のパスを取得、xmlの画像IDと紐づけて、画像を出力している。
-        //結果表示ImageViewの準備
+        // グリットレイアウトの画像のため、画像をGlideで画像のパスを取得、xmlの画像IDと紐づけて、画像を出力している。
+        // 結果表示ImageViewの準備
         Glide.with(this).load(imagePath).into(resultImage)
 
         // キャプションフラグメントをデフォルト表示にする

@@ -14,41 +14,52 @@ import com.example.exif.R
 
 
 class PhotoAdapter(private var context: Context, private var imagesList: ArrayList<Image>) :
-    RecyclerView.Adapter<PhotoAdapter.ImageViewHolder>(){
+    RecyclerView.Adapter<PhotoAdapter.ImageViewHolder>() {
 
-    class ImageViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
+
+    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView? = null
 
-        init{
-            image= itemView.findViewById(R.id.row_image)
+        init {
+            image = itemView.findViewById(R.id.row_image)
         }
 
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.row_custom_recycler_item,parent,false)
+        val view = inflater.inflate(R.layout.row_custom_recycler_item, parent, false)
+
         return ImageViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val currentImage=imagesList[position]
+        val currentImage = imagesList[position]
+
         Glide.with(context)
             .load(currentImage.imagePath)
             .apply(RequestOptions().centerCrop())
             .into(holder.image!!)
-        //MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
+
+        // MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
         holder.image?.setOnClickListener {
+
             val intent = Intent(context, PhotoDetailActivity::class.java)
-            intent.putExtra("id", currentImage.imageid)
+
+            intent.putExtra("id", currentImage.imageId)
             intent.putExtra("path", currentImage.imagePath)
             intent.putExtra("name", currentImage.imageName)
             intent.putExtra("sentence1", currentImage.imageSentence1)
             intent.putExtra("sentence2", currentImage.imageSentence2)
             intent.putExtra("sentence3", currentImage.imageSentence3)
+
             context.startActivity(intent)
         }
     }
+
 
     override fun getItemCount(): Int {
         return imagesList.size

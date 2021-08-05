@@ -7,20 +7,19 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/add_photo"
-        android:layout_gravity="top|left"
+        android:id="@+id/ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="写真追加"
+        android:text="完了"
         android:textColor="#FFFFFF"
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
         android:id="@+id/image_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,20 +20,14 @@ import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.databinding.FragmentPhotoBinding
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
-import kotlinx.android.synthetic.main.fragment_photo.*
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.IOException
 import java.io.File
+import java.io.IOException
 import java.io.InputStream
 
 class PhotoFragment : Fragment() {
@@ -66,6 +61,25 @@ class PhotoFragment : Fragment() {
         imageRecycler?.setHasFixedSize(true)
 
 
+        // API30以上の時だけ追加の権限の確認が必要（Exifに使う）
+        if (Build.VERSION.SDK_INT >= 30) {
+
+            // すべてのファイルを管理できる権限を付与（Exifの編集に必要）
+            // 許可しない限りアプリが使用できない
+            if (Environment.isExternalStorageManager()) {
+                // todo when permission is granted
+            } else {
+                // request for the permission
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                val uri: Uri = Uri.fromParts("package", activity?.packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+
+        }
+
+
+        // READ権限を付与する確認ポップアップ
         if (this.activity?.let {
                 ContextCompat.checkSelfPermission(
                     it,
@@ -81,14 +95,30 @@ class PhotoFragment : Fragment() {
             }
         }
 
+        // WRITE権限を付与する確認ポップアップ
+        if (this.activity?.let {
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            this.activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 101
+                )
+            }
+        }
+
         allPictures = ArrayList()
 
         if (allPictures!!.isEmpty()) {
             progressBar?.visibility = View.VISIBLE
-            //画像取得の際のプログレスバーの不可視設定かつimageRecyclerに
+            // 画像取得の際のプログレスバーの不可視設定かつimageRecyclerに
             // allPicturesの画像配列をセット。
             allPictures = getAllImages()
-            //Adapterをリサイクラーにセットする
+            // Adapterをリサイクラーにセットする
             imageRecycler?.adapter = PhotoAdapter(requireContext(), allPictures!!)
             progressBar?.visibility = View.GONE
         }
@@ -97,11 +127,11 @@ class PhotoFragment : Fragment() {
     }
 
 
-    //外部ストレージからすべての画像を取得するメソッドの設定
+    // 外部ストレージからすべての画像を取得するメソッドの設定
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getAllImages(): ArrayList<Image>? {
 
-        //データベース接続
+        // データベース接続
         val dbHelper = context?.let { SampleDBHelper(it, "SampleDB", null, 1) }
 
         val images = ArrayList<Image>()
@@ -116,7 +146,7 @@ class PhotoFragment : Fragment() {
             cursor!!.moveToFirst()
             do {
                 val image = Image()
-                image.imageid = a.toString()
+                image.imageId = a.toString()
                 image.imagePath =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
@@ -147,19 +177,19 @@ class PhotoFragment : Fragment() {
                     `in` = activity?.contentResolver?.openInputStream(uri)
                     var exifInterface = ExifInterface(`in`!!)
 
-                    // Exifの各値をここにセット
-                    // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
 
                     // 画像の高さ
                     var imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
                     // 画像の横幅
                     var imageWidth = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH)
                     // 画像のビットの深さ
-                    var bitsPerSample = exifInterface.getAttribute(ExifInterface.TAG_BITS_PER_SAMPLE)
+                    var bitsPerSample =
+                        exifInterface.getAttribute(ExifInterface.TAG_BITS_PER_SAMPLE)
                     // 圧縮の種類
                     var compression = exifInterface.getAttribute(ExifInterface.TAG_COMPRESSION)
                     // 画像タイトル
-                    var imageDescription = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
+                    var imageDescription =
+                        exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
                     // 画像方向
                     var imageOrientation = exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION)
                     // メーカ名
@@ -175,35 +205,33 @@ class PhotoFragment : Fragment() {
                     // 緯度
                     var gpsLongitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
                     // 原画像データの生成日時
-                    var dateTimeOriginal = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
+                    var dateTimeOriginal =
+                        exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
                     // 更新日時
                     var changeDateAndTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
 
-                    // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
-                    // セーブ -> exifInterface.saveAttributes()
 
                     try {
                         val database = dbHelper?.writableDatabase
                         val values = ContentValues()
                         values.put("photo_id", a)
-                        values.put("imageName", image.imageName)
-                        values.put("imageLength", imageLength)
-                        values.put("imageWidth", imageWidth)
-                        values.put("bitsPerSample", bitsPerSample)
+                        values.put("image_name", image.imageName)
+                        values.put("image_length", imageLength)
+                        values.put("image_width", imageWidth)
+                        values.put("bits_per_sample", bitsPerSample)
                         values.put("compression", compression)
-                        values.put("imageDescription", imageDescription)
-                        values.put("imageOrientation", imageOrientation)
+                        values.put("image_description", imageDescription)
+                        values.put("image_orientation", imageOrientation)
                         values.put("maker", maker)
                         values.put("model", model)
-                        values.put("stripOffsets", stripOffsets)
-                        values.put("gpsVersionID", gpsVersionID)
-                        values.put("gpsLatitude", gpsLatitude)
-                        values.put("gpsLongitude", gpsLongitude)
-                        values.put("dateTimeOriginal", dateTimeOriginal)
-                        values.put("changeDateAndTime", changeDateAndTime)
+                        values.put("strip_offsets", stripOffsets)
+                        values.put("gps_version_id", gpsVersionID)
+                        values.put("gps_latitude", gpsLatitude)
+                        values.put("gps_longitude", gpsLongitude)
+                        values.put("date_time_original", dateTimeOriginal)
+                        values.put("change_date_and_time", changeDateAndTime)
                         database?.insertOrThrow("Meta", null, values)
-                    }
-                    catch (e: SQLiteConstraintException){
+                    } catch (e: SQLiteConstraintException) {
 
                     }
                 } catch (e: IOException) {
@@ -213,7 +241,7 @@ class PhotoFragment : Fragment() {
                 }
 
                 images.add(image)
-                a = a + 1
+                a += 1
             } while (cursor.moveToNext())
             cursor.close()
         } catch (e: Exception) {
@@ -221,7 +249,6 @@ class PhotoFragment : Fragment() {
         }
         return images
     }
-
 
 
     override fun onDestroyView() {

@@ -32,9 +32,11 @@ class OcrFragment : Fragment() {
 
         _ocr = activity?.let { OCR(it.applicationContext) }
 
+        // OCR
         val ocrString: String
         var bitmap: Bitmap? = null
 
+        // URI取得
         val f: File = File(imagePath)
         val uri = Uri.fromFile(f)
 
@@ -47,6 +49,7 @@ class OcrFragment : Fragment() {
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
+
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             }
@@ -61,25 +64,24 @@ class OcrFragment : Fragment() {
                     bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
                     parcelFileDescriptor.close()
                 }
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
 
-        if (bitmap != null) {
-//                val imageView = view?.findViewById<View>(R.id.image) as ImageView
-//                imageView.scaleType = ImageView.ScaleType.FIT_CENTER
-//                imageView.setImageBitmap(bitmap)
-            ocrString = activity?.applicationContext?.let { _ocr!!.getString(it, bitmap) }
+        ocrString = if (bitmap != null) {
+            activity?.applicationContext?.let { _ocr!!.getString(it, bitmap) }
                 .toString()
         } else {
-            ocrString = "bitmap is null"
+            "bitmap is null"
         }
 
         binding.ocrString.setText(ocrString)
 
         return binding.root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -28,20 +28,20 @@ class ExifFragment : Fragment() {
 
     var arrayListPhotoId: ArrayList<String> = arrayListOf()
     var arrayListImageName: ArrayList<String> = arrayListOf()
-    var arrayListimageLength: ArrayList<String> = arrayListOf()
-    var arrayListimageWidth: ArrayList<String> = arrayListOf()
-    var arrayListbitsPerSample: ArrayList<String> = arrayListOf()
-    var arrayListcompressions: ArrayList<String> = arrayListOf()
-    var arrayListimageDescription: ArrayList<String> = arrayListOf()
-    var arrayListimageOrientation: ArrayList<String> = arrayListOf()
-    var arrayListmaker: ArrayList<String> = arrayListOf()
-    var arrayListmodel: ArrayList<String> = arrayListOf()
-    var arrayListstripOffsets: ArrayList<String> = arrayListOf()
-    var arrayListgpsVersionID: ArrayList<String> = arrayListOf()
-    var arrayListgpsLatitude: ArrayList<String> = arrayListOf()
-    var arrayListgpsLongitude: ArrayList<String> = arrayListOf()
-    var arrayListdateTimeOriginal: ArrayList<String> = arrayListOf()
-    var arrayListchangeDateAndTime: ArrayList<String> = arrayListOf()
+    var arrayListImageLength: ArrayList<String> = arrayListOf()
+    var arrayListImageWidth: ArrayList<String> = arrayListOf()
+    var arrayListBitsPerSample: ArrayList<String> = arrayListOf()
+    var arrayListCompressions: ArrayList<String> = arrayListOf()
+    var arrayListImageDescription: ArrayList<String> = arrayListOf()
+    var arrayListImageOrientation: ArrayList<String> = arrayListOf()
+    var arrayListMaker: ArrayList<String> = arrayListOf()
+    var arrayListModel: ArrayList<String> = arrayListOf()
+    var arrayListStripOffsets: ArrayList<String> = arrayListOf()
+    var arrayListGpsVersionID: ArrayList<String> = arrayListOf()
+    var arrayListGpsLatitude: ArrayList<String> = arrayListOf()
+    var arrayListGpsLongitude: ArrayList<String> = arrayListOf()
+    var arrayListDateTimeOriginal: ArrayList<String> = arrayListOf()
+    var arrayListChangeDateAndTime: ArrayList<String> = arrayListOf()
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -56,187 +56,173 @@ class ExifFragment : Fragment() {
         val uri = Uri.fromFile(f)
         var `in`: InputStream? = null
 
-        try {
-            `in` = activity?.contentResolver?.openInputStream(uri)
-            var exifInterface = ExifInterface(`in`!!)
 
-            // Exifの各値をここにセット
-            // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
+        //データベース接続
+        val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
 
-            //データベース接続
-            val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
+        // データの取得処理
+        val databaseR = dbHelper.readableDatabase
+        val sql =
+            "SELECT photo_id, image_name, image_length, image_width, bits_per_sample, compression, image_description, image_orientation, maker, model, strip_offsets, gps_version_id, gps_latitude, gps_longitude, date_time_original, change_date_and_time FROM Meta WHERE photo_id = $photoID"
+        val cursor = databaseR.rawQuery(sql, null)
 
-            // データの取得処理
-            val databaseR = dbHelper.readableDatabase
-            val sql =
-                "select photo_id, imageName, imageLength, imageWidth, bitsPerSample, compression, imageDescription, imageOrientation, maker, model, stripOffsets, gpsVersionID, gpsLatitude, gpsLongitude, dateTimeOriginal, changeDateAndTime from Meta where photo_id = " + photoID
-            val cursor = databaseR.rawQuery(sql, null)
-            if (cursor.count > 0) {
-                cursor.moveToFirst()
-                while (!cursor.isAfterLast) {
-                    arrayListPhotoId.add(cursor.getString(0))
-                    arrayListImageName.add(cursor.getString(1))
-                    arrayListimageLength.add(cursor.getString(2))
-                    arrayListimageWidth.add(cursor.getString(3))
-                    arrayListbitsPerSample.add(cursor.getString(4))
-                    arrayListcompressions.add(cursor.getString(5))
-                    arrayListimageDescription.add(cursor.getString(6))
-                    arrayListimageOrientation.add(cursor.getString(7))
-                    arrayListmaker.add(cursor.getString(8))
-                    arrayListmodel.add(cursor.getString(9))
-                    arrayListstripOffsets.add(cursor.getString(10))
-                    arrayListgpsVersionID.add(cursor.getString(11))
-                    arrayListgpsLatitude.add(cursor.getString(12))
-                    arrayListgpsLongitude.add(cursor.getString(13))
-                    arrayListdateTimeOriginal.add(cursor.getString(14))
-                    arrayListchangeDateAndTime.add(cursor.getString(15))
-                    cursor.moveToNext()
-                }
-            }
+        if (cursor.count > 0) {
+            cursor.moveToFirst()
 
+            while (!cursor.isAfterLast) {
 
-            // 画像の高さ
-            var imageLength: String? = null
-            // 画像の横幅
-            var imageWidth: String? = null
-            // 画像のビットの深さ
-            var bitsPerSample: String? = null
-            // 圧縮の種類
-            var compression: String? = null
-            // 画像タイトル
-            var imageDescription: String? = null
-            // 画像方向
-            var imageOrientation: String? = null
-            // メーカ名
-            var maker: String? = null
-            //モデル名
-            var model: String? = null
-            // ロケーション
-            var stripOffsets: String? = null
-            // GPSタグのバージョン
-            var gpsVersionID: String? = null
-            // 経度
-            var gpsLatitude: String? = null
-            // 緯度
-            var gpsLongitude: String? = null
-            // 原画像データの生成日時
-            var dateTimeOriginal: String? = null
-            // 更新日時
-            var changeDateAndTime: String? = null
+                arrayListPhotoId.add(cursor.getString(0))
+                arrayListImageName.add(cursor.getString(1))
+                arrayListImageLength.add(cursor.getString(2))
+                arrayListImageWidth.add(cursor.getString(3))
+                arrayListBitsPerSample.add(cursor.getString(4))
+                arrayListCompressions.add(cursor.getString(5))
+                arrayListImageDescription.add(cursor.getString(6))
+                arrayListImageOrientation.add(cursor.getString(7))
+                arrayListMaker.add(cursor.getString(8))
+                arrayListModel.add(cursor.getString(9))
+                arrayListStripOffsets.add(cursor.getString(10))
+                arrayListGpsVersionID.add(cursor.getString(11))
+                arrayListGpsLatitude.add(cursor.getString(12))
+                arrayListGpsLongitude.add(cursor.getString(13))
+                arrayListDateTimeOriginal.add(cursor.getString(14))
+                arrayListChangeDateAndTime.add(cursor.getString(15))
 
-            try {
-                // 画像の高さ
-                imageLength = arrayListimageLength.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 画像の横幅
-                imageWidth = arrayListimageWidth.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 画像のビットの深さ
-                bitsPerSample = arrayListbitsPerSample.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 圧縮の種類
-                compression = arrayListcompressions.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 画像タイトル
-                imageDescription = arrayListimageDescription.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 画像方向
-                imageOrientation = arrayListimageOrientation.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // メーカ名
-                maker = arrayListmaker.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                //モデル名
-                model = arrayListmodel.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // ロケーション
-                stripOffsets = arrayListstripOffsets.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // GPSタグのバージョン
-                gpsVersionID = arrayListgpsVersionID.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 経度
-                gpsLatitude = arrayListgpsLatitude.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 緯度
-                gpsLongitude = arrayListgpsLongitude.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 原画像データの生成日時
-                dateTimeOriginal = arrayListdateTimeOriginal.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-            try {
-                // 更新日時
-                changeDateAndTime = arrayListchangeDateAndTime.get(0)
-            } catch (e: NullPointerException) {
-
-            }
-
-            // データセット
-            binding.imageLength.setText(imageLength)
-            binding.imageWidth.setText(imageWidth)
-            binding.bitsPerSample.setText(bitsPerSample)
-            binding.compression.setText(compression)
-            binding.imageDescription.setText(imageDescription)
-            binding.imageOrientation.setText(imageOrientation)
-            binding.maker.setText(maker)
-            binding.model.setText(model)
-            binding.stripOffsets.setText(stripOffsets)
-            binding.gpsVersionID.setText(gpsVersionID)
-            binding.gpsLatitude.setText(gpsLatitude)
-            binding.gpsLongitude.setText(gpsLongitude)
-            binding.dateTimeOriginal.setText(dateTimeOriginal)
-            binding.changeDateAndTime.setText(changeDateAndTime)
-
-        } catch (e: IOException) {
-            e.stackTrace
-            e.message?.let { Log.e("ExifActivity", it) }
-
-        } finally {
-            if (`in` != null) {
-                try {
-                    `in`.close()
-                } catch (ignored: IOException) {
-                }
+                cursor.moveToNext()
             }
         }
+
+
+        // 画像の高さ
+        var imageLength: String? = null
+        // 画像の横幅
+        var imageWidth: String? = null
+        // 画像のビットの深さ
+        var bitsPerSample: String? = null
+        // 圧縮の種類
+        var compression: String? = null
+        // 画像タイトル
+        var imageDescription: String? = null
+        // 画像方向
+        var imageOrientation: String? = null
+        // メーカ名
+        var maker: String? = null
+        //モデル名
+        var model: String? = null
+        // ロケーション
+        var stripOffsets: String? = null
+        // GPSタグのバージョン
+        var gpsVersionID: String? = null
+        // 経度
+        var gpsLatitude: String? = null
+        // 緯度
+        var gpsLongitude: String? = null
+        // 原画像データの生成日時
+        var dateTimeOriginal: String? = null
+        // 更新日時
+        var changeDateAndTime: String? = null
+
+        try {
+            // 画像の高さ
+            imageLength = arrayListImageLength[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 画像の横幅
+            imageWidth = arrayListImageWidth[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 画像のビットの深さ
+            bitsPerSample = arrayListBitsPerSample[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 圧縮の種類
+            compression = arrayListCompressions[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 画像タイトル
+            imageDescription = arrayListImageDescription[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 画像方向
+            imageOrientation = arrayListImageOrientation[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // メーカ名
+            maker = arrayListMaker[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            //モデル名
+            model = arrayListModel[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // ロケーション
+            stripOffsets = arrayListStripOffsets[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // GPSタグのバージョン
+            gpsVersionID = arrayListGpsVersionID[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 経度
+            gpsLatitude = arrayListGpsLatitude[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 緯度
+            gpsLongitude = arrayListGpsLongitude[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 原画像データの生成日時
+            dateTimeOriginal = arrayListDateTimeOriginal[0]
+        } catch (e: NullPointerException) {
+
+        }
+        try {
+            // 更新日時
+            changeDateAndTime = arrayListChangeDateAndTime[0]
+        } catch (e: NullPointerException) {
+
+        }
+
+        // データセット
+        binding.imageLength.setText(imageLength)
+        binding.imageWidth.setText(imageWidth)
+        binding.bitsPerSample.setText(bitsPerSample)
+        binding.compression.setText(compression)
+        binding.imageDescription.setText(imageDescription)
+        binding.imageOrientation.setText(imageOrientation)
+        binding.maker.setText(maker)
+        binding.model.setText(model)
+        binding.stripOffsets.setText(stripOffsets)
+        binding.gpsVersionID.setText(gpsVersionID)
+        binding.gpsLatitude.setText(gpsLatitude)
+        binding.gpsLongitude.setText(gpsLongitude)
+        binding.dateTimeOriginal.setText(dateTimeOriginal)
+        binding.changeDateAndTime.setText(changeDateAndTime)
+
 
         // 保存ボタンを押したときの動作
         binding.exifSave.setOnClickListener {
@@ -348,20 +334,20 @@ class ExifFragment : Fragment() {
             val values = ContentValues()
 
             // 各カラムの値をセット
-            values.put("imageLength", imageLength?.text.toString())
-            values.put("imageWidth", imageWidth?.text.toString())
-            values.put("bitsPerSample", bitsPerSample?.text.toString())
+            values.put("image_length", imageLength?.text.toString())
+            values.put("image_width", imageWidth?.text.toString())
+            values.put("bits_per_sample", bitsPerSample?.text.toString())
             values.put("compression", compression?.text.toString())
-            values.put("imageDescription", imageDescription?.text.toString())
-            values.put("imageOrientation", imageOrientation?.text.toString())
+            values.put("image_description", imageDescription?.text.toString())
+            values.put("image_orientation", imageOrientation?.text.toString())
             values.put("maker", maker?.text.toString())
             values.put("model", model?.text.toString())
-            values.put("stripOffsets", stripOffsets?.text.toString())
-            values.put("gpsVersionID", gpsVersionID?.text.toString())
-            values.put("gpsLatitude", gpsLatitude?.text.toString())
-            values.put("gpsLongitude", gpsLongitude?.text.toString())
-            values.put("dateTimeOriginal", dateTimeOriginal?.text.toString())
-            values.put("changeDateAndTime", changeDateAndTime?.text.toString())
+            values.put("strip_offsets", stripOffsets?.text.toString())
+            values.put("gps_version_id", gpsVersionID?.text.toString())
+            values.put("gps_latitude", gpsLatitude?.text.toString())
+            values.put("gps_longitude", gpsLongitude?.text.toString())
+            values.put("date_time_original", dateTimeOriginal?.text.toString())
+            values.put("change_date_and_time", changeDateAndTime?.text.toString())
 
             // 一括でMetaテーブルをアップデート
             database.update("Meta", values, "photo_id=$photoID", null)

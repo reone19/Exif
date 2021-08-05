@@ -16,48 +16,61 @@ import com.example.exif.SampleDBHelper
 
 
 class AlbumAdapter(private var context: Context, private var imagesList: ArrayList<Image>) :
-    RecyclerView.Adapter<AlbumAdapter.ImageViewHolder>(){
-    var a:Int = 0
-    val dbimageId = IntArray(999)
+    RecyclerView.Adapter<AlbumAdapter.ImageViewHolder>() {
+    var a: Int = 0
+    private val dbImageId = IntArray(999)
 
-    class ImageViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
+
+    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView? = null
         var image1: ImageView? = null
 
-        init{
-            image= itemView.findViewById(R.id.row_image)
-            image1= itemView.findViewById(R.id.row_image1)
+        init {
+            image = itemView.findViewById(R.id.row_image)
+            image1 = itemView.findViewById(R.id.row_image1)
         }
 
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.row_custom_recycler_item,parent,false)
+        val view = inflater.inflate(R.layout.row_custom_recycler_item, parent, false)
+
         return ImageViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val currentImage=imagesList[position]
+
+        val currentImage = imagesList[position]
+
         Glide.with(context)
             .load(currentImage.imagePath)
             .apply(RequestOptions().centerCrop())
             .into(holder.image!!)
-        //MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
+
+        // MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
         holder.image?.setOnClickListener {
-            holder.image1?.setBackgroundColor(Color.argb(100,0,0,0))
-            dbimageId[a] = currentImage.imageid?.toInt()!!
-            //データベース接続
+
+            holder.image1?.setBackgroundColor(Color.argb(100, 0, 0, 0))
+            dbImageId[a] = currentImage.imageId?.toInt()!!
+
+            // データベース接続
             val dbHelper = SampleDBHelper(context, "SampleDB", null, 1)
             val database = dbHelper.writableDatabase
             val values = ContentValues()
-            values.put("photo_id", dbimageId[a])
-            values.put("album_id", currentImage.albumid)
+
+            values.put("photo_id", dbImageId[a])
+            values.put("album_id", currentImage.albumId)
+
             database.insertOrThrow("Album_Photo", null, values)
-            Log.d("TAG", dbimageId[a].toString())
-            a = a + 1
+            Log.d("TAG", dbImageId[a].toString())
+            a += 1
         }
     }
+
 
     override fun getItemCount(): Int {
         return imagesList.size
