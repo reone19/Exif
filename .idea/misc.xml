@@ -3,28 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/border_popup.xml" value="0.25" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/ic_album.xml" value="0.25" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/ic_photo.xml" value="0.25" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/ic_search.xml" value="0.25" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_add_photo_fragment.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_album_add_photo.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_album_detail.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_album_photo_fragment.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_image_detaile.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_main.xml" value="0.3037037037037037" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_photo_detail.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/album_sub.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_album_detail.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_photo_detail.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_album.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_caption.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_exif.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_ocr.xml" value="0.3037037037037037" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_photo.xml" value="0.3037037037037037" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_search.xml" value="0.3037037037037037" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/row_custom_recycler_item.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_exif.xml" value="0.33" />
       </map>
     </option>
   </component>

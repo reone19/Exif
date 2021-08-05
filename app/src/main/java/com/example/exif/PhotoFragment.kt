@@ -175,61 +175,101 @@ class PhotoFragment : Fragment() {
 
                 try {
                     `in` = activity?.contentResolver?.openInputStream(uri)
-                    var exifInterface = ExifInterface(`in`!!)
-
+                    val exifInterface = ExifInterface(`in`!!)
 
                     // 画像の高さ
-                    var imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
+                    val imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
                     // 画像の横幅
-                    var imageWidth = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH)
+                    val imageWidth = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH)
+                    // 画像の高さの解像度
+                    val yResolution = exifInterface.getAttribute(ExifInterface.TAG_Y_RESOLUTION)
+                    // 画像の横幅の解像度
+                    val xResolution = exifInterface.getAttribute(ExifInterface.TAG_X_RESOLUTION)
                     // 画像のビットの深さ
-                    var bitsPerSample =
+                    val bitsPerSample =
                         exifInterface.getAttribute(ExifInterface.TAG_BITS_PER_SAMPLE)
                     // 圧縮の種類
-                    var compression = exifInterface.getAttribute(ExifInterface.TAG_COMPRESSION)
-                    // 画像タイトル
-                    var imageDescription =
-                        exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
+                    val compression = exifInterface.getAttribute(ExifInterface.TAG_COMPRESSION)
                     // 画像方向
-                    var imageOrientation = exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION)
+                    val imageOrientation = exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION)
+                    // 画像タイトル
+                    val imageDescription =
+                        exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
+                    // 作者名
+                    val artist = exifInterface.getAttribute(ExifInterface.TAG_ARTIST)
                     // メーカ名
-                    var maker = exifInterface.getAttribute(ExifInterface.TAG_MAKE)
+                    val maker = exifInterface.getAttribute(ExifInterface.TAG_MAKE)
                     //モデル名
-                    var model = exifInterface.getAttribute(ExifInterface.TAG_MODEL)
+                    val model = exifInterface.getAttribute(ExifInterface.TAG_MODEL)
+                    // 絞り値
+                    val aperture = exifInterface.getAttribute(ExifInterface.TAG_APERTURE_VALUE)
+                    // 露出時間
+                    val exposureTime = exifInterface.getAttribute(ExifInterface.TAG_EXPOSURE_TIME)
+                    // ISO値
+                    val isoSpeed = exifInterface.getAttribute(ExifInterface.TAG_ISO_SPEED_RATINGS)
+                    // 露出補正時間
+                    val exposureBias = exifInterface.getAttribute(ExifInterface.TAG_EXPOSURE_BIAS_VALUE)
+                    // F値
+                    val fNumber = exifInterface.getAttribute(ExifInterface.TAG_F_NUMBER)
+                    // シャッタースピード
+                    val shutterSpeed = exifInterface.getAttribute(ExifInterface.TAG_SHUTTER_SPEED_VALUE)
+                    // 焦点距離
+                    val focalLength = exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH)
+                    // 測光モード
+                    val meteringMode = exifInterface.getAttribute(ExifInterface.TAG_METERING_MODE)
+                    // フラッシュ
+                    val flash = exifInterface.getAttribute(ExifInterface.TAG_FLASH)
                     // ロケーション
-                    var stripOffsets = exifInterface.getAttribute(ExifInterface.TAG_STRIP_OFFSETS)
+                    val stripOffsets = exifInterface.getAttribute(ExifInterface.TAG_STRIP_OFFSETS)
                     // GPSタグのバージョン
-                    var gpsVersionID = exifInterface.getAttribute(ExifInterface.TAG_GPS_VERSION_ID)
+                    val gpsVersionID = exifInterface.getAttribute(ExifInterface.TAG_GPS_VERSION_ID)
                     // 経度
-                    var gpsLatitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
+                    val gpsLatitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
                     // 緯度
-                    var gpsLongitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
+                    val gpsLongitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
+                    // 高度
+                    val gpsAltitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_ALTITUDE)
                     // 原画像データの生成日時
-                    var dateTimeOriginal =
+                    val dateTimeOriginal =
                         exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
                     // 更新日時
-                    var changeDateAndTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
+                    val changeDateAndTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
 
 
                     try {
                         val database = dbHelper?.writableDatabase
                         val values = ContentValues()
+
                         values.put("photo_id", a)
                         values.put("image_name", image.imageName)
                         values.put("image_length", imageLength)
                         values.put("image_width", imageWidth)
+                        values.put("y_resolution", yResolution)
+                        values.put("x_resolution", xResolution)
                         values.put("bits_per_sample", bitsPerSample)
                         values.put("compression", compression)
-                        values.put("image_description", imageDescription)
                         values.put("image_orientation", imageOrientation)
+                        values.put("image_description", imageDescription)
+                        values.put("artist", artist)
                         values.put("maker", maker)
                         values.put("model", model)
+                        values.put("aperture", aperture)
+                        values.put("exposure_time", exposureTime)
+                        values.put("iso_speed", isoSpeed)
+                        values.put("exposure_bias", exposureBias)
+                        values.put("f_number", fNumber)
+                        values.put("shutter_speed", shutterSpeed)
+                        values.put("focal_length", focalLength)
+                        values.put("metering_mode", meteringMode)
+                        values.put("flash", flash)
                         values.put("strip_offsets", stripOffsets)
                         values.put("gps_version_id", gpsVersionID)
                         values.put("gps_latitude", gpsLatitude)
                         values.put("gps_longitude", gpsLongitude)
+                        values.put("gps_altitude", gpsAltitude)
                         values.put("date_time_original", dateTimeOriginal)
                         values.put("change_date_and_time", changeDateAndTime)
+
                         database?.insertOrThrow("Meta", null, values)
                     } catch (e: SQLiteConstraintException) {
 
