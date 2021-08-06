@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentPhotoDetailBinding
 import java.io.File
@@ -30,6 +31,42 @@ class PhotoDetailFragment : Fragment() {
     ): View? {
         _binding = FragmentPhotoDetailBinding.inflate(inflater, container, false)
 
+
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(imageResId: Int) =
+            PhotoDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(IMG_RES_ID, imageResId)
+                }
+            }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        // アプリバーの表示
+        // タイトル
+        (activity as AppCompatActivity).supportActionBar?.title = imageName
+
+        val f: File = File(imagePath)
+        val uri = Uri.fromFile(f)
+        binding.imageView.setImageURI(uri)
+
+        // キャプションフラグメントをデフォルト表示にする
+        activity?.supportFragmentManager?.beginTransaction()?.apply {
+            replace(R.id.container, CaptionFragment())
+            addToBackStack(null)
+            commit()
+        }
 
         // キャプションボタンをクリックしたときのフラグメント動作
         binding.captionButton.setOnClickListener {
@@ -69,31 +106,6 @@ class PhotoDetailFragment : Fragment() {
             binding.exifButton.setBackgroundColor((Color.parseColor("#ffffff")))
             binding.ocrButton.setBackgroundColor((Color.parseColor("#dddddd")))
         }
-
-
-        return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(imageResId: Int) =
-            PhotoDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(IMG_RES_ID, imageResId)
-                }
-            }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val f: File = File(imagePath)
-        val uri = Uri.fromFile(f)
-        binding.imageView.setImageURI(uri)
-    }
 }

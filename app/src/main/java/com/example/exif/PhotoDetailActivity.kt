@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.exif.databinding.ActivityPhotoDetailBinding
-import com.example.exif.databinding.FragmentPhotoDetailBinding
 
 // 画像のパス
 var imagePath: String? = null
@@ -20,14 +19,11 @@ var photoID: String? = null
 class PhotoDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPhotoDetailBinding
-    private lateinit var bindingA: FragmentPhotoDetailBinding
-
-    var a: Int = 1
-
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityPhotoDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -41,37 +37,17 @@ class PhotoDetailActivity : AppCompatActivity() {
         // アプリバーの表示
         // 戻るボタン
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        // タイトル
-        supportActionBar?.title = imageName
 
 
         // グリットレイアウトの画像のため、画像をGlideで画像のパスを取得、xmlの画像IDと紐づけて、画像を出力している。
         // 結果表示ImageViewの準備
 //        Glide.with(this).load(imagePath).into(resultImage)
 
-        // キャプションフラグメントをデフォルト表示にする
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.container, CaptionFragment())
-            addToBackStack(null)
-            commit()
-        }
-
-
         binding.pager.adapter = MyAdapter(this)
     }
 
 
-    // アプリバーの戻るボタンを押したときにfinish
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return super.onSupportNavigateUp()
-    }
-
-
-
-
     class MyAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun getItemCount(): Int = 4
@@ -79,6 +55,13 @@ class PhotoDetailActivity : AppCompatActivity() {
         @RequiresApi(Build.VERSION_CODES.N)
         override fun createFragment(position: Int): Fragment =
             PhotoDetailFragment.newInstance(photoID?.toInt()!!)
+    }
+
+
+    // アプリバーの戻るボタンを押したときにfinish
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 
 
