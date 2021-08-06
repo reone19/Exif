@@ -1,5 +1,6 @@
 package com.example.exif
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,6 +29,48 @@ class PhotoDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPhotoDetailBinding.inflate(inflater, container, false)
+
+
+        // キャプションボタンをクリックしたときのフラグメント動作
+        binding.captionButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.container, CaptionFragment())
+                addToBackStack(null)
+                commit()
+            }
+            // ボタン背景色変更
+            binding.captionButton.setBackgroundColor((Color.parseColor("#dddddd")))
+            binding.exifButton.setBackgroundColor((Color.parseColor("#ffffff")))
+            binding.ocrButton.setBackgroundColor((Color.parseColor("#ffffff")))
+        }
+
+        // Exifボタンをクリックしたときのフラグメント動作
+        binding.exifButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.container, ExifFragment())
+                addToBackStack(null)
+                commit()
+            }
+            // ボタン背景色変更
+            binding.captionButton.setBackgroundColor((Color.parseColor("#ffffff")))
+            binding.exifButton.setBackgroundColor((Color.parseColor("#dddddd")))
+            binding.ocrButton.setBackgroundColor((Color.parseColor("#ffffff")))
+        }
+
+        // OCRボタンをクリックしたときのフラグメント動作
+        binding.ocrButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.container, OcrFragment())
+                addToBackStack(null)
+                commit()
+            }
+            // ボタン背景色変更
+            binding.captionButton.setBackgroundColor((Color.parseColor("#ffffff")))
+            binding.exifButton.setBackgroundColor((Color.parseColor("#ffffff")))
+            binding.ocrButton.setBackgroundColor((Color.parseColor("#dddddd")))
+        }
+
+
         return binding.root
     }
 
