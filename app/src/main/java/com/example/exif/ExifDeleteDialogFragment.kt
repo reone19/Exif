@@ -10,28 +10,28 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import java.io.File
 import java.io.IOException
 
 
-class ExifDeleteDialogFragment : DialogFragment() {
+class ExifDeleteDialogFragment(
+    private val message: String,
+    private val okLabel: String,
+    private val okSelected: () -> Unit,
+    private val cancelLabel: String,
+    private val cancelSelected: () -> Unit) : DialogFragment() {
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreateDialog(@Nullable savedInstanceState: Bundle?): Dialog {
-
-        val builder = AlertDialog.Builder(activity)
-
-        builder.setTitle("確認")
-            .setMessage("本当に削除しますか？")
-            .setPositiveButton("削除") { dialog, id ->
-                // このボタンを押した時の処理を書きます。
-                allDeleteExif()
-            }
-            .setNegativeButton("キャンセル", null)
-
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setMessage(message)
+        builder.setPositiveButton(okLabel) { dialog, which ->
+            okSelected()
+        }
+        builder.setNegativeButton(cancelLabel) { dialog, which ->
+            cancelSelected()
+        }
         return builder.create()
     }
 
@@ -269,35 +269,6 @@ class ExifDeleteDialogFragment : DialogFragment() {
 
             // 一括でMetaテーブルをアップデート
             database.update("Meta", values, "photo_id=$photoID", null)
-
-            // EditTextの表示を削除
-            imageLength?.text = null
-            imageWidth?.text = null
-            yResolution?.text = null
-            xResolution?.text = null
-            bitsPerSample?.text = null
-            compression?.text = null
-            imageOrientation?.text = null
-            imageDescription?.text = null
-            artist?.text = null
-            maker?.text = null
-            model?.text = null
-            aperture?.text = null
-            exposureTime?.text = null
-            isoSpeed?.text = null
-            exposureBias?.text = null
-            fNumber?.text = null
-            shutterSpeed?.text = null
-            focalLength?.text = null
-            meteringMode?.text = null
-            flash?.text = null
-            stripOffsets?.text = null
-            gpsVersionID?.text = null
-            gpsLatitude?.text = null
-            gpsLongitude?.text = null
-            gpsAltitude?.text = null
-            dateTimeOriginal?.text = null
-            changeDateAndTime?.text = null
 
 
             // トースト表示
