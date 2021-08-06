@@ -446,7 +446,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_IMAGE_LENGTH,
-                        imageLength.toString()
+                        imageLength?.text.toString()
                     )
                 }
 
@@ -458,7 +458,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_IMAGE_WIDTH,
-                        imageWidth.toString()
+                        imageWidth?.text.toString()
                     )
                 }
 
@@ -470,7 +470,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_Y_RESOLUTION,
-                        yResolution.toString()
+                        yResolution?.text.toString()
                     )
                 }
 
@@ -482,7 +482,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_X_RESOLUTION,
-                        xResolution.toString()
+                        xResolution?.text.toString()
                     )
                 }
 
@@ -494,7 +494,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_BITS_PER_SAMPLE,
-                        bitsPerSample.toString()
+                        bitsPerSample?.text.toString()
                     )
                 }
 
@@ -506,7 +506,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_COMPRESSION,
-                        compression.toString()
+                        compression?.text.toString()
                     )
                 }
 
@@ -518,7 +518,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_ORIENTATION,
-                        imageOrientation.toString()
+                        imageOrientation?.text.toString()
                     )
                 }
 
@@ -530,7 +530,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_IMAGE_DESCRIPTION,
-                        imageDescription.toString()
+                        imageDescription?.text.toString()
                     )
                 }
 
@@ -542,7 +542,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_ARTIST,
-                        artist.toString()
+                        artist?.text.toString()
                     )
                 }
 
@@ -554,7 +554,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_MAKE,
-                        maker.toString()
+                        maker?.text.toString()
                     )
                 }
 
@@ -566,7 +566,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_MODEL,
-                        model.toString()
+                        model?.text.toString()
                     )
                 }
 
@@ -578,7 +578,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_APERTURE_VALUE,
-                        aperture.toString()
+                        aperture?.text.toString()
                     )
                 }
 
@@ -590,7 +590,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_EXPOSURE_TIME,
-                        exposureTime.toString()
+                        exposureTime?.text.toString()
                     )
                 }
 
@@ -602,7 +602,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_ISO_SPEED_RATINGS,
-                        isoSpeed.toString()
+                        isoSpeed?.text.toString()
                     )
                 }
 
@@ -614,7 +614,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_EXPOSURE_BIAS_VALUE,
-                        exposureBias.toString()
+                        exposureBias?.text.toString()
                     )
                 }
 
@@ -626,7 +626,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_F_NUMBER,
-                        fNumber.toString()
+                        fNumber?.text.toString()
                     )
                 }
 
@@ -638,7 +638,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_SHUTTER_SPEED_VALUE,
-                        shutterSpeed.toString()
+                        shutterSpeed?.text.toString()
                     )
                 }
 
@@ -650,7 +650,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_FOCAL_LENGTH,
-                        focalLength.toString()
+                        focalLength?.text.toString()
                     )
                 }
 
@@ -662,7 +662,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_METERING_MODE,
-                        meteringMode.toString()
+                        meteringMode?.text.toString()
                     )
                 }
 
@@ -674,7 +674,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_FLASH,
-                        flash.toString()
+                        flash?.text.toString()
                     )
                 }
 
@@ -686,7 +686,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_STRIP_OFFSETS,
-                        stripOffsets.toString()
+                        stripOffsets?.text.toString()
                     )
                 }
 
@@ -698,7 +698,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_GPS_VERSION_ID,
-                        gpsVersionID.toString()
+                        gpsVersionID?.text.toString()
                     )
                 }
 
@@ -710,7 +710,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_GPS_LATITUDE,
-                        gpsLatitude.toString()
+                        gpsLatitude?.text.toString()
                     )
                 }
 
@@ -722,7 +722,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_GPS_LONGITUDE,
-                        gpsLongitude.toString()
+                        gpsLongitude?.text.toString()
                     )
                 }
 
@@ -734,7 +734,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_GPS_ALTITUDE,
-                        gpsAltitude.toString()
+                        gpsAltitude?.text.toString()
                     )
                 }
 
@@ -746,7 +746,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_DATETIME_ORIGINAL,
-                        dateTimeOriginal.toString()
+                        dateTimeOriginal?.text.toString()
                     )
                 }
 
@@ -758,7 +758,7 @@ class ExifFragment : Fragment() {
                 } else {
                     exifInterface.setAttribute(
                         ExifInterface.TAG_DATETIME,
-                        changeDateAndTime.toString()
+                        changeDateAndTime?.text.toString()
                     )
                 }
 
