@@ -88,22 +88,35 @@ class CaptionFragment : Fragment() {
 
     private fun updateCaption() {
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
-        // とりあえずインスタンス化した。
-        // val cat: String
+
         val caption1 = view?.findViewById<EditText>(R.id.capString1)
         val caption2 = view?.findViewById<EditText>(R.id.capString2)
         val caption3 = view?.findViewById<EditText>(R.id.capString3)
 
-        // cat = caption1?.text.toString()
-        // cat = caption2?.text.toString()
-        // cat = caption3?.text.toString()
-
         try {
             val database = dbHelper.writableDatabase
             val values = ContentValues()
-            values.put("sentence1", caption1?.text.toString())
-            values.put("sentence2", caption2?.text.toString())
-            values.put("sentence3", caption3?.text.toString())
+
+            // 空文字のときはnullを挿入
+            if (caption1?.text.toString().isEmpty()) {
+                values.putNull("sentence1")
+            } else {
+                values.put("sentence1", caption1?.text.toString())
+            }
+
+            if (caption2?.text.toString().isEmpty()) {
+                values.putNull("sentence2")
+            } else {
+                values.put("sentence2", caption2?.text.toString())
+            }
+
+            if (caption3?.text.toString().isEmpty()) {
+                values.putNull("sentence3")
+            } else {
+                values.put("sentence3", caption3?.text.toString())
+            }
+
+            // 一括アップデート
             database.update("Photo", values, "id=$photoID", null)
 
             // トースト表示
