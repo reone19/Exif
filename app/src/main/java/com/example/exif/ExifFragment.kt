@@ -372,6 +372,7 @@ class ExifFragment : Fragment() {
         binding.exifAllDelete.setOnClickListener {
             val dialog = ExifDeleteDialog(
                 "削除しますか？",
+
                 "削除", {
                     allDeleteExif()
                     Snackbar.make(it, "削除しました", Snackbar.LENGTH_SHORT)
@@ -379,7 +380,9 @@ class ExifFragment : Fragment() {
                         .setActionTextColor(Color.YELLOW)
                         .show()
                 },
-                "キャンセル", { })
+
+                "キャンセル", { }
+            )
             dialog.show(parentFragmentManager, "exif_delete_dialog")
         }
 
