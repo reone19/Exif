@@ -370,7 +370,7 @@ class ExifFragment : Fragment() {
 
         // 一括削除ボタンを押したときの動作　→　確認ダイアログを表示
         binding.exifAllDelete.setOnClickListener {
-            val dialog = ExifDeleteDialogFragment(
+            val dialog = ExifDeleteDialog(
                 "削除しますか？",
                 "削除", {
                     allDeleteExif()

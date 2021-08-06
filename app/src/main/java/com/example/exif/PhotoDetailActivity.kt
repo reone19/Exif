@@ -3,7 +3,6 @@ package com.example.exif
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -31,12 +30,13 @@ class PhotoDetailActivity : AppCompatActivity() {
         imageName = intent.getStringExtra("name")
         photoID = intent.getStringExtra("id")
         val resultImage = findViewById<ImageView>(R.id.imageView)
-        // スマホトップ左に画像の名前を表示
+
+        // アプリバーの表示
+        // 戻るボタン
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        // タイトル
         supportActionBar?.title = imageName
 
-        // 戻るボタン
-        val backBtn = findViewById<Button>(R.id.back)
-        backBtn.setOnClickListener { finish() }
 
         // グリットレイアウトの画像のため、画像をGlideで画像のパスを取得、xmlの画像IDと紐づけて、画像を出力している。
         // 結果表示ImageViewの準備
@@ -87,5 +87,12 @@ class PhotoDetailActivity : AppCompatActivity() {
             binding.exifButton.setBackgroundColor((Color.parseColor("#ffffff")))
             binding.ocrButton.setBackgroundColor((Color.parseColor("#dddddd")))
         }
+    }
+
+
+    // アプリバーの戻るボタンを押したときにfinish
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 }

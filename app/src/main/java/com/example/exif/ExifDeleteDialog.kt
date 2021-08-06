@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
 
-class ExifDeleteDialogFragment(
+class ExifDeleteDialog(
     private val message: String,
     private val okLabel: String,
     private val okSelected: () -> Unit,
