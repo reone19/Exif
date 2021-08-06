@@ -26,7 +26,6 @@ class PhotoDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPhotoDetailBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -38,7 +37,7 @@ class PhotoDetailFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(imageResId: Int) =
-            PhotoFragment().apply {
+            PhotoDetailFragment().apply {
                 arguments = Bundle().apply {
                     putInt(IMG_RES_ID, imageResId)
                 }
@@ -47,8 +46,5 @@ class PhotoDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        imageResId?.let {
-            binding.imageView.setImageResource(it)
-        }
     }
 }

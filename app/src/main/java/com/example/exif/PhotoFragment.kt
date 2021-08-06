@@ -129,7 +129,7 @@ class PhotoFragment : Fragment() {
 
     // 外部ストレージからすべての画像を取得するメソッドの設定
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun getAllImages(): ArrayList<Image>? {
+    fun getAllImages(): ArrayList<Image>? {
 
         // データベース接続
         val dbHelper = context?.let { SampleDBHelper(it, "SampleDB", null, 1) }
