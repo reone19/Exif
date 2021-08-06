@@ -1,11 +1,13 @@
 package com.example.exif
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentPhotoDetailBinding
+import java.io.File
 
 private const val IMG_RES_ID = "IMG_RES_ID"
 
@@ -46,5 +48,9 @@ class PhotoDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val f: File = File(imagePath)
+        val uri = Uri.fromFile(f)
+        binding.imageView.setImageURI(uri)
     }
 }

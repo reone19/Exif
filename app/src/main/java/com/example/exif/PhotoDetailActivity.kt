@@ -3,13 +3,11 @@ package com.example.exif
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.bumptech.glide.Glide
 import com.example.exif.databinding.ActivityPhotoDetailBinding
 
 // 画像のパス
@@ -26,11 +24,9 @@ class PhotoDetailActivity : AppCompatActivity() {
 
     class MyAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
-        @RequiresApi(Build.VERSION_CODES.N)
-        private var resources = PhotoFragment().getAllImages()
 
         @RequiresApi(Build.VERSION_CODES.N)
-        override fun getItemCount(): Int = resources!!.size
+        override fun getItemCount(): Int = 4
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun createFragment(position: Int): Fragment =
@@ -49,8 +45,6 @@ class PhotoDetailActivity : AppCompatActivity() {
         // 画像の名前を受け取るためのデータ
         imageName = intent.getStringExtra("name")
         photoID = intent.getStringExtra("id")
-        var resultImage = findViewById<ImageView>(R.id.imageView)
-        Glide.with(this).load(imagePath).into(resultImage)
 
 
         // アプリバーの表示
