@@ -7,9 +7,10 @@
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/ic_album.xml" value="0.25" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_album_detail.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_main.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_photo_detail.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_photo_detail.xml" value="0.22" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_album.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_exif.xml" value="0.33" />
+        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_photo_detail.xml" value="0.22" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_search.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/row_custom_recycler_item.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.23385416666666667" />

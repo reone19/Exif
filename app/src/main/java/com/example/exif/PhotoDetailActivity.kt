@@ -1,22 +1,41 @@
 package com.example.exif
 
+import android.content.ContentValues
+import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bumptech.glide.Glide
 import com.example.exif.databinding.ActivityPhotoDetailBinding
+import com.example.exif.model.Image
+import com.example.exif.model.PhotoAdapter
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 
 // 画像のパス
 var imagePath: String? = null
 var imageName: String? = null
 var photoID: String? = null
 
+
+
 class PhotoDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPhotoDetailBinding
+
+    var a: Int = 1
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +106,8 @@ class PhotoDetailActivity : AppCompatActivity() {
             binding.exifButton.setBackgroundColor((Color.parseColor("#ffffff")))
             binding.ocrButton.setBackgroundColor((Color.parseColor("#dddddd")))
         }
+
+        binding.pager.adapter = MyAdapter(this)
     }
 
 
@@ -95,4 +116,63 @@ class PhotoDetailActivity : AppCompatActivity() {
         finish()
         return super.onSupportNavigateUp()
     }
+
+
+    class MyAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+
+        private var allPictures = getAllImages()
+
+        private val resources =  PhotoAdapter(this, allPictures!!)
+
+        override fun getItemCount(): Int = resources.size
+
+        PhotoAdapter()
+
+        override fun createFragment(position: Int): Fragment =
+            PhotoDetailFragment.newInstance(resources[position])
+
+    }
+
+
+    // 外部ストレージからすべての画像を取得するメソッドの設定
+    private fun getAllImages(): ArrayList<Image>? {
+        val images = ArrayList<Image>()
+        val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val projection =
+            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
+
+        var cursor =
+            this@PhotoDetailActivity.contentResolver.query(
+                allImageUri,
+                projection,
+                null,
+                null,
+                null
+            )
+
+        try {
+            cursor!!.moveToFirst()
+            do {
+                val image = Image()
+                image.imageId = b.toString()
+                image.imagePath =
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
+                image.imageName =
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                for (i in 0 until a) {
+                    if (image.imageName == arrayListPhotoName[i]) {
+                        images.add(image)
+                    }
+                }
+                b += 1
+            } while (cursor.moveToNext())
+            cursor.close()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return images
+    }
+
 }
