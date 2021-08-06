@@ -2,15 +2,16 @@ package com.example.exif
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteConstraintException
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentCaptionBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 class CaptionFragment : Fragment() {
@@ -119,10 +120,13 @@ class CaptionFragment : Fragment() {
             // 一括アップデート
             database.update("Photo", values, "id=$photoID", null)
 
-            // トースト表示
-            val text = "保存しました。"
-            val duration = Toast.LENGTH_SHORT
-            Toast.makeText(context, text, duration).show()
+            // スナックバー表示
+            view?.let {
+                Snackbar.make(it, "保存しました", Snackbar.LENGTH_SHORT)
+                    .setAction("戻る") { activity?.finish() }
+                    .setActionTextColor(Color.YELLOW)
+                    .show()
+            }
 
         } catch (exception: Exception) {
             Log.e("updateData", exception.toString())
