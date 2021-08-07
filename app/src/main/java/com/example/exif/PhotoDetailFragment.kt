@@ -11,15 +11,18 @@ import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentPhotoDetailBinding
 import java.io.File
 
-private const val IMG_RES_ID = "IMG_RES_ID"
+private const val IMG_RES_PATH = "IMG_RES_PATH"
+private const val IMG_RES_NAME = "IMG_RES_NAME"
 
 class PhotoDetailFragment : Fragment() {
-    private var imageResId: Int? = null
+    private var imageResPath: String? = null
+    private var imageResName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            imageResId = it.getInt(IMG_RES_ID)
+            imageResPath = it.getString(IMG_RES_PATH)
+            imageResName = it.getString(IMG_RES_NAME)
         }
     }
 
@@ -42,10 +45,11 @@ class PhotoDetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(imageResId: Int) =
+        fun newInstance(imageResPath: String, imageResName:String) =
             PhotoDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(IMG_RES_ID, imageResId)
+                    putString(IMG_RES_PATH, imageResPath)
+                    putString(IMG_RES_NAME, imageResName)
                 }
             }
     }
@@ -55,11 +59,14 @@ class PhotoDetailFragment : Fragment() {
 
         // アプリバーの表示
         // タイトル
-        (activity as AppCompatActivity).supportActionBar?.title = imageName
+        (activity as AppCompatActivity).supportActionBar?.title = imageResName
 
-        val f: File = File(imagePath)
+        val f: File = File(imageResPath)
         val uri = Uri.fromFile(f)
-        binding.imageView.setImageURI(uri)
+        uri?.let {
+            binding.imageView.setImageURI(it)
+        }
+//        Log.e("a", uri.toString())
 
         // キャプションフラグメントをデフォルト表示にする
         activity?.supportFragmentManager?.beginTransaction()?.apply {

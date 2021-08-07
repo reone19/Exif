@@ -30,6 +30,10 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 
+// 画像のパスを配列にすべて保存
+var allImagePath: MutableList<String> = emptyList<String>().toMutableList()
+var allImageName: MutableList<String> = emptyList<String>().toMutableList()
+
 class PhotoFragment : Fragment() {
 
     // バインディング
@@ -145,7 +149,7 @@ class PhotoFragment : Fragment() {
         try {
             cursor!!.moveToFirst()
             do {
-                val image = Image()
+                var image = Image()
                 image.imageId = a.toString()
                 image.imagePath =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
@@ -154,6 +158,13 @@ class PhotoFragment : Fragment() {
                 image.imageSentence1 = null
                 image.imageSentence2 = null
                 image.imageSentence3 = null
+
+                // allImagePathに配列で全ての府画像パスを取得
+                // 画像横スライドに使う
+                allImagePath?.add(image.imagePath.toString())
+                allImageName?.add(image.imageName.toString())
+//                Log.e("imageName", image.imageId.toString())
+
                 try {
                     val database = dbHelper?.writableDatabase
                     val values = ContentValues()
@@ -208,11 +219,13 @@ class PhotoFragment : Fragment() {
                     // ISO値
                     val isoSpeed = exifInterface.getAttribute(ExifInterface.TAG_ISO_SPEED_RATINGS)
                     // 露出補正時間
-                    val exposureBias = exifInterface.getAttribute(ExifInterface.TAG_EXPOSURE_BIAS_VALUE)
+                    val exposureBias =
+                        exifInterface.getAttribute(ExifInterface.TAG_EXPOSURE_BIAS_VALUE)
                     // F値
                     val fNumber = exifInterface.getAttribute(ExifInterface.TAG_F_NUMBER)
                     // シャッタースピード
-                    val shutterSpeed = exifInterface.getAttribute(ExifInterface.TAG_SHUTTER_SPEED_VALUE)
+                    val shutterSpeed =
+                        exifInterface.getAttribute(ExifInterface.TAG_SHUTTER_SPEED_VALUE)
                     // 焦点距離
                     val focalLength = exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH)
                     // 測光モード

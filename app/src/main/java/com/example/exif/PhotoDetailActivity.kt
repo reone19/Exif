@@ -50,12 +50,14 @@ class PhotoDetailActivity : AppCompatActivity() {
     class MyAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
         @RequiresApi(Build.VERSION_CODES.N)
-        override fun getItemCount(): Int = 4
+        override fun getItemCount(): Int = allImagePath.size
+
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun createFragment(position: Int): Fragment =
-            PhotoDetailFragment.newInstance(photoID?.toInt()!!)
+            PhotoDetailFragment.newInstance(allImagePath[position], allImageName[position])
     }
+
 
 
     // アプリバーの戻るボタンを押したときにfinish
