@@ -15,6 +15,13 @@ var imagePath: String? = null
 var imageName: String? = null
 var photoID: String? = null
 
+// viewPager2で使う配列型変数
+// var allImagePath: Array<String?> = emptyArray()
+var allImageName: Array<String?> = emptyArray()
+var allImageSentence1: Array<String?> = emptyArray()
+var allImageSentence2: Array<String?> = emptyArray()
+var allImageSentence3: Array<String?> = emptyArray()
+
 
 class PhotoDetailActivity : AppCompatActivity() {
 
@@ -43,21 +50,140 @@ class PhotoDetailActivity : AppCompatActivity() {
         // 結果表示ImageViewの準備
 //        Glide.with(this).load(imagePath).into(resultImage)
 
+
+        // viewPager2
         binding.pager.adapter = MyAdapter(this)
+
+        // 初期位置を決める
+        // これで左スライドもできる
+        binding.pager.setCurrentItem(allImagePath.indexOf(imagePath), false)
+
+        // viewPagerのデザイン
+        binding.pager.setPageTransformer { page, position ->
+            page.also {
+                if (kotlin.math.abs(position) >= 1f) {
+                    it.alpha = 0f
+                    return@setPageTransformer
+                }
+                if (position > 0) {
+                    it.alpha = 1 - position
+                    val scale = 1f - position / 4f
+                    it.scaleX = scale
+                    it.scaleY = scale
+                    it.translationX = -it.width * position
+                    it.translationZ = -1f
+                } else {
+                    it.alpha = 1f
+                    it.scaleX = 1f
+                    it.scaleY = 1f
+                    it.translationX = 0f
+                    it.translationZ = 0f
+                }
+            }
+        }
+
+        //データベース接続
+        val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
+
+        // データの取得処理
+        val databaseR = dbHelper.readableDatabase
+
+        val sqlImagePath = "SELECT path FROM Photo"
+        val sqlImageName = "SELECT name FROM Photo"
+
+        val sqlSentence1 = "SELECT sentence1 FROM Photo"
+        val sqlSentence2 = "SELECT sentence2 FROM Photo"
+        val sqlSentence3 = "SELECT sentence3 FROM Photo"
+
+        val cursorImagePath = databaseR.rawQuery(sqlImagePath, null)
+        val cursorImageName = databaseR.rawQuery(sqlImageName, null)
+
+        val cursorSentence1 = databaseR.rawQuery(sqlSentence1, null)
+        val cursorSentence2 = databaseR.rawQuery(sqlSentence2, null)
+        val cursorSentence3 = databaseR.rawQuery(sqlSentence3, null)
+
+//        try {
+//            cursorImagePath.moveToFirst()
+//            allImagePath = arrayOfNulls(cursorImagePath.count)
+//            for (i in allImagePath.indices) {
+//                allImagePath[i] = cursorImagePath.getString(0)
+//                cursorImagePath.moveToNext()
+//            }
+//            cursorImagePath.close()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+
+        try {
+            cursorImageName.moveToFirst()
+            allImageName = arrayOfNulls(cursorImageName.count)
+            for (i in allImageName.indices) {
+                allImageName[i] = cursorImageName.getString(0)
+                cursorImageName.moveToNext()
+            }
+            cursorImageName.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        try {
+            cursorSentence1.moveToFirst()
+            allImageSentence1 = arrayOfNulls(cursorSentence1.count)
+            for (i in allImageSentence1.indices) {
+                allImageSentence1[i] = cursorSentence1.getString(0)
+                cursorSentence1.moveToNext()
+            }
+            cursorSentence1.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        try {
+            cursorSentence2.moveToFirst()
+            allImageSentence2 = arrayOfNulls(cursorSentence2.count)
+            for (i in allImageSentence2.indices) {
+                allImageSentence2[i] = cursorSentence1.getString(0)
+                cursorSentence2.moveToNext()
+            }
+            cursorSentence2.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        try {
+            cursorSentence3.moveToFirst()
+            allImageSentence3 = arrayOfNulls(cursorSentence3.count)
+            for (i in allImageSentence1.indices) {
+                allImageSentence3[i] = cursorSentence3.getString(0)
+                cursorSentence3.moveToNext()
+            }
+            cursorSentence3.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
 
+    // viewPager2
     class MyAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
+        // 要素の数を取得
         @RequiresApi(Build.VERSION_CODES.N)
         override fun getItemCount(): Int = allImagePath.size
 
 
+        // viewPager2で渡すデータ
         @RequiresApi(Build.VERSION_CODES.N)
         override fun createFragment(position: Int): Fragment =
-            PhotoDetailFragment.newInstance(allImagePath[position], allImageName[position])
+            PhotoDetailFragment.newInstance(
+                allImagePath[position],
+                allImageName[position],
+                allImageSentence1[position],
+                allImageSentence2[position],
+                allImageSentence3[position],
+            )
     }
-
 
 
     // アプリバーの戻るボタンを押したときにfinish
@@ -65,130 +191,5 @@ class PhotoDetailActivity : AppCompatActivity() {
         finish()
         return super.onSupportNavigateUp()
     }
-
-
-//    //データベース接続
-//    private val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
-//    //外部ストレージからすべての画像を取得するメソッドの設定
-//    @RequiresApi(Build.VERSION_CODES.N)
-//    private fun getAllImages(): ArrayList<Image>?{
-//        val images = ArrayList<Image>()
-//        val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-//        val projection =
-//            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
-//
-//        var cursor =
-//            this@PhotoDetailActivity.contentResolver.query(allImageUri, projection, null, null, null)
-//
-//        try {
-//            cursor!!.moveToFirst()
-//            do {
-//                val image = Image()
-//                image.imageId = a.toString()
-//                image.imagePath =
-//                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-//                image.imageName =
-//                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-//                image.imageSentence1 = ""
-//                image.imageSentence2 = ""
-//                image.imageSentence3 = ""
-//                try {
-//                    val database = dbHelper.writableDatabase
-//                    val values = ContentValues()
-//                    values.put("id", a)
-//                    values.put("path", image.imagePath)
-//                    values.put("name", image.imageName)
-//                    values.put("sentence1",image.imageSentence1)
-//                    values.put("sentence2",image.imageSentence2)
-//                    values.put("sentence3",image.imageSentence3)
-//                    database.insertOrThrow("Photo",null, values)
-//                }
-//                catch (e: SQLiteConstraintException){
-//
-//                }
-//
-//                // Exif取得
-//                val f: File = File(image.imagePath)
-//                val uri = Uri.fromFile(f)
-//                var `in`: InputStream? = null
-//
-//                try {
-//                    `in` = contentResolver.openInputStream(uri)
-//                    var exifInterface = ExifInterface(`in`!!)
-//
-//                    // Exifの各値をここにセット
-//                    // <変数> = exifInterface.getAttribute(ExifInterface.<ExifのTAG>)
-//
-//                    // 画像の高さ
-//                    var imageLength = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
-//                    // 画像の横幅
-//                    var imageWidth = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH)
-//                    // 画像のビットの深さ
-//                    var bitsPerSample = exifInterface.getAttribute(ExifInterface.TAG_BITS_PER_SAMPLE)
-//                    // 圧縮の種類
-//                    var compression = exifInterface.getAttribute(ExifInterface.TAG_COMPRESSION)
-//                    // 画像タイトル
-//                    var imageDescription = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
-//                    // 画像方向
-//                    var imageOrientation = exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION)
-//                    // メーカ名
-//                    var maker = exifInterface.getAttribute(ExifInterface.TAG_MAKE)
-//                    //モデル名
-//                    var model = exifInterface.getAttribute(ExifInterface.TAG_MODEL)
-//                    // ロケーション
-//                    var stripOffsets = exifInterface.getAttribute(ExifInterface.TAG_STRIP_OFFSETS)
-//                    // GPSタグのバージョン
-//                    var gpsVersionID = exifInterface.getAttribute(ExifInterface.TAG_GPS_VERSION_ID)
-//                    // 経度
-//                    var gpsLatitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
-//                    // 緯度
-//                    var gpsLongitude = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
-//                    // 原画像データの生成日時
-//                    var dateTimeOriginal = exifInterface.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
-//                    // 更新日時
-//                    var changeDateAndTime = exifInterface.getAttribute(ExifInterface.TAG_DATETIME)
-//
-//                    // セット -> exifInterface.setAttribute(ExifInterface.<TAG>, <value>)
-//                    // セーブ -> exifInterface.saveAttributes()
-//
-//                    try {
-//                        val database = dbHelper.writableDatabase
-//                        val values = ContentValues()
-//                        values.put("photo_id", a)
-//                        values.put("imageName", image.imageName)
-//                        values.put("imageLength", imageLength)
-//                        values.put("imageWidth", imageWidth)
-//                        values.put("bitsPerSample", bitsPerSample)
-//                        values.put("compression", compression)
-//                        values.put("imageDescription", imageDescription)
-//                        values.put("imageOrientation", imageOrientation)
-//                        values.put("maker", maker)
-//                        values.put("model", model)
-//                        values.put("stripOffsets", stripOffsets)
-//                        values.put("gpsVersionID", gpsVersionID)
-//                        values.put("gpsLatitude", gpsLatitude)
-//                        values.put("gpsLongitude", gpsLongitude)
-//                        values.put("dateTimeOriginal", dateTimeOriginal)
-//                        values.put("changeDateAndTime", changeDateAndTime)
-//                        database.insertOrThrow("Meta", null, values)
-//                    }
-//                    catch (e: SQLiteConstraintException){
-//
-//                    }
-//                } catch (e: IOException) {
-//                    e.stackTrace
-//                    e.message?.let { Log.e("ExifActivity", it) }
-//
-//                }
-//
-//                images.add(image)
-//                a += 1
-//            } while (cursor.moveToNext())
-//            cursor.close()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        return images
-//    }
 
 }

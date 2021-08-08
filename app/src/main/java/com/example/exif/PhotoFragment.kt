@@ -32,7 +32,11 @@ import java.io.InputStream
 
 // 画像のパスを配列にすべて保存
 var allImagePath: MutableList<String> = emptyList<String>().toMutableList()
-var allImageName: MutableList<String> = emptyList<String>().toMutableList()
+//var allImageName: MutableList<String> = emptyList<String>().toMutableList()
+//var allImageSentence1: MutableList<String> = emptyList<String>().toMutableList()
+//var allImageSentence2: MutableList<String> = emptyList<String>().toMutableList()
+//var allImageSentence3: MutableList<String> = emptyList<String>().toMutableList()
+
 
 class PhotoFragment : Fragment() {
 
@@ -162,7 +166,10 @@ class PhotoFragment : Fragment() {
                 // allImagePathに配列で全ての府画像パスを取得
                 // 画像横スライドに使う
                 allImagePath?.add(image.imagePath.toString())
-                allImageName?.add(image.imageName.toString())
+//                allImageName?.add(image.imageName.toString())
+//                allImageSentence1?.add(image.imageSentence1.toString())
+//                allImageSentence2?.add(image.imageSentence2.toString())
+//                allImageSentence3?.add(image.imageSentence3.toString())
 //                Log.e("imageName", image.imageId.toString())
 
                 try {
