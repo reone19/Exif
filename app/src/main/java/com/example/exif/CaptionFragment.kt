@@ -78,7 +78,9 @@ class CaptionFragment : Fragment() {
             binding.capString3.setText(sentence3)
 
             // ログ　後で削除
-            Log.e("capString1Tab", binding.capString1.text.toString())
+            Log.d("capString1DB", binding.capString1.text.toString())
+            Log.d("capString2DB", binding.capString2.text.toString())
+            Log.d("capString3DB", binding.capString3.text.toString())
 
         } catch (e: SQLiteConstraintException) {
 

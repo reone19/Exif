@@ -157,6 +157,17 @@ class PhotoDetailFragment : Fragment() {
         // タイトル
         (activity as AppCompatActivity).supportActionBar?.title = imageResName
 
+        // キャプションフラグメントをデフォルト表示にする
+        activity?.supportFragmentManager?.beginTransaction()?.apply {
+            // ボタン背景色変更
+            binding.captionButton.setBackgroundColor((Color.parseColor("#dddddd")))
+            binding.exifButton.setBackgroundColor((Color.parseColor("#ffffff")))
+            binding.ocrButton.setBackgroundColor((Color.parseColor("#ffffff")))
+            replace(R.id.container, CaptionFragment())
+            addToBackStack(null)
+            commit()
+        }
+
         // _binding?.container?.capString2?.setText(imageResSentence2)
         // _binding?.container?.capString3?.setText(imageResSentence3)
         Log.e("imageResPath", imageResPath.toString())
