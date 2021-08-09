@@ -137,7 +137,7 @@ class PhotoFragment : Fragment() {
         val images = ArrayList<Image>()
         val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection =
-            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
+            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME,MediaStore.MediaColumns.SIZE)
 
         var cursor =
             this.activity?.contentResolver?.query(allImageUri, projection, null, null, null)
@@ -151,6 +151,8 @@ class PhotoFragment : Fragment() {
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                image.imageSize =
+                        cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
                 image.imageSentence1 = null
                 image.imageSentence2 = null
                 image.imageSentence3 = null
@@ -160,6 +162,7 @@ class PhotoFragment : Fragment() {
                     values.put("id", a)
                     values.put("path", image.imagePath)
                     values.put("name", image.imageName)
+                    values.put("size", image.imageSize)
                     values.put("sentence1", image.imageSentence1)
                     values.put("sentence2", image.imageSentence2)
                     values.put("sentence3", image.imageSentence3)

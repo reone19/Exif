@@ -52,6 +52,7 @@ class PhotoAdapter(private var context: Context, private var imagesList: ArrayLi
             intent.putExtra("id", currentImage.imageId)
             intent.putExtra("path", currentImage.imagePath)
             intent.putExtra("name", currentImage.imageName)
+            intent.putExtra("size", currentImage.imageSize)
             intent.putExtra("sentence1", currentImage.imageSentence1)
             intent.putExtra("sentence2", currentImage.imageSentence2)
             intent.putExtra("sentence3", currentImage.imageSentence3)
