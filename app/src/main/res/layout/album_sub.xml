@@ -29,23 +29,25 @@
                 <ImageButton
                     android:id="@+id/image_id0"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="115dp"
+                    android:layout_height="115dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/no_image" />
+                    app:srcCompat="@drawable/picture" />
 
                 <TextView
                     android:id="@+id/text0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="最近の項目" />
 
                 <TextView
                     android:id="@+id/sub_text0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="0" />
             </LinearLayout>
 
@@ -61,8 +63,8 @@
                 <ImageButton
                     android:id="@+id/image_id1"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="115dp"
+                    android:layout_height="115dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
@@ -72,12 +74,14 @@
                     android:id="@+id/text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="" />
 
                 <TextView
                     android:id="@+id/sub_text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="" />
             </LinearLayout>
 
@@ -93,8 +97,8 @@
                 <ImageButton
                     android:id="@+id/image_id2"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="115dp"
+                    android:layout_height="115dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
@@ -104,12 +108,14 @@
                     android:id="@+id/text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="" />
 
                 <TextView
                     android:id="@+id/sub_text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:text="" />
             </LinearLayout>
         </LinearLayout>

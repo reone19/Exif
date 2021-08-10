@@ -3,6 +3,8 @@ package com.example.exif
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,9 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import com.example.exif.databinding.FragmentExifBinding
+import java.io.File
 import java.util.*
 
+
 class AlbumFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,12 +71,15 @@ class AlbumFragment : Fragment() {
 
     var arrayListAlbumPhotoNum: ArrayList<String> = arrayListOf()
 
+    var arrayListImagePath: ArrayList<String> = arrayListOf()
+
     companion object {
         private const val TAG = "AlbumFragment"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         // ポップアップをインスタンス化、非表示
         val popup = view.findViewById<LinearLayout>(R.id.popup)
@@ -118,7 +128,10 @@ class AlbumFragment : Fragment() {
                     try {
                         val sqlSub =
                             "SELECT COUNT(*) FROM Album_Photo WHERE album_id = " + arrayListId[h]
+                        val sqlImage =
+                            "SELECT ph.Path FROM Album_Photo al INNER JOIN Photo ph ON al.photo_id=ph.id WHERE album_id = " + arrayListId[h]
                         val cursorSub = databaseR.rawQuery(sqlSub, null)
+                        val cursorImage = databaseR.rawQuery(sqlImage, null)
 
                         if (cursorSub.count > 0) {
                             cursorSub.moveToFirst()
@@ -126,6 +139,14 @@ class AlbumFragment : Fragment() {
                             while (!cursorSub.isAfterLast) {
                                 arrayListAlbumPhotoNum.add(cursorSub.getString(0))
                                 cursorSub.moveToNext()
+                            }
+                        }
+                        if (cursorImage.count > 0) {
+                            cursorImage.moveToFirst()
+
+                            while (!cursorImage.isAfterLast) {
+                                arrayListImagePath.add(cursorImage.getString(0))
+                                cursorImage.moveToNext()
                             }
                         }
 
@@ -141,7 +162,7 @@ class AlbumFragment : Fragment() {
                     val subTextId = resources.getIdentifier(subText, "id", "com.example.exif")
                     // 空の写真をインスタンス化
                     val imageSource =
-                        resources.getIdentifier("no_image", "drawable", "com.example.exif")
+                        resources.getIdentifier("picture", "drawable", "com.example.exif")
 
                     // album_subの追加がラストか判別(ラストじゃないなら)
                     if (i != d / 3) {
@@ -169,8 +190,15 @@ class AlbumFragment : Fragment() {
                         } catch (e: IndexOutOfBoundsException) {
                             subTv.text = "0"
                         }
-                        // 空の写真をno_imageに
-                        imageview.setImageResource(imageSource)
+                        // 空の写真をpictureに
+                        try {
+                            val file: File = File(arrayListImagePath[0])
+                            val uri = Uri.fromFile(file)
+                            imageview.setImageURI(uri)
+                        }
+                        catch (e: IndexOutOfBoundsException){
+                            imageview.setImageResource(imageSource)
+                        }
 
                     } else {
                         try {
@@ -198,8 +226,15 @@ class AlbumFragment : Fragment() {
                             } catch (e: IndexOutOfBoundsException) {
                                 subTv.text = "0"
                             }
-                            // 空の写真をno_imageに
-                            imageview.setImageResource(imageSource)
+                            // 空の写真をpictureに
+                            try {
+                                val file: File = File(arrayListImagePath[0])
+                                val uri = Uri.fromFile(file)
+                                imageview.setImageURI(uri)
+                            }
+                            catch (e: IndexOutOfBoundsException){
+                                imageview.setImageResource(imageSource)
+                            }
 
                         } catch (e: IndexOutOfBoundsException) {
                             break
@@ -220,7 +255,7 @@ class AlbumFragment : Fragment() {
                     if (e == 3) {
                         e = 0;
                     }
-
+                    arrayListImagePath.clear()
                 }
                 if (d <= l && d % l == 0) {
                     break
@@ -252,7 +287,7 @@ class AlbumFragment : Fragment() {
             val textId = resources.getIdentifier(text, "id", "com.example.exif")
             val subTextId = resources.getIdentifier(subText, "id", "com.example.exif")
             // 空の写真をインスタンス化
-            val imageSource = resources.getIdentifier("no_image", "drawable", "com.example.exif")
+            val imageSource = resources.getIdentifier("picture", "drawable", "com.example.exif")
             // 新しいID生成
             val imageNewId = IntArray(999)
             imageNewId[b] = f
@@ -309,8 +344,9 @@ class AlbumFragment : Fragment() {
                 title = edittext.text.toString()
                 tv.text = title
                 subTv.text = "0"
-                // 空の写真をno_imageに
+                // 空の写真をpictureに
                 imageview.setImageResource(imageSource)
+
             }
 
             // データの挿入処理
@@ -340,6 +376,9 @@ class AlbumFragment : Fragment() {
             }
             popup.visibility = View.INVISIBLE
             scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+            Toast.makeText(context, "アルバムが作成されました", Toast.LENGTH_LONG).show()
+            val intent_Main = Intent(context, MainActivity::class.java)
+            startActivity(intent_Main)
         }
 
         // 「キャンセル」を押したときにポップアップを非表示に

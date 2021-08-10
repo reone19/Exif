@@ -54,18 +54,55 @@ class AlbumAdapter(private var context: Context, private var imagesList: ArrayLi
         // MediaStoreのデータベースから取得した画像をタップしたらインテントで画面遷移
         holder.image?.setOnClickListener {
 
-            holder.image1?.setBackgroundColor(Color.argb(100, 0, 0, 0))
+            var flg:Int = 0
+            var arrayListPhotoId: java.util.ArrayList<String> = arrayListOf()
             dbImageId[a] = currentImage.imageId?.toInt()!!
 
             // データベース接続
             val dbHelper = SampleDBHelper(context, "SampleDB", null, 1)
+            val databaseR = dbHelper.readableDatabase
+            val sqlSearch =
+                "SELECT photo_id FROM Album_Photo WHERE album_id = " + currentImage.albumId
+            val cursorSearch = databaseR.rawQuery(sqlSearch, null)
+            if (cursorSearch.count > 0) {
+                cursorSearch.moveToFirst()
+
+                while (!cursorSearch.isAfterLast) {
+                    arrayListPhotoId.add(cursorSearch.getString(0))
+                    cursorSearch.moveToNext()
+                }
+            }
+
+            //写真被りの判定
+            for (i in 0..arrayListPhotoId.count()){
+                try {
+                    if (arrayListPhotoId[i].toInt() == dbImageId[a]){
+                        flg = 1
+                    }
+                }
+                catch (e: IndexOutOfBoundsException){
+
+                }
+            }
+
             val database = dbHelper.writableDatabase
             val values = ContentValues()
+            //flgが0のとき、データベースに追加
+            if (flg == 0){
+                holder.image1?.setBackgroundColor(Color.argb(100, 0, 0, 0))
+                values.put("photo_id", dbImageId[a])
+                values.put("album_id", currentImage.albumId)
 
-            values.put("photo_id", dbImageId[a])
-            values.put("album_id", currentImage.albumId)
+                database.insertOrThrow("Album_Photo", null, values)
+            }
+            //flgが1のとき、データベースから削除
+            else{
+                holder.image1?.setBackgroundColor(Color.argb(0, 0, 0, 0))
+                val whereClauses = "photo_id = " + dbImageId[a] + " AND album_id = " + currentImage.albumId
+                database.delete("Album_Photo", whereClauses, null)
+            }
 
-            database.insertOrThrow("Album_Photo", null, values)
+
             Log.d("TAG", dbImageId[a].toString())
             a += 1
         }

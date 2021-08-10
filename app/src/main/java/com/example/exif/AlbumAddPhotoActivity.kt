@@ -36,6 +36,7 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
 
         val okButton = findViewById<Button>(R.id.ok)
         okButton.setOnClickListener {
+            Toast.makeText(this, "アルバムに写真が追加がされました", Toast.LENGTH_LONG).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

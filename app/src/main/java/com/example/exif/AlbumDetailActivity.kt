@@ -106,7 +106,7 @@ class AlbumDetailActivity : AppCompatActivity() {
         val images = ArrayList<Image>()
         val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection =
-            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME)
+            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME,MediaStore.MediaColumns.SIZE)
 
         var cursor =
             this@AlbumDetailActivity.contentResolver.query(
@@ -126,6 +126,8 @@ class AlbumDetailActivity : AppCompatActivity() {
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 image.imageName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
+                image.imageSize =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
                 for (i in 0 until a) {
                     if (image.imageName == arrayListPhotoName[i]) {
                         images.add(image)
