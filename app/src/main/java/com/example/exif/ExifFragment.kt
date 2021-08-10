@@ -15,9 +15,41 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentExifBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_exif.*
 import java.io.File
 import java.io.IOException
 import java.util.*
+
+// viewPager2による更新で、フォト画面に行かないと表示されている値が更新されない問題解消のため
+private var changeImageLength: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeImageWidth: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeYResolution: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeXResolution: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeBitsPerSample: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeCompression: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeImageOrientation: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeImageDescription: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeArtist: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeMaker: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeModel: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeAperture: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeExposureTime: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeIsoSpeed: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeExposureBias: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeFNumber: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeShutterSpeed: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeFocalLength: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeMeteringMode: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeFlash: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeStripOffsets: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeGpsVersionID: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeGpsLatitude: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeGpsLongitude: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeGpsAltitude: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeDateTimeOriginal: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeChangeDateAndTime: Array<String?> = arrayOfNulls(allImageId.size)
+
+private var changeExifFlag: Array<String?> = arrayOfNulls(allImageId.size)
 
 
 class ExifFragment : Fragment() {
@@ -33,7 +65,7 @@ class ExifFragment : Fragment() {
     private val arrayListYResolution: ArrayList<String> = arrayListOf()
     private val arrayListXResolution: ArrayList<String> = arrayListOf()
     private val arrayListBitsPerSample: ArrayList<String> = arrayListOf()
-    private val arrayListCompressions: ArrayList<String> = arrayListOf()
+    private val arrayListCompression: ArrayList<String> = arrayListOf()
     private val arrayListImageOrientation: ArrayList<String> = arrayListOf()
     private val arrayListImageDescription: ArrayList<String> = arrayListOf()
     private val arrayListArtist: ArrayList<String> = arrayListOf()
@@ -86,7 +118,7 @@ class ExifFragment : Fragment() {
                 arrayListYResolution.add(cursor.getString(4))
                 arrayListXResolution.add(cursor.getString(5))
                 arrayListBitsPerSample.add(cursor.getString(6))
-                arrayListCompressions.add(cursor.getString(7))
+                arrayListCompression.add(cursor.getString(7))
                 arrayListImageOrientation.add(cursor.getString(8))
                 arrayListImageDescription.add(cursor.getString(9))
                 arrayListArtist.add(cursor.getString(10))
@@ -202,7 +234,7 @@ class ExifFragment : Fragment() {
 
         try {
             // 圧縮の種類
-            compression = arrayListCompressions[0]
+            compression = arrayListCompression[0]
         } catch (e: NullPointerException) {
         }
 
@@ -332,34 +364,64 @@ class ExifFragment : Fragment() {
         } catch (e: NullPointerException) {
         }
 
-        // データセット
-        binding.imageLength.setText(imageLength)
-        binding.imageWidth.setText(imageWidth)
-        binding.yResolution.setText(yResolution)
-        binding.xResolution.setText(xResolution)
-        binding.bitsPerSample.setText(bitsPerSample)
-        binding.compression.setText(compression)
-        binding.imageOrientation.setText(imageOrientation)
-        binding.imageDescription.setText(imageDescription)
-        binding.artist.setText(artist)
-        binding.maker.setText(maker)
-        binding.model.setText(model)
-        binding.aperture.setText(aperture)
-        binding.exposureTime.setText(exposureTime)
-        binding.isoSpeed.setText(isoSpeed)
-        binding.exposureBias.setText(exposureBias)
-        binding.fNumber.setText(fNumber)
-        binding.shutterSpeed.setText(shutterSpeed)
-        binding.focalLength.setText(focalLength)
-        binding.meteringMode.setText(meteringMode)
-        binding.flash.setText(flash)
-        binding.stripOffsets.setText(stripOffsets)
-        binding.gpsVersionID.setText(gpsVersionID)
-        binding.gpsLatitude.setText(gpsLatitude)
-        binding.gpsLongitude.setText(gpsLongitude)
-        binding.gpsAltitude.setText(gpsAltitude)
-        binding.dateTimeOriginal.setText(dateTimeOriginal)
-        binding.changeDateAndTime.setText(changeDateAndTime)
+        // データセット(viewPager2からセット)
+        if (changeExifFlag[imageResId!! - 1] == true.toString()) {
+            binding.imageLength.setText(changeImageLength[imageResId!! - 1])
+            binding.imageWidth.setText(changeImageWidth[imageResId!! - 1])
+            binding.yResolution.setText(changeYResolution[imageResId!! - 1])
+            binding.xResolution.setText(changeXResolution[imageResId!! - 1])
+            binding.bitsPerSample.setText(changeBitsPerSample[imageResId!! - 1])
+            binding.compression.setText(changeCompression[imageResId!! - 1])
+            binding.imageOrientation.setText(changeImageOrientation[imageResId!! - 1])
+            binding.imageDescription.setText(changeImageDescription[imageResId!! - 1])
+            binding.artist.setText(changeArtist[imageResId!! - 1])
+            binding.maker.setText(changeMaker[imageResId!! - 1])
+            binding.model.setText(changeModel[imageResId!! - 1])
+            binding.aperture.setText(changeAperture[imageResId!! - 1])
+            binding.exposureTime.setText(changeExposureTime[imageResId!! - 1])
+            binding.isoSpeed.setText(changeIsoSpeed[imageResId!! - 1])
+            binding.exposureBias.setText(changeExposureBias[imageResId!! - 1])
+            binding.fNumber.setText(changeFNumber[imageResId!! - 1])
+            binding.shutterSpeed.setText(changeShutterSpeed[imageResId!! - 1])
+            binding.focalLength.setText(changeFocalLength[imageResId!! - 1])
+            binding.meteringMode.setText(changeMeteringMode[imageResId!! - 1])
+            binding.flash.setText(changeFlash[imageResId!! - 1])
+            binding.stripOffsets.setText(changeStripOffsets[imageResId!! - 1])
+            binding.gpsVersionID.setText(changeGpsVersionID[imageResId!! - 1])
+            binding.gpsLatitude.setText(changeGpsLatitude[imageResId!! - 1])
+            binding.gpsLongitude.setText(changeGpsLongitude[imageResId!! - 1])
+            binding.gpsAltitude.setText(changeGpsAltitude[imageResId!! - 1])
+            binding.dateTimeOriginal.setText(changeDateTimeOriginal[imageResId!! - 1])
+            binding.changeDateAndTime.setText(changeChangeDateAndTime[imageResId!! - 1])
+        } else {
+            binding.imageLength.setText(imageResImageLength)
+            binding.imageWidth.setText(imageResImageWidth)
+            binding.yResolution.setText(imageResYResolution)
+            binding.xResolution.setText(imageResXResolution)
+            binding.bitsPerSample.setText(imageResBitsPerSample)
+            binding.compression.setText(imageResCompression)
+            binding.imageOrientation.setText(imageResImageOrientation)
+            binding.imageDescription.setText(imageResImageDescription)
+            binding.artist.setText(imageResArtist)
+            binding.maker.setText(imageResMaker)
+            binding.model.setText(imageResModel)
+            binding.aperture.setText(imageResAperture)
+            binding.exposureTime.setText(imageResExposureTime)
+            binding.isoSpeed.setText(imageResIsoSpeed)
+            binding.exposureBias.setText(imageResExposureBias)
+            binding.fNumber.setText(imageResFNumber)
+            binding.shutterSpeed.setText(imageResShutterSpeed)
+            binding.focalLength.setText(imageResFocalLength)
+            binding.meteringMode.setText(imageResMeteringMode)
+            binding.flash.setText(imageResFlash)
+            binding.stripOffsets.setText(imageResStripOffsets)
+            binding.gpsVersionID.setText(imageResGpsVersionID)
+            binding.gpsLatitude.setText(imageResGpsLatitude)
+            binding.gpsLongitude.setText(imageResGpsLongitude)
+            binding.gpsAltitude.setText(imageResGpsAltitude)
+            binding.dateTimeOriginal.setText(imageResDateTimeOriginal)
+            binding.changeDateAndTime.setText(imageResChangeDateAndTime)
+        }
 
 
         // 保存ボタンを押したときの動作
@@ -945,7 +1007,38 @@ class ExifFragment : Fragment() {
             }
 
             // 一括でMetaテーブルをアップデート
-            database.update("Meta", values, "photo_id=$photoID", null)
+            database.update("Meta", values, "photo_id=$imageResPhotoId", null)
+
+            //viewPager2のため、値を保持
+            changeImageLength[imageResId!! - 1] = imageLength?.text.toString()
+            changeImageWidth[imageResId!! - 1] = imageWidth?.text.toString()
+            changeYResolution[imageResId!! - 1] = yResolution?.text.toString()
+            changeXResolution[imageResId!! - 1] = xResolution?.text.toString()
+            changeBitsPerSample[imageResId!! - 1] = bitsPerSample?.text.toString()
+            changeCompression[imageResId!! - 1] = compression?.text.toString()
+            changeImageOrientation[imageResId!! - 1] = imageOrientation?.text.toString()
+            changeImageDescription[imageResId!! - 1] = imageDescription?.text.toString()
+            changeArtist[imageResId!! - 1] = artist?.text.toString()
+            changeMaker[imageResId!! - 1] = maker?.text.toString()
+            changeModel[imageResId!! - 1] = model?.text.toString()
+            changeAperture[imageResId!! - 1] = aperture?.text.toString()
+            changeExposureTime[imageResId!! - 1] = exposureTime?.text.toString()
+            changeIsoSpeed[imageResId!! - 1] = isoSpeed?.text.toString()
+            changeExposureBias[imageResId!! - 1] = exposureBias?.text.toString()
+            changeFNumber[imageResId!! - 1] = fNumber?.text.toString()
+            changeShutterSpeed[imageResId!! - 1] = shutterSpeed?.text.toString()
+            changeFocalLength[imageResId!! - 1] = focalLength?.text.toString()
+            changeMeteringMode[imageResId!! - 1] = meteringMode?.text.toString()
+            changeFlash[imageResId!! - 1] = flash?.text.toString()
+            changeStripOffsets[imageResId!! - 1] = stripOffsets?.text.toString()
+            changeGpsVersionID[imageResId!! - 1] = gpsVersionID?.text.toString()
+            changeGpsLatitude[imageResId!! - 1] = gpsLatitude?.text.toString()
+            changeGpsLongitude[imageResId!! - 1] = gpsLongitude?.text.toString()
+            changeGpsAltitude[imageResId!! - 1] = gpsAltitude?.text.toString()
+            changeDateTimeOriginal[imageResId!! - 1] = dateTimeOriginal?.text.toString()
+            changeChangeDateAndTime[imageResId!! - 1] = changeDateAndTime?.text.toString()
+
+            changeExifFlag[imageResId!! - 1] = true.toString()
 
             // スナックバー表示
             view?.let {
@@ -1163,7 +1256,7 @@ class ExifFragment : Fragment() {
             values.putNull("change_date_and_time")
 
             // 一括でMetaテーブルをアップデート
-            database.update("Meta", values, "photo_id=$photoID", null)
+            database.update("Meta", values, "photo_id=$imageResPhotoId", null)
 
             // EditTextの表示を削除
             binding.imageLength.text = null
@@ -1193,6 +1286,37 @@ class ExifFragment : Fragment() {
             binding.gpsAltitude.text = null
             binding.dateTimeOriginal.text = null
             binding.changeDateAndTime.text = null
+
+            //viewPager2のため、値を保持
+            changeImageLength[imageResId!! - 1] = imageLength?.text.toString()
+            changeImageWidth[imageResId!! - 1] = imageWidth?.text.toString()
+            changeYResolution[imageResId!! - 1] = yResolution?.text.toString()
+            changeXResolution[imageResId!! - 1] = xResolution?.text.toString()
+            changeBitsPerSample[imageResId!! - 1] = bitsPerSample?.text.toString()
+            changeCompression[imageResId!! - 1] = compression?.text.toString()
+            changeImageOrientation[imageResId!! - 1] = imageOrientation?.text.toString()
+            changeImageDescription[imageResId!! - 1] = imageDescription?.text.toString()
+            changeArtist[imageResId!! - 1] = artist?.text.toString()
+            changeMaker[imageResId!! - 1] = maker?.text.toString()
+            changeModel[imageResId!! - 1] = model?.text.toString()
+            changeAperture[imageResId!! - 1] = aperture?.text.toString()
+            changeExposureTime[imageResId!! - 1] = exposureTime?.text.toString()
+            changeIsoSpeed[imageResId!! - 1] = isoSpeed?.text.toString()
+            changeExposureBias[imageResId!! - 1] = exposureBias?.text.toString()
+            changeFNumber[imageResId!! - 1] = fNumber?.text.toString()
+            changeShutterSpeed[imageResId!! - 1] = shutterSpeed?.text.toString()
+            changeFocalLength[imageResId!! - 1] = focalLength?.text.toString()
+            changeMeteringMode[imageResId!! - 1] = meteringMode?.text.toString()
+            changeFlash[imageResId!! - 1] = flash?.text.toString()
+            changeStripOffsets[imageResId!! - 1] = stripOffsets?.text.toString()
+            changeGpsVersionID[imageResId!! - 1] = gpsVersionID?.text.toString()
+            changeGpsLatitude[imageResId!! - 1] = gpsLatitude?.text.toString()
+            changeGpsLongitude[imageResId!! - 1] = gpsLongitude?.text.toString()
+            changeGpsAltitude[imageResId!! - 1] = gpsAltitude?.text.toString()
+            changeDateTimeOriginal[imageResId!! - 1] = dateTimeOriginal?.text.toString()
+            changeChangeDateAndTime[imageResId!! - 1] = changeDateAndTime?.text.toString()
+
+            changeExifFlag[imageResId!! - 1] = true.toString()
 
         } catch (exception: Exception) {
             Log.e("deleteData", exception.toString())
