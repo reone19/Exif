@@ -582,11 +582,11 @@ class PhotoDetailActivity : AppCompatActivity() {
         // これで左スライドもできる
         binding.pager.setCurrentItem(allImagePath.indexOf(imagePath), false)
 
-        // PhotoFragmentのIDとDBのIDが違うとき
-//        if () {
-//            // スライド禁止（アルバム画面）
-//            binding.pager.isUserInputEnabled = false
-//        }
+        // アルバム画面ではスライドできない
+        if (!slideYesNo) {
+            // スライド禁止（アルバム画面）
+            binding.pager.isUserInputEnabled = false
+        }
 
 
         // viewPagerのデザイン

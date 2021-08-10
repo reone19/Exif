@@ -1,16 +1,12 @@
 package com.example.exif
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exif.model.Image
@@ -36,6 +32,9 @@ class AlbumDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_album_detail)
+
+        // アルバム画面ではviewPager2をスライドさせない
+        slideYesNo = false
 
         albumID = intent.getStringExtra("album_id").toString()
         Log.d("TAG", albumID)
@@ -63,16 +62,16 @@ class AlbumDetailActivity : AppCompatActivity() {
         // これで表示画像の大きさを均等になるよう修正を加えている。falseにしたら大変な事になる。
         imageRecycler?.setHasFixedSize(true)
 
-        if (ContextCompat.checkSelfPermission(
-                this@AlbumDetailActivity,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@AlbumDetailActivity,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 101
-            )
-        }
+//        if (ContextCompat.checkSelfPermission(
+//                this@AlbumDetailActivity,
+//                Manifest.permission.READ_EXTERNAL_STORAGE
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            ActivityCompat.requestPermissions(
+//                this@AlbumDetailActivity,
+//                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 101
+//            )
+//        }
 
         if (dbCursor.count > 0) {
             dbCursor.moveToFirst()
@@ -100,6 +99,7 @@ class AlbumDetailActivity : AppCompatActivity() {
         }
 
     }
+
 
     // 外部ストレージからすべての画像を取得するメソッドの設定
     private fun getAllImages(): ArrayList<Image>? {

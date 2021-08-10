@@ -30,14 +30,8 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 
-// 画像のパスを配列にすべて保存
-// var allImageIdFromPhotoFragment: MutableList<Int?> = emptyList<Int>().toMutableList()
-// var allImagePath: MutableList<String?> = emptyList<String>().toMutableList()
-// var allImageName: MutableList<String?> = emptyList<String>().toMutableList()
-// var allImageSentence1: MutableList<String?> = emptyList<String>().toMutableList()
-// var allImageSentence2: MutableList<String?> = emptyList<String>().toMutableList()
-// var allImageSentence3: MutableList<String?> = emptyList<String>().toMutableList()
-
+// viewPager2でスライドができるかの可否
+var slideYesNo: Boolean = false
 
 class PhotoFragment : Fragment() {
 
@@ -60,6 +54,9 @@ class PhotoFragment : Fragment() {
     ): View? {
         _binding = FragmentPhotoBinding.inflate(inflater, container, false)
         val view = inflater.inflate(R.layout.fragment_photo, container, false)
+
+        // ライブラリ画面ではviewPager2をスライドさせる
+        slideYesNo = true
 
         // リサイクルビューイメージのId定義
         imageRecycler = view.findViewById(R.id.image_recycler)
