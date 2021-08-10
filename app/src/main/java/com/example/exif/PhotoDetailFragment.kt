@@ -48,7 +48,10 @@ private const val IMG_RES_GPS_ALTITUDE = "IMG_RES_GPS_ALTITUDE"
 private const val IMG_RES_DATE_TIME_ORIGINAL = "IMG_RES_DATE_TIME_ORIGINAL"
 private const val IMG_RES_CHANGE_AND_DATE_TIME = "IMG_RES_CHANGE_AND_DATE_TIME"
 
+// 横スライド時に必要なデータを格納する変数
 var imageResId: Int? = null
+var imageResPath: String? = null
+var imageResName: String? = null
 var imageResSentence1: String? = null
 var imageResSentence2: String? = null
 var imageResSentence3: String? = null
@@ -83,9 +86,6 @@ var imageResChangeDateAndTime: String? = null
 
 
 class PhotoDetailFragment : Fragment() {
-    // 横スライド時に必要なデータを格納する変数
-    private var imageResPath: String? = null
-    private var imageResName: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -250,6 +250,7 @@ class PhotoDetailFragment : Fragment() {
             binding.captionButton.setBackgroundColor((Color.parseColor("#dddddd")))
             binding.exifButton.setBackgroundColor((Color.parseColor("#ffffff")))
             binding.ocrButton.setBackgroundColor((Color.parseColor("#ffffff")))
+
             replace(R.id.container, CaptionFragment())
             commit()
         }
@@ -293,20 +294,20 @@ class PhotoDetailFragment : Fragment() {
             }
         }
 
-        Log.e("imageResId", imageResId.toString())
-        Log.e("imageResPath", imageResPath.toString())
-        Log.e("imageResName", imageResName.toString())
-        Log.e("imageResSentence1", imageResSentence1.toString())
-        Log.e("imageResSentence2", imageResSentence2.toString())
-        Log.e("imageResSentence3", imageResSentence3.toString())
-        Log.e("imageResPhotoId", imageResPhotoId.toString())
+        Log.d("imageResId", imageResId.toString())
+        Log.d("imageResPhotoId", imageResPhotoId.toString())
+        Log.d("imageResPath", imageResPath.toString())
+        Log.d("imageResName", imageResName.toString())
+        Log.d("imageResSentence1", imageResSentence1.toString())
+        Log.d("imageResSentence2", imageResSentence2.toString())
+        Log.d("imageResSentence3", imageResSentence3.toString())
 
     }
 
     override fun onPause() {
         super.onPause()
         // スライド時、前の状態が残っていて不具合が起きたので削除するようにする
-        getFragmentManager()?.beginTransaction()?.remove(this)?.commit();
+        getFragmentManager()?.beginTransaction()?.remove(this)?.commit()
 
     }
 

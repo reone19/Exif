@@ -5,13 +5,14 @@
       <map>
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/border_popup.xml" value="0.25" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/drawable/ic_album.xml" value="0.25" />
+        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_album_add_photo.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_album_detail.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_main.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/activity_photo_detail.xml" value="0.22" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/album_sub.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_album.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_caption.xml" value="0.20555555555555555" />
-        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_exif.xml" value="0.33" />
+        <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_exif.xml" value="0.25" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_ocr.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_photo.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/nagi_/Desktop/Exif/app/src/main/res/layout/fragment_photo_detail.xml" value="0.189873417721519" />

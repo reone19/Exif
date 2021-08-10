@@ -17,7 +17,7 @@ var photoID: String? = null
 
 // viewPager2で使う配列型変数
 var allImageId: Array<Int?> = emptyArray()
-// var allImagePath: Array<String?> = emptyArray()
+var allImagePath: Array<String?> = emptyArray()
 var allImageName: Array<String?> = emptyArray()
 var allImageSentence1: Array<String?> = emptyArray()
 var allImageSentence2: Array<String?> = emptyArray()
@@ -80,39 +80,6 @@ class PhotoDetailActivity : AppCompatActivity() {
         // Glide.with(this).load(imagePath).into(resultImage)
 
 
-        // viewPager2
-        binding.pager.adapter = MyAdapter(this)
-
-        // 初期位置を決める
-        // これで左スライドもできる
-        binding.pager.setCurrentItem(allImagePath.indexOf(imagePath), false)
-
-        var itemNumber: Int? =  binding.pager.currentItem
-
-        // viewPagerのデザイン
-        binding.pager.setPageTransformer { page, position ->
-            page.also {
-                if (kotlin.math.abs(position) >= 1f) {
-                    it.alpha = 0f
-                    return@setPageTransformer
-                }
-                if (position > 0) {
-                    it.alpha = 1 - position
-                    val scale = 1f - position / 4f
-                    it.scaleX = scale
-                    it.scaleY = scale
-                    it.translationX = -it.width * position
-                    it.translationZ = -1f
-                } else {
-                    it.alpha = 1f
-                    it.scaleX = 1f
-                    it.scaleY = 1f
-                    it.translationX = 0f
-                    it.translationZ = 0f
-                }
-            }
-        }
-
         //データベース接続
         val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
 
@@ -163,16 +130,16 @@ class PhotoDetailActivity : AppCompatActivity() {
         val cursorSentence2 = databaseR.rawQuery(sqlSentence2, null)
         val cursorSentence3 = databaseR.rawQuery(sqlSentence3, null)
 
-        val cursorPhotoId =databaseR.rawQuery(sqlPhotoId, null)
-        val cursorImageLength =databaseR.rawQuery(sqlImageLength, null)
-        val cursorImageWidth =databaseR.rawQuery(sqlImageWidth, null)
+        val cursorPhotoId = databaseR.rawQuery(sqlPhotoId, null)
+        val cursorImageLength = databaseR.rawQuery(sqlImageLength, null)
+        val cursorImageWidth = databaseR.rawQuery(sqlImageWidth, null)
         val cursorYResolution = databaseR.rawQuery(sqlYResolution, null)
         val cursorXResolution = databaseR.rawQuery(sqlXResolution, null)
-        val cursorBitsPerSample =databaseR.rawQuery(sqlBitsPerSample, null)
+        val cursorBitsPerSample = databaseR.rawQuery(sqlBitsPerSample, null)
         val cursorCompression = databaseR.rawQuery(sqlCompression, null)
         val cursorImageOrientation = databaseR.rawQuery(sqlImageOrientation, null)
         val cursorImageDescription = databaseR.rawQuery(sqlImageDescription, null)
-        val cursorArtist =databaseR.rawQuery(sqlArtist, null)
+        val cursorArtist = databaseR.rawQuery(sqlArtist, null)
         val cursorMaker = databaseR.rawQuery(sqlMaker, null)
         val cursorModel = databaseR.rawQuery(sqlModel, null)
         val cursorAperture = databaseR.rawQuery(sqlAperture, null)
@@ -189,8 +156,8 @@ class PhotoDetailActivity : AppCompatActivity() {
         val cursorGpsLatitude = databaseR.rawQuery(sqlGpsLatitude, null)
         val cursorGpsLongitude = databaseR.rawQuery(sqlGpsLongitude, null)
         val cursorGpsAltitude = databaseR.rawQuery(sqlGpsAltitude, null)
-        val cursorDateTimeOriginal =databaseR.rawQuery(sqlDateTimeOriginal, null)
-        val cursorChangeDateAndTime =databaseR.rawQuery(sqlChangeDateAndTime, null)
+        val cursorDateTimeOriginal = databaseR.rawQuery(sqlDateTimeOriginal, null)
+        val cursorChangeDateAndTime = databaseR.rawQuery(sqlChangeDateAndTime, null)
 
 
         // 共通
@@ -206,17 +173,17 @@ class PhotoDetailActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-//        try {
-//            cursorImagePath.moveToFirst()
-//            allImagePath = arrayOfNulls(cursorImagePath.count)
-//            for (i in allImagePath.indices) {
-//                allImagePath[i] = cursorImagePath.getString(0)
-//                cursorImagePath.moveToNext()
-//            }
-//            cursorImagePath.close()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
+        try {
+            cursorImagePath.moveToFirst()
+            allImagePath = arrayOfNulls(cursorImagePath.count)
+            for (i in allImagePath.indices) {
+                allImagePath[i] = cursorImagePath.getString(0)
+                cursorImagePath.moveToNext()
+            }
+            cursorImagePath.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         try {
             cursorImageName.moveToFirst()
@@ -258,7 +225,7 @@ class PhotoDetailActivity : AppCompatActivity() {
         try {
             cursorSentence3.moveToFirst()
             allImageSentence3 = arrayOfNulls(cursorSentence3.count)
-            for (i in allImageSentence1.indices) {
+            for (i in allImageSentence3.indices) {
                 allImageSentence3[i] = cursorSentence3.getString(0)
                 cursorSentence3.moveToNext()
             }
@@ -603,6 +570,49 @@ class PhotoDetailActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        // このソートをしないと順番がバラバラになる
+        allImageId.sort()
+        allPhotoId.sort()
+
+        // viewPager2実行
+        binding.pager.adapter = MyAdapter(this)
+
+        // 初期位置を決める
+        // これで左スライドもできる
+        binding.pager.setCurrentItem(allImagePath.indexOf(imagePath), false)
+
+        // PhotoFragmentのIDとDBのIDが違うとき
+//        if () {
+//            // スライド禁止（アルバム画面）
+//            binding.pager.isUserInputEnabled = false
+//        }
+
+
+        // viewPagerのデザイン
+        binding.pager.setPageTransformer { page, position ->
+            page.also {
+                if (kotlin.math.abs(position) >= 1f) {
+                    it.alpha = 0f
+                    return@setPageTransformer
+                }
+                if (position > 0) {
+                    it.alpha = 1 - position
+                    val scale = 1f - position / 4f
+                    it.scaleX = scale
+                    it.scaleY = scale
+                    it.translationX = -it.width * position
+                    it.translationZ = -1f
+                } else {
+                    it.alpha = 1f
+                    it.scaleX = 1f
+                    it.scaleY = 1f
+                    it.translationX = 0f
+                    it.translationZ = 0f
+                }
+            }
+        }
+
 
     }
 
