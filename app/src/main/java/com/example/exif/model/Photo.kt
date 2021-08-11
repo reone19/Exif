@@ -10,6 +10,7 @@ class Image {
     var imageSentence1: String? = null
     var imageSentence2: String? = null
     var imageSentence3: String? = null
+    var imageOcr: String? = null
 
     constructor(imagePath: String?, imageName: String?) {
         this.imagePath = imagePath

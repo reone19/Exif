@@ -1,15 +1,20 @@
 package com.example.exif
 
+import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentOcrBinding
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -49,7 +54,6 @@ class OcrFragment : Fragment() {
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             }
@@ -76,11 +80,46 @@ class OcrFragment : Fragment() {
         } else {
             "bitmap is null"
         }
-
         binding.ocrString.setText(ocrString)
+
+        binding.btn.setOnClickListener {
+            updateOcr()
+        }
 
         return binding.root
     }
+    private fun updateOcr() {
+        val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
+
+        val ocr = view?.findViewById<EditText>(R.id.ocrString)
+
+        try {
+            val database = dbHelper.writableDatabase
+            val values = ContentValues()
+
+            // 空文字のときはnullを挿入
+            if (ocr?.text.toString().isEmpty()) {
+                values.putNull("ocr")
+            } else {
+                values.put("ocr", ocr?.text.toString())
+            }
+
+            // アップデート
+            database.update("Photo", values, "id=$photoID", null)
+
+            // スナックバー表示
+            view?.let {
+                Snackbar.make(it, "保存しました", Snackbar.LENGTH_SHORT)
+                    .setAction("戻る") { activity?.finish() }
+                    .setActionTextColor(Color.YELLOW)
+                    .show()
+            }
+
+        } catch (exception: Exception) {
+            Log.e("updateData", exception.toString())
+        }
+    }
+
 
 
     override fun onDestroyView() {

@@ -152,7 +152,8 @@ class PhotoFragment : Fragment() {
                 image.imageName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
                 image.imageSize =
-                        cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
+                    cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
+                image.imageOcr = null
                 image.imageSentence1 = null
                 image.imageSentence2 = null
                 image.imageSentence3 = null
@@ -163,6 +164,7 @@ class PhotoFragment : Fragment() {
                     values.put("path", image.imagePath)
                     values.put("name", image.imageName)
                     values.put("size", image.imageSize)
+                    values.put("ocr", image.imageOcr)
                     values.put("sentence1", image.imageSentence1)
                     values.put("sentence2", image.imageSentence2)
                     values.put("sentence3", image.imageSentence3)
