@@ -7,9 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -19,7 +17,13 @@ import java.util.*
 
 
 class AlbumFragment : Fragment() {
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.plus, menu)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,6 +77,9 @@ class AlbumFragment : Fragment() {
 
     var arrayListImagePath: ArrayList<String> = arrayListOf()
 
+    lateinit var popup:LinearLayout
+    lateinit var scroll:ScrollView
+
     companion object {
         private const val TAG = "AlbumFragment"
     }
@@ -82,11 +89,11 @@ class AlbumFragment : Fragment() {
 
 
         // ポップアップをインスタンス化、非表示
-        val popup = view.findViewById<LinearLayout>(R.id.popup)
+        popup = view.findViewById<LinearLayout>(R.id.popup)
         popup.visibility = View.INVISIBLE
 
         // ポップアップ時背景用インスタンス化
-        val scroll = view.findViewById<ScrollView>(R.id.scroll)
+        scroll = view.findViewById<ScrollView>(R.id.scroll)
 
         // アルバム遷移用ボタンのインスタンス化準備
         val btn = arrayOfNulls<ImageButton>(999)
@@ -268,13 +275,13 @@ class AlbumFragment : Fragment() {
         }
 
         // 「追加」を押したときにポップアップを追加
-        val addButton = view.findViewById<Button>(R.id.add_album)
-        addButton.setOnClickListener {
-            // ポップアップを表示
-            popup.visibility = View.VISIBLE
-            // 背景を暗く
-            scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
-        }
+        //val addButton = view.findViewById<Button>(R.id.add_album)
+        //addButton.setOnClickListener {
+        // ポップアップを表示
+        //popup.visibility = View.VISIBLE
+        // 背景を暗く
+        //scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
+        //}
 
         // 「保存」を押したときにアルバムを追加
         val saveBtn = view.findViewById<Button>(R.id.btn_save)
@@ -362,6 +369,12 @@ class AlbumFragment : Fragment() {
 
             database.insertOrThrow("Album", null, values)
 
+            Toast.makeText(context, "アルバムが作成されました", Toast.LENGTH_LONG).show()
+            val intent = Intent(context, AlbumDetailActivity::class.java)
+            intent.putExtra("album_id", f.toString())
+            intent.putExtra("intent_flg", "0")
+            startActivity(intent)
+
             a += 1
             b += 1
             c += 1
@@ -376,9 +389,6 @@ class AlbumFragment : Fragment() {
             }
             popup.visibility = View.INVISIBLE
             scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
-            Toast.makeText(context, "アルバムが作成されました", Toast.LENGTH_LONG).show()
-            val intent_Main = Intent(context, MainActivity::class.java)
-            startActivity(intent_Main)
         }
 
         // 「キャンセル」を押したときにポップアップを非表示に
@@ -394,8 +404,22 @@ class AlbumFragment : Fragment() {
                 Log.d("TAG", btn[z].toString())
                 val intent = Intent(context, AlbumDetailActivity::class.java)
                 intent.putExtra("album_id", num[z].toString())
+                intent.putExtra("intent_flg", "1")
                 startActivity(intent)
             }
+        }
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            //作成ボタンを押したとき
+            R.id.addButton -> {
+                // ポップアップを表示
+                popup.visibility = View.VISIBLE
+                // 背景を暗く
+                scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 }

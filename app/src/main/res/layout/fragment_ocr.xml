@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
         <EditText
@@ -19,6 +20,12 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:text="" />
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="保存" />
 
     </LinearLayout>
 

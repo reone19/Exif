@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -34,12 +36,14 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
         albumID = intent.getStringExtra("album_id").toString()
         Log.d("AlbumId", albumID)
 
-        val okButton = findViewById<Button>(R.id.ok)
-        okButton.setOnClickListener {
-            Toast.makeText(this, "アルバムに写真が追加がされました", Toast.LENGTH_LONG).show()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+//        val okButton = findViewById<Button>(R.id.ok)
+//        okButton.setOnClickListener {
+//            Toast.makeText(this, "アルバムに写真が追加がされました", Toast.LENGTH_LONG).show()
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//        }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // リサイクルビューイメージのId定義
         imageRecycler = findViewById(R.id.image_recycler)
@@ -74,6 +78,34 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+
+        val inflater = menuInflater
+        //メニューのリソース選択
+        inflater.inflate(R.menu.ok, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            //作成ボタンを押したとき
+            R.id.okButton -> {
+                Toast.makeText(this, "アルバムに写真が追加がされました", Toast.LENGTH_LONG).show()
+                val intent = Intent(this, AlbumDetailActivity::class.java)
+                intent.putExtra("album_id", albumID)
+                intent.putExtra("intent_flg", "0")
+                startActivity(intent)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    // アプリバーの戻るボタンを押したときにfinish
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
 
     // 外部ストレージからすべての画像を取得するメソッドの設定
     private fun getAllImages(): ArrayList<Image>? {

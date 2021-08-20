@@ -5,6 +5,8 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
@@ -13,9 +15,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -27,8 +27,12 @@ import com.example.exif.databinding.FragmentPhotoBinding
 import com.example.exif.model.Image
 import com.example.exif.model.PhotoAdapter
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
+
+// viewPager2でスライドができるかの可否
+var slideYesNo: Boolean = false
 
 class PhotoFragment : Fragment() {
 
@@ -42,7 +46,8 @@ class PhotoFragment : Fragment() {
     private var imageRecycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private var allPictures: ArrayList<Image>? = null
-
+    // OCR
+    private var _ocr: OCR? = null
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -51,6 +56,9 @@ class PhotoFragment : Fragment() {
     ): View? {
         _binding = FragmentPhotoBinding.inflate(inflater, container, false)
         val view = inflater.inflate(R.layout.fragment_photo, container, false)
+
+        // ライブラリ画面ではviewPager2をスライドさせる
+        slideYesNo = true
 
         // リサイクルビューイメージのId定義
         imageRecycler = view.findViewById(R.id.image_recycler)
@@ -152,10 +160,12 @@ class PhotoFragment : Fragment() {
                 image.imageName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
                 image.imageSize =
-                        cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
+                    cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
+                image.imageOcr = null
                 image.imageSentence1 = null
                 image.imageSentence2 = null
                 image.imageSentence3 = null
+
                 try {
                     val database = dbHelper?.writableDatabase
                     val values = ContentValues()
@@ -163,6 +173,7 @@ class PhotoFragment : Fragment() {
                     values.put("path", image.imagePath)
                     values.put("name", image.imageName)
                     values.put("size", image.imageSize)
+                    values.put("ocr", image.imageOcr)
                     values.put("sentence1", image.imageSentence1)
                     values.put("sentence2", image.imageSentence2)
                     values.put("sentence3", image.imageSentence3)
@@ -282,7 +293,7 @@ class PhotoFragment : Fragment() {
                     e.message?.let { Log.e("ExifActivity", it) }
 
                 }
-
+                // OCR
                 images.add(image)
                 a += 1
             } while (cursor.moveToNext())

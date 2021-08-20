@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ class AlbumDetailActivity : AppCompatActivity() {
     var a: Int = 0
     var b: Int = 1
     var albumID = ""
+    var intent_flg = ""
 
     var arrayListPhotoId: java.util.ArrayList<String> = arrayListOf()
     var arrayListAlbumId: java.util.ArrayList<String> = arrayListOf()
@@ -37,6 +40,9 @@ class AlbumDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_album_detail)
 
+        // アルバム画面ではviewPager2をスライドさせない
+        slideYesNo = false
+
         albumID = intent.getStringExtra("album_id").toString()
         Log.d("TAG", albumID)
 
@@ -48,12 +54,14 @@ class AlbumDetailActivity : AppCompatActivity() {
             "SELECT al.photo_id, al.album_id, ph.path, ph.name FROM Album_Photo al INNER JOIN Photo ph ON al.photo_id=ph.id WHERE album_id = $albumID"
         val dbCursor = databaseR.rawQuery(sql, null)
 
-        val addButton = findViewById<Button>(R.id.add_photo)
-        addButton.setOnClickListener {
-            val intent = Intent(this, AlbumAddPhotoActivity::class.java)
-            intent.putExtra("album_id", albumID)
-            startActivity(intent)
-        }
+//        val addButton = findViewById<Button>(R.id.add_photo)
+//        addButton.setOnClickListener {
+//            val intent = Intent(this, AlbumAddPhotoActivity::class.java)
+//            intent.putExtra("album_id", albumID)
+//            startActivity(intent)
+//        }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // リサイクルビューイメージのId定義
         imageRecycler = findViewById(R.id.image_recycler)
@@ -99,6 +107,42 @@ class AlbumDetailActivity : AppCompatActivity() {
             progressBar?.visibility = View.GONE
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+
+        val inflater = menuInflater
+        //メニューのリソース選択
+        inflater.inflate(R.menu.plus, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            //作成ボタンを押したとき
+            R.id.addButton -> {
+                val intent = Intent(this, AlbumAddPhotoActivity::class.java)
+                intent.putExtra("album_id", albumID)
+                startActivity(intent)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    // アプリバーの戻るボタンを押したときにfinish
+    override fun onSupportNavigateUp(): Boolean {
+        intent_flg = intent.getStringExtra("intent_flg").toString()
+        Log.d("flg", intent_flg)
+        if (intent_flg == "1"){
+            intent_flg = "0"
+            finish()
+        }
+        else{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        return super.onSupportNavigateUp()
     }
 
     // 外部ストレージからすべての画像を取得するメソッドの設定

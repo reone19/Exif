@@ -73,7 +73,7 @@ class OCR(context: Context) {
 
 
     companion object {
-        private const val LANG = "eng"
+        private const val LANG = "jpnnew"
         private val TESS_DATA_DIR = "tessdata" + File.separator
         private const val TESS_TRAINED_DATA = "$LANG.traineddata"
     }

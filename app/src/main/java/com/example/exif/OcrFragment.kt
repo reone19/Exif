@@ -1,19 +1,28 @@
 package com.example.exif
 
+import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentOcrBinding
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
+// viewPager2による更新で、フォト画面に行かないと表示されている値が更新されない問題解消のため
+private var changeOcr: Array<String?> = arrayOfNulls(allImageId.size)
+
+private var changeOcrFlag: Array<String?> = arrayOfNulls(allImageId.size)
 
 class OcrFragment : Fragment() {
 
@@ -49,7 +58,6 @@ class OcrFragment : Fragment() {
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             }
@@ -77,9 +85,56 @@ class OcrFragment : Fragment() {
             "bitmap is null"
         }
 
-        binding.ocrString.setText(ocrString)
+        // データセット（viewPager2によってセット）
+        if (changeOcrFlag[imageResId!! - 1] == true.toString()) {
+            binding.ocrString.setText(changeOcr[imageResId!! - 1])
+        } else {
+            binding.ocrString.setText(imageResOcr)
+        }
+
+        binding.btn.setOnClickListener {
+            updateOcr()
+        }
 
         return binding.root
+    }
+
+
+    private fun updateOcr() {
+        val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
+
+        val ocr = view?.findViewById<EditText>(R.id.ocrString)
+
+        try {
+            val database = dbHelper.writableDatabase
+            val values = ContentValues()
+
+            // 空文字のときはnullを挿入
+            if (ocr?.text.toString().isEmpty()) {
+                values.putNull("ocr")
+            } else {
+                values.put("ocr", ocr?.text.toString())
+            }
+
+            // アップデート（viewPager2によるIDでアップデート）
+            database.update("Photo", values, "id=$imageResId", null)
+
+            //viewPager2のため、値を保持
+            changeOcr[imageResId!! - 1] = ocr?.text.toString()
+
+            changeOcrFlag[imageResId!! - 1] = true.toString()
+
+            // スナックバー表示
+            view?.let {
+                Snackbar.make(it, "保存しました", Snackbar.LENGTH_SHORT)
+                    .setAction("戻る") { activity?.finish() }
+                    .setActionTextColor(Color.YELLOW)
+                    .show()
+            }
+
+        } catch (exception: Exception) {
+            Log.e("updateData", exception.toString())
+        }
     }
 
 

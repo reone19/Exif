@@ -7,6 +7,7 @@ class Image {
     var imagePath: String? = null
     var imageName: String? = null
     var imageSize: Long? = null
+    var imageOcr: String? = null
     var imageSentence1: String? = null
     var imageSentence2: String? = null
     var imageSentence3: String? = null

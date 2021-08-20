@@ -13,6 +13,13 @@ import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentCaptionBinding
 import com.google.android.material.snackbar.Snackbar
 
+// viewPager2による更新で、フォト画面に行かないと表示されている値が更新されない問題解消のため
+private var changeSentence1: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeSentence2: Array<String?> = arrayOfNulls(allImageId.size)
+private var changeSentence3: Array<String?> = arrayOfNulls(allImageId.size)
+
+private var changeCaptionFlag: Array<String?> = arrayOfNulls(allImageId.size)
+
 
 class CaptionFragment : Fragment() {
 
@@ -27,6 +34,7 @@ class CaptionFragment : Fragment() {
     private var sentence1: String? = null
     private var sentence2: String? = null
     private var sentence3: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,10 +80,17 @@ class CaptionFragment : Fragment() {
             } catch (e: NullPointerException) {
 
             }
-            // データセット
-            binding.capString1.setText(sentence1)
-            binding.capString2.setText(sentence2)
-            binding.capString3.setText(sentence3)
+
+            // データセット（viewPager2によってセット）
+            if (changeCaptionFlag[imageResId!! - 1] == true.toString()) {
+                binding.capString1.setText(changeSentence1[imageResId!! - 1])
+                binding.capString2.setText(changeSentence2[imageResId!! - 1])
+                binding.capString3.setText(changeSentence3[imageResId!! - 1])
+            } else {
+                binding.capString1.setText(imageResSentence1)
+                binding.capString2.setText(imageResSentence2)
+                binding.capString3.setText(imageResSentence3)
+            }
 
         } catch (e: SQLiteConstraintException) {
 
@@ -117,8 +132,15 @@ class CaptionFragment : Fragment() {
                 values.put("sentence3", caption3?.text.toString())
             }
 
-            // 一括アップデート
-            database.update("Photo", values, "id=$photoID", null)
+            // 一括アップデート（viewPager2によるIDでアップデート）
+            database.update("Photo", values, "id=$imageResId", null)
+
+            //viewPager2のため、値を保持
+            changeSentence1[imageResId!! - 1] = caption1?.text.toString()
+            changeSentence2[imageResId!! - 1] = caption2?.text.toString()
+            changeSentence3[imageResId!! - 1] = caption3?.text.toString()
+
+            changeCaptionFlag[imageResId!! - 1] = true.toString()
 
             // スナックバー表示
             view?.let {
