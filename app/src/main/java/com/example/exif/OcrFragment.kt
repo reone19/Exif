@@ -1,21 +1,25 @@
 package com.example.exif
 
+import android.app.ProgressDialog
 import android.content.ContentValues
-import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.fragment.app.Fragment
 import com.example.exif.databinding.FragmentOcrBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_ocr.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -46,27 +50,6 @@ class OcrFragment : Fragment() {
 
 
         _binding = FragmentOcrBinding.inflate(inflater, container, false)
-//        //DB参照
-//        val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
-//        try {
-//            // データの取得処理
-//            val databaseR = dbHelper.readableDatabase
-//            val sql =
-//                "SELECT id,ocr FROM photo WHERE id = $photoID"
-//            val cursor = databaseR.rawQuery(sql, null)
-//
-//            if (cursor.count > 0) {
-//                cursor.moveToFirst()
-//                while (!cursor.isAfterLast) {
-//                    arrayListPhotoId.add(cursor.getString(0))
-//                    arrayListImageOcr.add(cursor.getString(1))
-//                    cursor.moveToNext()
-//                }
-//            }
-//        } catch (e: SQLiteConstraintException) {
-//
-//        }
-
         // 画像のキャプション
 
         //OCRが既にレコードにある場合
@@ -77,15 +60,56 @@ class OcrFragment : Fragment() {
             binding.ocrString.setText(imageResOcr)
         }
 
-
         //OCRがレコードになかった場合
         //日本語OCRボタン
         binding.btn1.setOnClickListener {
-            japanesesOcr()
+            var pd = ProgressDialog(context)
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            pd.setTitle("日本語OCR")
+            pd.setMessage("文字列抽出中..")
+            pd.max = 100
+            pd.show()
+
+
+            Thread(Runnable {
+                var count = 0
+                while (count <= 100) {
+                    try {
+                        pd.progress = count
+                        count += 25
+                        pd.setProgress(count)
+                        Thread.sleep(2000)
+                    } catch (i: InterruptedException) {
+                    }
+                }
+                pd.dismiss()
+                japanesesOcr()
+            }).start()
         }
         //英語OCR用ボタン
         binding.btn2.setOnClickListener {
-            englishOcr()
+            var pd = ProgressDialog(context)
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            pd.setTitle("英語OCR")
+            pd.setMessage("文字列抽出中..")
+            pd.max = 100
+            pd.show()
+
+
+            Thread(Runnable {
+                var count = 0
+                while (count <= 100) {
+                    try {
+                        pd.progress = count
+                        count += 50
+                        pd.setProgress(count)
+                        Thread.sleep(1000)
+                    } catch (i: InterruptedException) {
+                    }
+                }
+                pd.dismiss()
+                englishOcr()
+            }).start()
         }
 
         //アップデート用ボタン
@@ -144,12 +168,16 @@ class OcrFragment : Fragment() {
             "bitmap is null"
         }
 
-        //データセット
-        binding.ocrString.setText(ocrString)
+        //ハンドラを生成し、メインスレッドにサブスレッドからのUI操作を許可送信
+        Handler(Looper.getMainLooper()).postDelayed({
+            //データセット
+            binding.ocrString.setText(ocrString)
+        },0)
     }
 
     //英語OCRメソッド
     private fun englishOcr() {
+
         _ocr2 = activity?.let { OCReng(it.applicationContext) }
 
         // OCR
@@ -195,9 +223,11 @@ class OcrFragment : Fragment() {
         } else {
             "bitmap is null"
         }
-
-        //データセット
-        binding.ocrString.setText(ocrString)
+        //ハンドラを生成し、メインスレッドにサブスレッドからのUI操作を許可送信
+        Handler(Looper.getMainLooper()).postDelayed({
+            //データセット
+            binding.ocrString.setText(ocrString)
+        },0)
     }
 
     //アップデートメソッド
