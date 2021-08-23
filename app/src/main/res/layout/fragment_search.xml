@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_marginRight="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -494,7 +495,7 @@
                 android:id="@+id/search28"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="55dp"
+                android:layout_marginBottom="65dp"
                 android:iconifiedByDefault="false"
                 android:queryHint="検索" />
 
