@@ -127,6 +127,7 @@ class AlbumDetailActivity : AppCompatActivity() {
             R.id.addButton -> {
                 val intent = Intent(this, AlbumAddPhotoActivity::class.java)
                 intent.putExtra("album_id", albumID)
+                intent.putExtra("name",albumTitle)
                 startActivity(intent)
                 return true
             }

@@ -29,6 +29,8 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
     private var progressBar: ProgressBar? = null
     private var allPictures: ArrayList<Image>? = null
 
+    var albumTitle = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_album_add_photo)
@@ -42,7 +44,7 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
 //            val intent = Intent(this, MainActivity::class.java)
 //            startActivity(intent)
 //        }
-
+        albumTitle = intent.getStringExtra("name").toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "写真を選択してください"
 
@@ -96,6 +98,7 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
                 val intent = Intent(this, AlbumDetailActivity::class.java)
                 intent.putExtra("album_id", albumID)
                 intent.putExtra("intent_flg", "0")
+                intent.putExtra("name",albumTitle)
                 startActivity(intent)
                 return true
             }
