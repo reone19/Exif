@@ -41,7 +41,7 @@ class AlbumDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_album_detail)
 
-        // アルバム画面ではviewPager2をスライドさせない
+        //アルバム画面ではviewPager2をスライドさせない
         slideYesNo = false
 
         albumID = intent.getStringExtra("album_id").toString()

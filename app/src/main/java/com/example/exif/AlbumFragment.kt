@@ -12,7 +12,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.exif.databinding.FragmentExifBinding
 import java.io.File
 import java.util.*
 
@@ -232,7 +231,6 @@ class AlbumFragment : Fragment() {
                             // アルバム内の写真数表示
                             val subTv =
                                 view.findViewById<TextView>(arrayListSubTextId[h].toInt())
-
                             try {
                                 subTv.text = arrayListAlbumPhotoNum[h]
                             } catch (e: IndexOutOfBoundsException) {
@@ -423,7 +421,7 @@ class AlbumFragment : Fragment() {
                 // ポップアップを表示
                 popup.visibility = View.VISIBLE
                 // 背景を暗く
-                scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
+                //scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
