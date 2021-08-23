@@ -76,7 +76,7 @@ class OcrFragment : Fragment() {
                 while (count <= 100) {
                     try {
                         pd.progress = count
-                        count += 25
+                        count += 40
                         pd.setProgress(count)
                         Thread.sleep(2000)
                     } catch (i: InterruptedException) {

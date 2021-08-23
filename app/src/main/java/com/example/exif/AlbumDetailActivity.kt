@@ -25,6 +25,7 @@ class AlbumDetailActivity : AppCompatActivity() {
     var b: Int = 1
     var albumID = ""
     var intent_flg = ""
+    var albumTitle = ""
 
     var arrayListPhotoId: java.util.ArrayList<String> = arrayListOf()
     var arrayListAlbumId: java.util.ArrayList<String> = arrayListOf()
@@ -46,6 +47,7 @@ class AlbumDetailActivity : AppCompatActivity() {
         albumID = intent.getStringExtra("album_id").toString()
         Log.d("TAG", albumID)
 
+        albumTitle = intent.getStringExtra("name").toString()
         // データベース接続
         val dbHelper = SampleDBHelper(this, "SampleDB", null, 1)
         // データの取得処理
@@ -62,6 +64,7 @@ class AlbumDetailActivity : AppCompatActivity() {
 //        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = albumTitle
 
         // リサイクルビューイメージのId定義
         imageRecycler = findViewById(R.id.image_recycler)
@@ -117,6 +120,7 @@ class AlbumDetailActivity : AppCompatActivity() {
         inflater.inflate(R.menu.plus, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             //作成ボタンを押したとき
@@ -134,11 +138,10 @@ class AlbumDetailActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         intent_flg = intent.getStringExtra("intent_flg").toString()
         Log.d("flg", intent_flg)
-        if (intent_flg == "1"){
+        if (intent_flg == "1") {
             intent_flg = "0"
             finish()
-        }
-        else{
+        } else {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -150,7 +153,11 @@ class AlbumDetailActivity : AppCompatActivity() {
         val images = ArrayList<Image>()
         val allImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection =
-            arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME,MediaStore.MediaColumns.SIZE)
+            arrayOf(
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.MediaColumns.SIZE
+            )
 
         var cursor =
             this@AlbumDetailActivity.contentResolver.query(

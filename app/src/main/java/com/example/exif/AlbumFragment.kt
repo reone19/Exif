@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.exif.databinding.FragmentExifBinding
@@ -21,9 +22,11 @@ class AlbumFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.plus, menu)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,8 +80,9 @@ class AlbumFragment : Fragment() {
 
     var arrayListImagePath: ArrayList<String> = arrayListOf()
 
-    lateinit var popup:LinearLayout
-    lateinit var scroll:ScrollView
+    lateinit var popup: LinearLayout
+    lateinit var scroll: ScrollView
+
 
     companion object {
         private const val TAG = "AlbumFragment"
@@ -87,6 +91,8 @@ class AlbumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //サポートバー設定
+        (activity as AppCompatActivity).supportActionBar?.title = "アルバム"
 
         // ポップアップをインスタンス化、非表示
         popup = view.findViewById<LinearLayout>(R.id.popup)
@@ -202,8 +208,7 @@ class AlbumFragment : Fragment() {
                             val file: File = File(arrayListImagePath[0])
                             val uri = Uri.fromFile(file)
                             imageview.setImageURI(uri)
-                        }
-                        catch (e: IndexOutOfBoundsException){
+                        } catch (e: IndexOutOfBoundsException) {
                             imageview.setImageResource(imageSource)
                         }
 
@@ -238,8 +243,7 @@ class AlbumFragment : Fragment() {
                                 val file: File = File(arrayListImagePath[0])
                                 val uri = Uri.fromFile(file)
                                 imageview.setImageURI(uri)
-                            }
-                            catch (e: IndexOutOfBoundsException){
+                            } catch (e: IndexOutOfBoundsException) {
                                 imageview.setImageResource(imageSource)
                             }
 
@@ -373,6 +377,7 @@ class AlbumFragment : Fragment() {
             val intent = Intent(context, AlbumDetailActivity::class.java)
             intent.putExtra("album_id", f.toString())
             intent.putExtra("intent_flg", "0")
+            intent.putExtra("name", title)
             startActivity(intent)
 
             a += 1
@@ -405,10 +410,12 @@ class AlbumFragment : Fragment() {
                 val intent = Intent(context, AlbumDetailActivity::class.java)
                 intent.putExtra("album_id", num[z].toString())
                 intent.putExtra("intent_flg", "1")
+                intent.putExtra("name", arrayListName[z])
                 startActivity(intent)
             }
         }
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             //作成ボタンを押したとき

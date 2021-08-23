@@ -458,7 +458,7 @@ class ExifFragment : Fragment() {
 
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
         // Exif用imagePath
-        val f: File = File(imagePath)
+        val f: File = File(imageResPath)
         val uri = Uri.fromFile(f)
 
         // 各ExifのEditTextを変数に取得
@@ -1060,7 +1060,7 @@ class ExifFragment : Fragment() {
 
         val dbHelper = SampleDBHelper(requireContext(), "SampleDB", null, 1)
         // Exif用imagePath
-        val f: File = File(imagePath)
+        val f: File = File(imageResPath)
         val uri = Uri.fromFile(f)
 
         // Exif直接編集処理

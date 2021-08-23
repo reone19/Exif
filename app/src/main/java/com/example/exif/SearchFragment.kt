@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 class SearchFragment : Fragment() {
@@ -20,6 +21,9 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //サポートバー設定
+        (activity as AppCompatActivity).supportActionBar?.title = "検索"
 
         val searchBar = view.findViewById<SearchView>(R.id.search)
 

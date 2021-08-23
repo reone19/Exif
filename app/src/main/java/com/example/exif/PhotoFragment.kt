@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -68,6 +69,8 @@ class PhotoFragment : Fragment() {
         // これで表示画像の大きさを均等になるよう修正を加えている。falseにしたら大変な事になる。
         imageRecycler?.setHasFixedSize(true)
 
+        //サポートバー設定
+        (activity as AppCompatActivity).supportActionBar?.title = "Mstorage"
 
         // API30以上の時だけ追加の権限の確認が必要（Exifに使う）
         if (Build.VERSION.SDK_INT >= 30) {

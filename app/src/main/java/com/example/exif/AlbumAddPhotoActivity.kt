@@ -44,6 +44,7 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
 //        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "写真を選択してください"
 
         // リサイクルビューイメージのId定義
         imageRecycler = findViewById(R.id.image_recycler)
@@ -86,6 +87,7 @@ class AlbumAddPhotoActivity : AppCompatActivity() {
         inflater.inflate(R.menu.ok, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             //作成ボタンを押したとき

@@ -36,6 +36,7 @@ class SearchResultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search_result)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "検索結果"
 
         // リサイクルビューイメージのId定義
         imageRecycler = findViewById(R.id.image_recycler)
