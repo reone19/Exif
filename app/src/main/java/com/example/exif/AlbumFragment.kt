@@ -2,7 +2,9 @@ package com.example.exif
 
 import android.content.ContentValues
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,14 +19,18 @@ import java.util.*
 
 
 class AlbumFragment : Fragment() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.plus, menu)
+        inflater.inflate(R.menu.delete, menu)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,10 +74,22 @@ class AlbumFragment : Fragment() {
     // 3の倍数用
     var l: Int = 3
 
+    var minus:Int = 0
+
+    // for文制御
+    var p:Int = 2
+
+    // for文制御
+    var m:Int = 0
+
+    var n:Int = 0
+
+    var s:Int = 0
+
     var arrayListId: ArrayList<String> = arrayListOf()
     var arrayListTextId: ArrayList<String> = arrayListOf()
     var arrayListSubTextId: ArrayList<String> = arrayListOf()
-    var arrayListPhotoNum: ArrayList<Int> = arrayListOf()
+    var arrayListDeleteFlg: ArrayList<Int> = arrayListOf()
     var arrayListName: ArrayList<String> = arrayListOf()
     var arrayListNum: ArrayList<Int> = arrayListOf()
 
@@ -86,6 +104,7 @@ class AlbumFragment : Fragment() {
     companion object {
         private const val TAG = "AlbumFragment"
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -110,7 +129,7 @@ class AlbumFragment : Fragment() {
         // データの取得処理
         val databaseR = dbHelper.readableDatabase
         val sql =
-            "SELECT id, text_id, subtext_id, photo_num, name, num FROM " + "Album"
+            "SELECT id, text_id, subtext_id, delete_flg, name, num FROM " + "Album"
         val cursor = databaseR.rawQuery(sql, null)
 
         if (cursor.count > 0) {
@@ -120,23 +139,53 @@ class AlbumFragment : Fragment() {
                 arrayListId.add(cursor.getString(0))
                 arrayListTextId.add(cursor.getString(1))
                 arrayListSubTextId.add(cursor.getString(2))
-                arrayListPhotoNum.add(cursor.getInt(3))
+                arrayListDeleteFlg.add(cursor.getInt(3))
                 arrayListName.add(cursor.getString(4))
                 arrayListNum.add(cursor.getInt(5))
                 cursor.moveToNext()
             }
 
+            for (i in 0 until arrayListDeleteFlg.count()){
+                if (arrayListDeleteFlg[i] == 1){
+                    minus += 1
+                }
+            }
+
             // アルバム個数取得
             d = arrayListNum.size
+            s = arrayListNum.size
+            s -= minus
 
             // album_sub追加処理
-            for (i in 0..d / 3) {
+            for (i in 0..s / 3) {
+                Log.d("s", s.toString())
                 //「MainLinearLayout」というidに「album_sub.xml」を追加
                 val mainSub = view.findViewById<LinearLayout>(R.id.MainLinearLayout)
                 layoutInflater.inflate(R.layout.album_sub, mainSub)
 
+                for (y in m until arrayListDeleteFlg.count()){
+                    Log.d("m", m.toString())
+                    m += 1
+
+                    if (arrayListDeleteFlg[y] == 1){
+                        p += 1
+                    }
+                    else if (arrayListDeleteFlg[y] == 0){
+                        n += 1
+                    }
+
+                    if (n == 3){
+                        n = 0
+                        break
+                    }
+                }
+
                 // アルバム1つ1つの設定ループ
-                for (q in 0..2) {
+                for (q in 0..p) {
+                    Log.d("e", e.toString())
+                    Log.d("h", h.toString())
+                    Log.d("p", p.toString())
+
                     try {
                         val sqlSub =
                             "SELECT COUNT(*) FROM Album_Photo WHERE album_id = " + arrayListId[h]
@@ -153,6 +202,7 @@ class AlbumFragment : Fragment() {
                                 cursorSub.moveToNext()
                             }
                         }
+
                         if (cursorImage.count > 0) {
                             cursorImage.moveToFirst()
 
@@ -165,6 +215,7 @@ class AlbumFragment : Fragment() {
                     } catch (e: IndexOutOfBoundsException) {
 
                     }
+
                     // IDを変数で指定
                     val image = "image_id$e"
                     val text = "text$e"
@@ -172,83 +223,110 @@ class AlbumFragment : Fragment() {
                     val imageId = resources.getIdentifier(image, "id", "com.example.exif")
                     val textId = resources.getIdentifier(text, "id", "com.example.exif")
                     val subTextId = resources.getIdentifier(subText, "id", "com.example.exif")
+
                     // 空の写真をインスタンス化
                     val imageSource =
                         resources.getIdentifier("picture", "drawable", "com.example.exif")
 
                     // album_subの追加がラストか判別(ラストじゃないなら)
-                    if (i != d / 3) {
-                        // データベースから取得したIDをセットする
-                        val imageview = view.findViewById<ImageButton>(imageId)
-                        val textview = view.findViewById<TextView>(textId)
-                        val subTextview = view.findViewById<TextView>(subTextId)
-
-                        imageview.id = arrayListId[h].toInt()
-                        textview.id = arrayListTextId[h].toInt()
-                        subTextview.id = arrayListSubTextId[h].toInt()
-
-                        // アルバム遷移用ボタンのインスタンス化
-                        btn[k] = view.findViewById<ImageButton>(arrayListId[h].toInt())
-                        num[k] = arrayListId[h].toInt()
-
-                        // アルバムタイトル表示
-                        val tv = view.findViewById<TextView>(arrayListTextId[h].toInt())
-                        tv.text = arrayListName[h]
-                        // アルバム内の写真数表示
-                        val subTv = view.findViewById<TextView>(arrayListSubTextId[h].toInt())
+                    if (i != s / 3) {
 
                         try {
-                            subTv.text = arrayListAlbumPhotoNum[h]
-                        } catch (e: IndexOutOfBoundsException) {
-                            subTv.text = "0"
+
+                            if (arrayListDeleteFlg[h] == 0){
+                                // データベースから取得したIDをセットする
+                                val imageview = view.findViewById<ImageButton>(imageId)
+                                val textview = view.findViewById<TextView>(textId)
+                                val subTextview = view.findViewById<TextView>(subTextId)
+
+                                Log.d("id", imageId.toString())
+                                imageview.id = arrayListId[h].toInt()
+                                textview.id = arrayListTextId[h].toInt()
+                                subTextview.id = arrayListSubTextId[h].toInt()
+
+                                // アルバム遷移用ボタンのインスタンス化
+                                btn[k] = view.findViewById<ImageButton>(arrayListId[h].toInt())
+                                num[k] = arrayListId[h].toInt()
+
+                                // アルバムタイトル表示
+                                val tv = view.findViewById<TextView>(arrayListTextId[h].toInt())
+                                tv.text = arrayListName[h]
+                                // アルバム内の写真数表示
+                                val subTv = view.findViewById<TextView>(arrayListSubTextId[h].toInt())
+
+                                try {
+                                    subTv.text = arrayListAlbumPhotoNum[h]
+                                } catch (e: IndexOutOfBoundsException) {
+                                    subTv.text = "0"
+                                }
+                                // 空の写真をpictureに
+                                try {
+                                    val file: File = File(arrayListImagePath[0])
+                                    val uri = Uri.fromFile(file)
+                                    imageview.setImageURI(uri)
+                                }
+                                catch (e: IndexOutOfBoundsException){
+                                    imageview.setImageResource(imageSource)
+                                }
+                            }
+
+                            else {
+                                e -= 1
+                            }
                         }
-                        // 空の写真をpictureに
-                        try {
-                            val file: File = File(arrayListImagePath[0])
-                            val uri = Uri.fromFile(file)
-                            imageview.setImageURI(uri)
-                        } catch (e: IndexOutOfBoundsException) {
-                            imageview.setImageResource(imageSource)
+                        catch (e: IndexOutOfBoundsException){
+                            h -= 1
                         }
 
                     } else {
                         try {
-                            // データベースから取得したIDをセットする
-                            val imageview = view.findViewById<ImageButton>(imageId)
-                            val textview = view.findViewById<TextView>(textId)
-                            val subTextview = view.findViewById<TextView>(subTextId)
 
-                            imageview.id = arrayListId[h].toInt()
-                            textview.id = arrayListTextId[h].toInt()
-                            subTextview.id = arrayListSubTextId[h].toInt()
+                            if (arrayListDeleteFlg[h] == 0){
+                                // データベースから取得したIDをセットする
+                                val imageview = view.findViewById<ImageButton>(imageId)
+                                val textview = view.findViewById<TextView>(textId)
+                                val subTextview = view.findViewById<TextView>(subTextId)
 
-                            // アルバム遷移用ボタンのインスタンス化
-                            btn[k] = view.findViewById<ImageButton>(arrayListId[h].toInt())
-                            num[k] = arrayListId[h].toInt()
-                            // アルバムタイトル表示
-                            val tv = view.findViewById<TextView>(arrayListTextId[h].toInt())
-                            tv.text = arrayListName[h]
-                            // アルバム内の写真数表示
-                            val subTv =
-                                view.findViewById<TextView>(arrayListSubTextId[h].toInt())
-                            try {
-                                subTv.text = arrayListAlbumPhotoNum[h]
-                            } catch (e: IndexOutOfBoundsException) {
-                                subTv.text = "0"
+                                imageview.id = arrayListId[h].toInt()
+                                textview.id = arrayListTextId[h].toInt()
+                                subTextview.id = arrayListSubTextId[h].toInt()
+
+                                // アルバム遷移用ボタンのインスタンス化
+                                btn[k] = view.findViewById<ImageButton>(arrayListId[h].toInt())
+                                num[k] = arrayListId[h].toInt()
+
+                                // アルバムタイトル表示
+                                val tv = view.findViewById<TextView>(arrayListTextId[h].toInt())
+                                tv.text = arrayListName[h]
+                                // アルバム内の写真数表示
+                                val subTv =
+                                    view.findViewById<TextView>(arrayListSubTextId[h].toInt())
+
+                                try {
+                                    subTv.text = arrayListAlbumPhotoNum[h]
+                                } catch (e: IndexOutOfBoundsException) {
+                                    subTv.text = "0"
+                                }
+                                // 空の写真をpictureに
+                                try {
+                                    val file: File = File(arrayListImagePath[0])
+                                    val uri = Uri.fromFile(file)
+                                    imageview.setImageURI(uri)
+                                }
+                                catch (e: IndexOutOfBoundsException){
+                                    imageview.setImageResource(imageSource)
+                                }
                             }
-                            // 空の写真をpictureに
-                            try {
-                                val file: File = File(arrayListImagePath[0])
-                                val uri = Uri.fromFile(file)
-                                imageview.setImageURI(uri)
-                            } catch (e: IndexOutOfBoundsException) {
-                                imageview.setImageResource(imageSource)
+                            else {
+                                e -= 1
                             }
 
                         } catch (e: IndexOutOfBoundsException) {
+                            h -= 1
                             break
                         }
                     }
+
                     // アルバムIDを取得
                     f = arrayListId[h].toInt() + 3
                     // テキストIDを取得
@@ -259,6 +337,7 @@ class AlbumFragment : Fragment() {
                     e += 1
                     h += 1
                     k += 1
+                    p = 2
 
                     // 1列追加したらカウンタを0に
                     if (e == 3) {
@@ -266,13 +345,15 @@ class AlbumFragment : Fragment() {
                     }
                     arrayListImagePath.clear()
                 }
-                if (d <= l && d % l == 0) {
+
+                if (s <= l && s % l == 0) {
                     break
                 }
+
                 l += 3
 
             }
-            a += (d % 3)
+            a += (s % 3)
             c += d
         }
 
@@ -295,8 +376,10 @@ class AlbumFragment : Fragment() {
             val imageId = resources.getIdentifier(image, "id", "com.example.exif")
             val textId = resources.getIdentifier(text, "id", "com.example.exif")
             val subTextId = resources.getIdentifier(subText, "id", "com.example.exif")
+
             // 空の写真をインスタンス化
             val imageSource = resources.getIdentifier("picture", "drawable", "com.example.exif")
+
             // 新しいID生成
             val imageNewId = IntArray(999)
             imageNewId[b] = f
@@ -306,6 +389,7 @@ class AlbumFragment : Fragment() {
             subTextNewId[b] = j
 
             val title: String
+
             if (a % 3 == 0) {
                 // 「MainLinearLayout」というidに「album_sub.xml」を追加
                 val mainSub = view.findViewById<LinearLayout>(R.id.MainLinearLayout)
@@ -353,6 +437,7 @@ class AlbumFragment : Fragment() {
                 title = edittext.text.toString()
                 tv.text = title
                 subTv.text = "0"
+
                 // 空の写真をpictureに
                 imageview.setImageResource(imageSource)
 
@@ -365,7 +450,7 @@ class AlbumFragment : Fragment() {
             values.put("id", imageNewId[b])
             values.put("text_id", textNewId[b])
             values.put("subtext_id", subTextNewId[b])
-            values.put("photo_num", 0)
+            values.put("delete_flg", 0)
             values.put("name", title)
             values.put("num", c)
 
@@ -390,16 +475,44 @@ class AlbumFragment : Fragment() {
             if (a == 3) {
                 a = 0;
             }
+
             popup.visibility = View.INVISIBLE
-            scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+
+                // ライトモード
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    // 背景を元に戻す
+                    scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+                }
+
+                // ダークモード
+                Configuration.UI_MODE_NIGHT_YES -> {
+                }
+            }
+
         }
+
 
         // 「キャンセル」を押したときにポップアップを非表示に
         val cancelBtn = view.findViewById<Button>(R.id.btn_cancel)
+
         cancelBtn.setOnClickListener {
             // ポップアップを非表示
             popup.visibility = View.INVISIBLE
-            scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+
+                // ライトモード
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    // 背景を元に戻す
+                    scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+                }
+
+                // ダークモード
+                Configuration.UI_MODE_NIGHT_YES -> {
+                }
+            }
         }
 
         for (z in 0..c) {
@@ -415,15 +528,46 @@ class AlbumFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+
+        when (item.itemId) {
             //作成ボタンを押したとき
             R.id.addButton -> {
                 // ポップアップを表示
                 popup.visibility = View.VISIBLE
-                // 背景を暗く
-                //scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
+
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+
+                    // ライトモード
+                    Configuration.UI_MODE_NIGHT_NO -> {
+                        // 背景を暗く
+                        scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
+                        // ポップアップ
+                        val drawable = GradientDrawable()
+                        drawable.setColor(Color.WHITE)
+                        drawable.cornerRadius = 50F
+                        popup.background = drawable
+
+                    }
+
+                    // ダークモード
+                    Configuration.UI_MODE_NIGHT_YES -> {
+                        // ポップアップ
+                        val drawable = GradientDrawable()
+                        drawable.setColor(Color.GRAY)
+                        drawable.cornerRadius = 50F
+                        popup.background = drawable
+                    }
+                }
+
                 return true
             }
+
+            R.id.deleteButton -> {
+                val intent = Intent(context, AlbumDeleteActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }

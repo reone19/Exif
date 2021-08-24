@@ -13,13 +13,19 @@ import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.core.os.HandlerCompat.postDelayed
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.exif.databinding.FragmentOcrBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_ocr.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -28,6 +34,7 @@ import java.io.IOException
 private var changeOcr: Array<String?> = arrayOfNulls(allImageId.size)
 
 private var changeOcrFlag: Array<String?> = arrayOfNulls(allImageId.size)
+
 
 class OcrFragment : Fragment() {
 
@@ -38,10 +45,7 @@ class OcrFragment : Fragment() {
     // OCR
     private var _ocr: OCR? = null
     private var _ocr2: OCReng? = null
-
-    // 格納配列＆変数
-//    private var arrayListPhotoId: ArrayList<String> = arrayListOf()
-//    private var arrayListImageOcr: ArrayList<String> = arrayListOf()
+    private var ocrString :String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,56 +64,33 @@ class OcrFragment : Fragment() {
             binding.ocrString.setText(imageResOcr)
         }
 
+        binding.progressBar.visibility = ProgressBar.INVISIBLE
+
         //OCRがレコードになかった場合
         //日本語OCRボタン
         binding.btn1.setOnClickListener {
-            var pd = ProgressDialog(context)
-            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-            pd.setTitle("日本語OCR")
-            pd.setMessage("文字列抽出中..")
-            pd.max = 100
-            pd.show()
 
-
-            Thread(Runnable {
-                var count = 0
-                while (count <= 100) {
-                    try {
-                        pd.progress = count
-                        count += 40
-                        pd.setProgress(count)
-                        Thread.sleep(2000)
-                    } catch (i: InterruptedException) {
-                    }
-                }
-                pd.dismiss()
+            // ★MainThreadでUIを更新する
+            binding.progressBar.visibility = ProgressBar.VISIBLE
+            lifecycleScope.launch {
                 japanesesOcr()
-            }).start()
+                // ★WorkerThreadからMainThreadに戻ってくる
+                // MainThreadを離れて戻ってきたので最初のプログレスバー更新とは別の描画ループ
+                binding.progressBar.visibility = ProgressBar.INVISIBLE
+                binding.ocrString.setText(ocrString)
+            }
         }
         //英語OCR用ボタン
         binding.btn2.setOnClickListener {
-            var pd = ProgressDialog(context)
-            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-            pd.setTitle("英語OCR")
-            pd.setMessage("文字列抽出中..")
-            pd.max = 100
-            pd.show()
-
-
-            Thread(Runnable {
-                var count = 0
-                while (count <= 100) {
-                    try {
-                        pd.progress = count
-                        count += 50
-                        pd.setProgress(count)
-                        Thread.sleep(1000)
-                    } catch (i: InterruptedException) {
-                    }
-                }
-                pd.dismiss()
+            // ★MainThreadでUIを更新する
+            binding.progressBar.visibility = ProgressBar.VISIBLE
+            lifecycleScope.launch {
                 englishOcr()
-            }).start()
+                // ★WorkerThreadからMainThreadに戻ってくる
+                // MainThreadを離れて戻ってきたので最初のプログレスバー更新とは別の描画ループ
+                binding.progressBar.visibility = ProgressBar.INVISIBLE
+                binding.ocrString.setText(ocrString)
+            }
         }
 
         //アップデート用ボタン
@@ -120,12 +101,11 @@ class OcrFragment : Fragment() {
     }
 
     //日本語OCRメソッド
-    private fun japanesesOcr() {
+    suspend fun japanesesOcr() = withContext(Dispatchers.Default) {
 
         _ocr = activity?.let { OCR(it.applicationContext) }
 
         // OCR
-        val ocrString: String
         var bitmap: Bitmap? = null
 
         // URI取得
@@ -168,20 +148,14 @@ class OcrFragment : Fragment() {
             "bitmap is null"
         }
 
-        //ハンドラを生成し、メインスレッドにサブスレッドからのUI操作を許可送信
-        Handler(Looper.getMainLooper()).postDelayed({
-            //データセット
-            binding.ocrString.setText(ocrString)
-        },0)
     }
 
     //英語OCRメソッド
-    private fun englishOcr() {
+    suspend fun englishOcr() = withContext(Dispatchers.Default){
 
         _ocr2 = activity?.let { OCReng(it.applicationContext) }
 
         // OCR
-        val ocrString: String
         var bitmap: Bitmap? = null
 
         // URI取得
@@ -223,11 +197,6 @@ class OcrFragment : Fragment() {
         } else {
             "bitmap is null"
         }
-        //ハンドラを生成し、メインスレッドにサブスレッドからのUI操作を許可送信
-        Handler(Looper.getMainLooper()).postDelayed({
-            //データセット
-            binding.ocrString.setText(ocrString)
-        },0)
     }
 
     //アップデートメソッド

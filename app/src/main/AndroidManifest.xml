@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Exif">
-        <activity android:name=".SearchResultActivity"></activity>
+        <activity android:name=".AlbumDeleteActivity"></activity>
+        <activity android:name=".SearchResultActivity" />
         <activity android:name=".PhotoDetailActivity" />
         <activity android:name=".AlbumAddPhotoActivity" />
         <activity android:name=".AlbumDetailActivity" />
