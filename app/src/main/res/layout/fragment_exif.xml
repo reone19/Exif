@@ -9,7 +9,8 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
 
         <TableRow
             android:layout_width="match_parent"
@@ -24,8 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
-                android:text="" />
+                android:inputType="number" />
         </TableRow>
 
         <TableRow
@@ -41,8 +41,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
-                android:text="" />
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="画像の高さの解像度" />
+
+            <EditText
+                android:id="@+id/yResolution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="画像の横幅の解像度" />
+
+            <EditText
+                android:id="@+id/xResolution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
         </TableRow>
 
         <TableRow
@@ -58,8 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
-                android:text="" />
+                android:inputType="number" />
         </TableRow>
 
         <TableRow
@@ -75,25 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
-                android:text="" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:padding="3dp"
-                android:text="画像タイトル" />
-
-            <EditText
-                android:id="@+id/imageDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                android:inputType="number" />
         </TableRow>
 
         <TableRow
@@ -109,8 +121,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
-                android:text="" />
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="画像タイトル" />
+
+            <EditText
+                android:id="@+id/imageDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="作者名" />
+
+            <EditText
+                android:id="@+id/artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -126,8 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                android:inputType="textPersonName" />
         </TableRow>
 
 
@@ -144,8 +186,151 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="絞り値" />
+
+            <EditText
+                android:id="@+id/aperture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="露出時間" />
+
+            <EditText
+                android:id="@+id/exposureTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="ISO値" />
+
+            <EditText
+                android:id="@+id/isoSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="露出補正時間" />
+
+            <EditText
+                android:id="@+id/exposureBias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="F値" />
+
+            <EditText
+                android:id="@+id/fNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="シャッタースピード" />
+
+            <EditText
+                android:id="@+id/shutterSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="焦点距離" />
+
+            <EditText
+                android:id="@+id/focalLength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="測光モード" />
+
+            <EditText
+                android:id="@+id/meteringMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="フラッシュ" />
+
+            <EditText
+                android:id="@+id/flash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -161,8 +346,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -178,8 +362,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
-                android:text="" />
+                android:inputType="number|text" />
         </TableRow>
 
         <TableRow
@@ -195,8 +378,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number|text"
-                android:text="" />
+                android:inputType="number|text" />
         </TableRow>
 
         <TableRow
@@ -212,8 +394,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number|text"
-                android:text="" />
+                android:inputType="number|text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="3dp"
+                android:text="高度" />
+
+            <EditText
+                android:id="@+id/gpsAltitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|text" />
         </TableRow>
 
         <TableRow
@@ -229,8 +426,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="datetime"
-                android:text="" />
+                android:inputType="datetime" />
         </TableRow>
 
         <TableRow
@@ -246,8 +442,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="datetime"
-                android:text="" />
+                android:inputType="datetime" />
 
         </TableRow>
 
@@ -256,6 +451,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="保存" />
+
+        <Button
+            android:id="@+id/exifAllDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="一括削除" />
 
     </TableLayout>
 
