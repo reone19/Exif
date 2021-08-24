@@ -2,17 +2,14 @@ package com.example.exif
 
 import android.content.ContentValues
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import com.example.exif.databinding.FragmentExifBinding
 import java.io.File
 import java.util.*
 
@@ -124,16 +121,17 @@ class AlbumDeleteActivity : AppCompatActivity() {
                 arrayListNum.add(cursor.getInt(5))
                 cursor.moveToNext()
             }
-            for (i in 0..arrayListDeleteFlg.count() - 1) {
+
+            for (i in 0 until arrayListDeleteFlg.count()) {
                 if (arrayListDeleteFlg[i] == 1) {
-                    minus = minus + 1
+                    minus += 1
                 }
             }
 
             // アルバム個数取得
             d = arrayListNum.size
             s = arrayListNum.size
-            s = s - minus
+            s -= minus
 
             // album_sub追加処理
             for (i in 0..s / 3) {
@@ -141,12 +139,12 @@ class AlbumDeleteActivity : AppCompatActivity() {
                 val mainSub = findViewById<LinearLayout>(R.id.MainLinearLayout)
                 layoutInflater.inflate(R.layout.album_sub, mainSub)
 
-                for (y in m..arrayListDeleteFlg.count() - 1) {
-                    m = m + 1
+                for (y in m until arrayListDeleteFlg.count()) {
+                    m += 1
                     if (arrayListDeleteFlg[y] == 1) {
-                        p = p + 1
+                        p += 1
                     } else if (arrayListDeleteFlg[y] == 0) {
-                        n = n + 1
+                        n += 1
                     }
 
                     if (n == 3) {
@@ -173,6 +171,7 @@ class AlbumDeleteActivity : AppCompatActivity() {
                                 cursorSub.moveToNext()
                             }
                         }
+
                         if (cursorImage.count > 0) {
                             cursorImage.moveToFirst()
 
@@ -192,6 +191,7 @@ class AlbumDeleteActivity : AppCompatActivity() {
                     val imageId = resources.getIdentifier(image, "id", "com.example.exif")
                     val textId = resources.getIdentifier(text, "id", "com.example.exif")
                     val subTextId = resources.getIdentifier(subText, "id", "com.example.exif")
+
                     // 空の写真をインスタンス化
                     val imageSource =
                         resources.getIdentifier("picture", "drawable", "com.example.exif")
@@ -199,6 +199,7 @@ class AlbumDeleteActivity : AppCompatActivity() {
                     // album_subの追加がラストか判別(ラストじゃないなら)
                     if (i != s / 3) {
                         try {
+
                             if (arrayListDeleteFlg[h] == 0) {
                                 // データベースから取得したIDをセットする
                                 val imageview = findViewById<ImageButton>(imageId)
@@ -224,6 +225,7 @@ class AlbumDeleteActivity : AppCompatActivity() {
                                 } catch (e: IndexOutOfBoundsException) {
                                     subTv.text = "0"
                                 }
+
                                 // 空の写真をpictureに
                                 try {
                                     val file: File = File(arrayListImagePath[0])
@@ -232,15 +234,17 @@ class AlbumDeleteActivity : AppCompatActivity() {
                                 } catch (e: IndexOutOfBoundsException) {
                                     imageview.setImageResource(imageSource)
                                 }
+
                             } else {
-                                e = e - 1
+                                e -= 1
                             }
                         } catch (e: IndexOutOfBoundsException) {
-                            h = h - 1
+                            h -= 1
                         }
 
                     } else {
                         try {
+
                             if (arrayListDeleteFlg[h] == 0) {
                                 // データベースから取得したIDをセットする
                                 val imageview = findViewById<ImageButton>(imageId)
@@ -266,6 +270,7 @@ class AlbumDeleteActivity : AppCompatActivity() {
                                 } catch (e: IndexOutOfBoundsException) {
                                     subTv.text = "0"
                                 }
+
                                 // 空の写真をpictureに
                                 try {
                                     val file: File = File(arrayListImagePath[0])
@@ -274,15 +279,17 @@ class AlbumDeleteActivity : AppCompatActivity() {
                                 } catch (e: IndexOutOfBoundsException) {
                                     imageview.setImageResource(imageSource)
                                 }
+
                             } else {
-                                e = e - 1
+                                e -= 1
                             }
 
                         } catch (e: IndexOutOfBoundsException) {
-                            h = h - 1
+                            h -= 1
                             break
                         }
                     }
+
                     // アルバムIDを取得
                     f = arrayListId[h].toInt() + 3
                     // テキストIDを取得
@@ -301,9 +308,11 @@ class AlbumDeleteActivity : AppCompatActivity() {
                     }
                     arrayListImagePath.clear()
                 }
+
                 if (s <= l && s % l == 0) {
                     break
                 }
+
                 l += 3
 
             }
@@ -324,8 +333,22 @@ class AlbumDeleteActivity : AppCompatActivity() {
             Toast.makeText(this, "アルバムが削除されました", Toast.LENGTH_LONG).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+
+            // ポップアップを非表示
             popup.visibility = View.INVISIBLE
-            scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+
+                // ライトモード
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    // 背景を元に戻す
+                    scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+                }
+
+                // ダークモード
+                Configuration.UI_MODE_NIGHT_YES -> {
+                }
+            }
         }
 
         // 「キャンセル」を押したときにポップアップを非表示に
@@ -333,18 +356,55 @@ class AlbumDeleteActivity : AppCompatActivity() {
         cancelBtn.setOnClickListener {
             // ポップアップを非表示
             popup.visibility = View.INVISIBLE
-            scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+
+                // ライトモード
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    // 背景を元に戻す
+                    scroll.setBackgroundColor(Color.argb(255, 255, 255, 255))
+                }
+
+                // ダークモード
+                Configuration.UI_MODE_NIGHT_YES -> {
+                }
+            }
         }
 
         for (z in 0..c) {
             btn[z]?.setOnClickListener {
                 x = arrayListId[z].toInt()
+
                 // ポップアップを表示
                 popup.visibility = View.VISIBLE
-                // 背景を暗く
-                scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
+
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+
+                    // ライトモード
+                    Configuration.UI_MODE_NIGHT_NO -> {
+                        // 背景を暗く
+                        scroll.setBackgroundColor(Color.argb(100, 0, 0, 0))
+                        // ポップアップ
+                        val drawable = GradientDrawable()
+                        drawable.setColor(Color.WHITE)
+                        drawable.cornerRadius = 50F
+                        popup.background = drawable
+
+                    }
+
+                    // ダークモード
+                    Configuration.UI_MODE_NIGHT_YES -> {
+                        // ポップアップ
+                        val drawable = GradientDrawable()
+                        drawable.setColor(Color.GRAY)
+                        drawable.cornerRadius = 50F
+                        popup.background = drawable
+                    }
+                }
+
             }
         }
+
     }
 
     // アプリバーの戻るボタンを押したときにfinish

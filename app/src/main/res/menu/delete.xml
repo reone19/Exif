@@ -3,5 +3,6 @@
     <item
         android:id="@+id/deleteButton"
         android:title="削除"
+        android:icon="@drawable/ic_baseline_restore_from_trash_24"
         app:showAsAction="always"></item>
 </menu>

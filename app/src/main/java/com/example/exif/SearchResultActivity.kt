@@ -137,7 +137,7 @@ class SearchResultActivity : AppCompatActivity() {
         if (result[12] != null) {
             val query13 = result[12]
             sql =
-                "SELECT photo_id, image_name FROM Meta WHERE aperture LIKE '$query13'"
+                "SELECT photo_id, image_name FROM Meta WHERE aperture LIKE '%$query13%'"
         }
         if (result[13] != null) {
             val query14 = result[13]
@@ -162,7 +162,7 @@ class SearchResultActivity : AppCompatActivity() {
         if (result[17] != null) {
             val query18 = result[17]
             sql =
-                "SELECT photo_id, image_name FROM Meta WHERE shutter_speed LIKE '$query18'"
+                "SELECT photo_id, image_name FROM Meta WHERE shutter_speed LIKE '%$query18%'"
         }
         if (result[18] != null) {
             val query19 = result[18]
@@ -207,12 +207,12 @@ class SearchResultActivity : AppCompatActivity() {
         if (result[26] != null) {
             val query27 = result[26]
             sql =
-                "SELECT photo_id, image_name FROM Meta WHERE date_time_original LIKE '$query27'"
+                "SELECT photo_id, image_name FROM Meta WHERE date_time_original LIKE '%$query27%'"
         }
         if (result[27] != null) {
             val query28 = result[27]
             sql =
-                "SELECT photo_id, image_name FROM Meta WHERE change_date_and_time LIKE '$query28'"
+                "SELECT photo_id, image_name FROM Meta WHERE change_date_and_time LIKE '%$query28%'"
         }
         if (result[28] != null) {
             val query29 = result[28]

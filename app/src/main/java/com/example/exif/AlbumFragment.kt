@@ -6,14 +6,12 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import java.io.File
 import java.util.*
 
@@ -27,8 +25,8 @@ class AlbumFragment : Fragment() {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.plus, menu)
         inflater.inflate(R.menu.delete, menu)
+        inflater.inflate(R.menu.plus, menu)
     }
 
 
@@ -476,6 +474,7 @@ class AlbumFragment : Fragment() {
                 a = 0;
             }
 
+            // ポップアップを非表示
             popup.visibility = View.INVISIBLE
 
             when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
