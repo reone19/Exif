@@ -133,6 +133,8 @@ class PhotoFragment : Fragment() {
             imageRecycler?.adapter = PhotoAdapter(requireContext(), allPictures!!)
             progressBar?.visibility = View.GONE
         }
+        // 一番下にスクロールさせる
+        imageRecycler?.scrollToPosition(imageRecycler?.adapter?.itemCount!! - 1)
 
         return view
     }

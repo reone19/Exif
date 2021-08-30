@@ -80,17 +80,21 @@ class CaptionFragment : Fragment() {
             } catch (e: NullPointerException) {
 
             }
+                // データセット（viewPager2によってセット）
+                if (changeCaptionFlag[imageResId!! - 1] == true.toString()) {
+                    try{
+                    binding.capString1.setText(changeSentence1[imageResId!! - 1])
+                    binding.capString2.setText(changeSentence2[imageResId!! - 1])
+                    binding.capString3.setText(changeSentence3[imageResId!! - 1])
+                    }catch (e: NullPointerException){
 
-            // データセット（viewPager2によってセット）
-            if (changeCaptionFlag[imageResId!! - 1] == true.toString()) {
-                binding.capString1.setText(changeSentence1[imageResId!! - 1])
-                binding.capString2.setText(changeSentence2[imageResId!! - 1])
-                binding.capString3.setText(changeSentence3[imageResId!! - 1])
-            } else {
-                binding.capString1.setText(imageResSentence1)
-                binding.capString2.setText(imageResSentence2)
-                binding.capString3.setText(imageResSentence3)
-            }
+                    }
+                } else {
+                    binding.capString1.setText(imageResSentence1)
+                    binding.capString2.setText(imageResSentence2)
+                    binding.capString3.setText(imageResSentence3)
+                }
+
 
         } catch (e: SQLiteConstraintException) {
 
@@ -99,6 +103,7 @@ class CaptionFragment : Fragment() {
         binding.btn.setOnClickListener {
             updateCaption()
         }
+
         return binding.root
     }
 
