@@ -5,7 +5,6 @@ Android写真アプリ＋α
 # DEMO
 
 ![画面遷移](https://user-images.githubusercontent.com/57529474/131344009-896b8d87-c8f8-4695-8660-f1d7be76272a.gif)
-
 ![キャプション・Exif・OCR](https://user-images.githubusercontent.com/57529474/131344503-5e8f5d00-fad0-4c18-9843-9cf7f8e6a8c3.gif)
 
 # Features
